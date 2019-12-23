@@ -1,5 +1,5 @@
-#ifndef SODUKU_GAME_H_INCLUDED
-#define SODUKU_GAME_H_INCLUDED
+#ifndef SUDOKU_GAME_H_INCLUDED
+#define SUDOKU_GAME_H_INCLUDED
 
 #include <cstdint>
 #include <vector>
@@ -55,4 +55,4 @@ private:
   	size_t _n;  
 };
 
-#endif // SODUKU_GAME_H_INCLUDED
+#endif // SUDOKU_GAME_H_INCLUDED

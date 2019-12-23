@@ -27,6 +27,7 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     while (!done)
     {
         std::cout << game << std::endl;
+        callback();
         if (!game.isLegal())
         {
             //rewind
@@ -106,7 +107,6 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             
         }
         int  bp = 1;
-        callback();
     }
     int bp = 1;
 }

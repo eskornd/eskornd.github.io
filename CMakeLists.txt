@@ -1,5 +1,5 @@
 
-project(soduku)
+project(sudoku)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -12,6 +12,6 @@ set(SRCS
 	srcs/Robot.cpp
 )
 	
-add_executable(soduku ${SRCS})
+add_executable(sudoku ${SRCS})
 
 

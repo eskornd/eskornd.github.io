@@ -1,5 +1,5 @@
-#ifndef SODUKU_ROBOT_H_INCLUDED
-#define SODUKU_ROBOT_H_INCLUDED
+#ifndef SUDOKU_ROBOT_H_INCLUDED
+#define SUDOKU_ROBOT_H_INCLUDED
 
 #include "Game.h"
 #include <functional>
@@ -14,4 +14,4 @@ public:
     
 };
 
-#endif // SODUKU_ROBOT_H_INCLUDED
+#endif // SUDOKU_ROBOT_H_INCLUDED
