@@ -33,7 +33,7 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             //rewind
             auto & t = memos.top();
             rewinded = t;
-            game.erase(t.index);
+            game.unassign(t.index);
             unfilled.push_front(t.index);
             memos.pop();
             continue;
@@ -55,13 +55,13 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                     if (t.value < N)
                     {
                         rewinded = t;
-                        game.erase(t.index);
+                        game.unassign(t.index);
                         unfilled.push_front(t.index);
                         memos.pop();
                         break;
                     } else {
                         // dead end
-                        game.erase(t.index);
+                        game.unassign(t.index);
                         unfilled.push_front(t.index);
                         memos.pop();
                     }
@@ -81,7 +81,7 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 int bp =2;
                 auto & t = memos.top();
                 rewinded = t;
-                game.erase(t.index);
+                game.unassign(t.index);
                 unfilled.push_front(t.index);
                 memos.pop();
                 continue;
@@ -89,14 +89,14 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             }
             
             m.index = index;
-            game.insert(m.index, m.value);
+            game.assign(m.index, m.value);
             memos.push(m);
             unfilled.pop_front();
             rewinded = std::nullopt;
                 
 //            if (game.isLegalInsert(m.index, m.value))
 //            {
-//                game.insert(m.index, m.value);
+//                game.assign(m.index, m.value);
 //                memos.push(m);
 //                unfilled.pop_front();
 //                rewinded = std::nullopt;
@@ -111,6 +111,6 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     int bp = 1;
 }
 
-
 template void Robot::solve<4>(const Game<4> &, Robot::Callback );
 template void Robot::solve<6>(const Game<6> &, Robot::Callback );
+template void Robot::solve<9>(const Game<9> &, Robot::Callback );

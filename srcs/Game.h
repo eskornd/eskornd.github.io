@@ -34,10 +34,10 @@ public:
     
     bool passed() const;
 
-    void insert(size_t index, const Num & num);
-    void insert(size_t row, size_t col, const Num & num);
+    void assign(size_t index, const Num & num);
+    void assign(size_t row, size_t col, const Num & num);
     
-    void erase(size_t index);
+    void unassign(size_t index);
     
     std::vector<size_t> unfilled() const;
     

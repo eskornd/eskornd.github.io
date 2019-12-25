@@ -88,7 +88,7 @@ Game<N>::Game(const std::vector<Num> & inNums)
     {
         for (size_t j = 0; j<N; ++j)
         {
-            insert(i, j, inNums[i*N+j]);
+            assign(i, j, inNums[i*N+j]);
         }
     }
 }
@@ -121,21 +121,21 @@ Game<N>& Game<N>::operator=(const Game<N> & inRhs)
 }
 
 template <size_t N>
-void Game<N>::erase(size_t index)
+void Game<N>::unassign(size_t index)
 {
-    insert(index, std::nullopt);
+    assign(index, std::nullopt);
 }
 
 template <size_t N>
-void Game<N>::insert(size_t index, const Num & num)
+void Game<N>::assign(size_t index, const Num & num)
 {
     auto row = index / N;
     auto col = index % N;
-    insert(row, col, num);
+    assign(row, col, num);
 }
 
 template <size_t N>
-void Game<N>::insert(size_t row, size_t col, const Num & num)
+void Game<N>::assign(size_t row, size_t col, const Num & num)
 {
     if (num && num.value()>N)
     {
@@ -202,7 +202,7 @@ template <size_t N>
 bool Game<N>::isLegalInsert(size_t index, const Num & num)
 {
     Game<N> copy = *this;
-    copy.insert(index, num);
+    copy.assign(index, num);
     return copy.isLegal();
 }
 
@@ -259,6 +259,8 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 
 template class Game<4>;
 template class Game<6>;
+template class Game<9>;
 template std::ostream & operator<< <4> (std::ostream & , const Game<4> &);
 template std::ostream & operator<< <6> (std::ostream & , const Game<6> &);
+template std::ostream & operator<< <9> (std::ostream & , const Game<9> &);
 
