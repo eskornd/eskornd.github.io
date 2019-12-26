@@ -7,8 +7,8 @@
 #include <iostream>
 #include <optional>
 
-
-using Num = std::optional<uint8_t>;
+using Value = uint8_t;
+using Num = std::optional<Value>;
 //using opt = std::optional;
 //using Num = uint8_t;
 

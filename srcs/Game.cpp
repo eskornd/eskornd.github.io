@@ -280,6 +280,13 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 	return os;
 }
 
+template <size_t N>
+std::vector<Num> Game<N>::domain(size_t index)
+{
+    std::vector<Num> v;
+    return v;
+}
+
 template class Game<4>;
 template class Game<6>;
 template class Game<9>;
