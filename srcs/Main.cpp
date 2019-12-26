@@ -11,6 +11,8 @@ namespace {
             return (num>0 && num<=N) ? num : std::nullopt;
         });
     }
+    
+    
 }
 
 int main()
@@ -49,32 +51,60 @@ int main()
         robot.solve(game);
     }
     
-//    if (0)
+    Robot::Callback waitInput = []()
+    {
+        std::string line;
+        std::getline(std::cin, line);
+    };
+    if (0)
     {
         std::vector<Num> v={ 3,6,0,0,5,2, 1,0,0,3,0,0, 0,0,0,4,0,3, 0,3,0,5,2,0, 5,2,1,6,0,4, 0,4,0,0,1,5};
         validateInput<6>(v);
         Game<6> game(v);
         Robot robot;
-        robot.solve(game,[](){
-            std::string line;
-            std::getline(std::cin, line);
-        });
+        
+        robot.solve<6>(game);
     }
     
-//    if (0)
+
+    Robot::Callback wait500ms = [](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(500ms);
+    };
+    
+    Robot::Callback wait200ms = [](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(200ms);
+    };
+    
+    Robot::Callback wait20ms = [](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(20ms);
+    };
+    
+    Robot::Callback wait10ms = [](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(10ms);
+    };
+    
+    Robot::Callback wait5ms = [](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(5ms);
+    };
+    
+    if (0)
     {
         std::vector<Num> v={ 6,0,0,4,0,0, 0,0,1,6,3,5, 5,3,0,0,4,2, 0,0,2,0,0,0, 3,6,5,0,0,0, 0,0,0,0,6,0};
         validateInput<6>(v);
         Game<6> game(v);
+        std::cout << game;
+        std::cout << "press enter to start:" << std::endl;
+        waitInput();
         Robot robot;
-        robot.solve(game, [](){
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(200ms);
-//            std::string line;
-//            std::getline(std::cin, line);
-        });
+        robot.solve(game, wait200ms);
     }
     
+//    if (0)
     {
         std::vector<Num> v={
             7,0,0,0,0,6,5,0,0,
@@ -89,14 +119,12 @@ int main()
             };
         validateInput<9>(v);
         Game<9> game(v);
+        std::cout << game;
+        std::cout << "press enter to start:" << std::endl;
+        waitInput();
         Robot robot;
-        robot.solve(game, [](){
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(20ms);
-            //            std::string line;
-            //            std::getline(std::cin, line);
-        });
+        robot.solve(game, wait5ms);
     }
 	return 0;
 }
-template void Robot::solve<6>(const Game<6> &, Robot::Callback );
+

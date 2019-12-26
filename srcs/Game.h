@@ -7,8 +7,10 @@
 #include <iostream>
 #include <optional>
 
-//using Num = std::optional<uint8_t>;
-using Num = std::optional<char>;
+
+using Num = std::optional<uint8_t>;
+//using opt = std::optional;
+//using Num = uint8_t;
 
 template <size_t N>
 class Game
@@ -39,7 +41,11 @@ public:
     
     void unassign(size_t index);
     
+    
     std::vector<size_t> unfilled() const;
+    
+    
+    std::vector<Num> domain(size_t index);
     
 	template <size_t M>
 	friend std::ostream & operator<< (std::ostream & os, const Game<M> & game);
@@ -49,9 +55,9 @@ private:
     
 	std::vector<Num> _nums;
     std::array<std::array<std::array<Num, N>, N>*, 3> _groups;
-    std::array<std::array<Num, N>, N> _rows;// = _groups[0];
-    std::array<std::array<Num, N>, N> _cols;// = _groups[1];
-    std::array<std::array<Num, N>, N> _grids;// = _groups[2];
+    std::array<std::array<Num, N>, N> _rows;
+    std::array<std::array<Num, N>, N> _cols;
+    std::array<std::array<Num, N>, N> _grids;
   	size_t _n;  
 };
 

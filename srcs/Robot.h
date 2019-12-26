@@ -10,7 +10,7 @@ public:
     using Callback = std::function<void()>;
     
 	template <size_t N>
-	void solve(const Game<N> & game, Callback callback = nullptr);
+    void solve(const Game<N> & game, Callback callback = nullptr);
     
 };
 

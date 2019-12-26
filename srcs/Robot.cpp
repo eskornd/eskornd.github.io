@@ -24,18 +24,26 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     std::stack<Memo> memos;
     assert(game.isLegal());
     bool done = false;
+    
+    size_t dead_end = 0;
+    size_t rewind_count = 0;
+    auto rewind = [&memos, &game, &unfilled, &rewinded, &rewind_count] () {
+        assert( !memos.empty());
+        auto & t = memos.top();
+        rewinded = t;
+        game.unassign(t.index);
+        unfilled.push_front(t.index);
+        memos.pop();
+        ++rewind_count;
+    };
+    
     while (!done)
     {
         std::cout << game << std::endl;
-        callback();
+        if (callback) callback();
         if (!game.isLegal())
         {
-            //rewind
-            auto & t = memos.top();
-            rewinded = t;
-            game.unassign(t.index);
-            unfilled.push_front(t.index);
-            memos.pop();
+            rewind();
             continue;
         }
         
@@ -46,27 +54,30 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             {
                 assert(game.passed());
                 done = true;
+                std::cout << " rewind: " << rewind_count << std::endl;
+                std::cout << " deadend: " << dead_end << std::endl;
                 break;
             } else {
                 // rewind
-                while (!memos.empty())
-                {
-                    auto & t = memos.top();
-                    if (t.value < N)
-                    {
-                        rewinded = t;
-                        game.unassign(t.index);
-                        unfilled.push_front(t.index);
-                        memos.pop();
-                        break;
-                    } else {
-                        // dead end
-                        game.unassign(t.index);
-                        unfilled.push_front(t.index);
-                        memos.pop();
-                    }
-                }
-                int bp = 2;
+                // Can't happen
+//                while (!memos.empty())
+//                {
+//                    auto & t = memos.top();
+//                    if (t.value < N)
+//                    {
+//                        rewinded = t;
+//                        game.unassign(t.index);
+//                        unfilled.push_front(t.index);
+//                        memos.pop();
+//                        break;
+//                    } else {
+//                        // dead end
+//                        game.unassign(t.index);
+//                        unfilled.push_front(t.index);
+//                        memos.pop();
+//                    }
+//                }
+//                int bp = 2;
                 
             }
         } else {
@@ -78,14 +89,10 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             
             if (m.value > N)
             {
-                int bp =2;
-                auto & t = memos.top();
-                rewinded = t;
-                game.unassign(t.index);
-                unfilled.push_front(t.index);
-                memos.pop();
+                ++dead_end;
+                // dead end, rewind again,
+                rewind();
                 continue;
-                //rewind
             }
             
             m.index = index;
@@ -103,13 +110,12 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
 //            } else {
 //                rewinded = m;
 //            }
-            
-            
         }
         int  bp = 1;
     }
     int bp = 1;
 }
+
 
 template void Robot::solve<4>(const Game<4> &, Robot::Callback );
 template void Robot::solve<6>(const Game<6> &, Robot::Callback );

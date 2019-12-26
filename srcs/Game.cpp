@@ -1,6 +1,6 @@
 #include "Game.h"
 #include <cassert>
-
+#include <utility>
 namespace
 {
     size_t gridWidth(size_t N)
@@ -75,6 +75,35 @@ namespace
         }
         return !has_duplicate;
     }
+    
+    template <size_t N>
+    std::pair<size_t, size_t> ToRowCol(size_t index)
+    {
+        auto row = index / N;
+        auto col = index % N;
+        return std::make_pair(row, col);
+    }
+    
+    template <size_t N>
+    size_t ToIndex(size_t row, size_t col)
+    {
+        return row * N + col;
+    }
+    
+    template <size_t N>
+    std::pair<size_t, size_t> ToGridRowCol(size_t row, size_t col)
+    {
+        auto w=gridWidth(N);
+        auto h=gridHeight(N);
+        
+        auto grid_row = row/h;
+        auto grid_col = col/w;
+        size_t grid_index = grid_row * h + grid_col;
+        auto cell_row = row % h;
+        auto cell_col = col % w;
+        size_t cell_index = cell_row * w + cell_col;
+        return std::make_pair(grid_index, cell_index);
+    }
 }
 
 template <size_t N>
@@ -101,6 +130,7 @@ Game<N>::Game(const Game<N> & inRhs)
 , _grids(inRhs._grids)
 , _n(inRhs._n)
 {
+    // deep copy
     _groups[0] = &_rows;
     _groups[1] = &_cols;
     _groups[2] = &_grids;
@@ -109,6 +139,7 @@ Game<N>::Game(const Game<N> & inRhs)
 template <size_t N>
 Game<N>& Game<N>::operator=(const Game<N> & inRhs)
 {
+    // deep copy
     _nums = inRhs._nums;
     _rows = inRhs._rows;
     _cols = inRhs._cols;
@@ -129,9 +160,8 @@ void Game<N>::unassign(size_t index)
 template <size_t N>
 void Game<N>::assign(size_t index, const Num & num)
 {
-    auto row = index / N;
-    auto col = index % N;
-    assign(row, col, num);
+    auto pair = ToRowCol<N>(index);
+    assign(pair.first, pair.second, num);
 }
 
 template <size_t N>
@@ -142,20 +172,13 @@ void Game<N>::assign(size_t row, size_t col, const Num & num)
         bool cannot_happen = true;
     }
     
-    _nums[row*N+col] = num;
+    _nums[ToIndex<N>(row, col)] = num;
     _rows[row][col] = num;
     _cols[col][row] = num;
-    auto w=gridWidth(N);
-    auto h=gridHeight(N);
-    
-    auto grid_row = row/h;
-    auto grid_col = col/w;
-    size_t grid_index = grid_row * h + grid_col;
-    auto cell_row = row % h;
-    auto cell_col = col % w;
-    size_t cell_index = cell_row * w + cell_col;
+    auto grid_index_pair = ToGridRowCol<N>(row, col);
+
     //std::cout << "[" << row << "][" << col <<"] -> " << grid_index << ", " << cell_index <<std::endl;
-    _grids[grid_index][cell_index] = num;
+    _grids[grid_index_pair.first][grid_index_pair.second] = num;
 }
 
 template <size_t N>
@@ -185,7 +208,7 @@ const Num& Game<N>::at(size_t row, size_t col) const
 template <size_t N>
 bool Game<N>::has(size_t row, size_t col) const
 {
-    return has(row*N+col);
+    return has(ToIndex<N>(row, col));
 }
 
 template <size_t N>
