@@ -95,6 +95,7 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 continue;
             }
             
+            game.checkDomain(index);
             m.index = index;
             game.assign(m.index, m.value);
             memos.push(m);

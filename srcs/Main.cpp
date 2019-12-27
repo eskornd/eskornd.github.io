@@ -12,16 +12,25 @@ namespace {
         });
     }
     
+    template <size_t N>
+    std::vector<opt<Num>> toGameInput(const std::vector<Num> & inNums)
+    {
+        std::vector<opt<Num>> outNums(inNums.size());
+        std::transform(inNums.begin(), inNums.end(), outNums.begin(), [](auto & num){
+            return (num>0 && num<=N) ? opt<Num>(num) : std::nullopt;
+        });
+        return outNums;
+    }
     
 }
 
 int main()
 {
+    
     if (0)
     {
         std::vector<Num> v={ 1,2,3,4,2,3,4,1, 3,4,1,2, 4,1,2,3};
-        validateInput<4>(v);
-        Game<4> game(v);
+        Game<4> game(toGameInput<4>(v));
         std::cout << game << std::endl;
     }
 
@@ -29,24 +38,21 @@ int main()
     if (0)
     {
         std::vector<Num> v={ 2,1,3,4, 3,4,1,2, 4,3,2,1, 1,2,4,3};
-        validateInput<4>(v);
-        Game<4> game(v);
+        Game<4> game(toGameInput<4>(v));
         std::cout << game << std::endl;
     }
     
     if (0)
     {
         std::vector<Num> w={ 1,2,3,4,5,6, 2,3,4,5,6,1, 3,4,5,6,1,2, 4,5,6,1,2,3, 5,6,1,2,3,4, 6,1,2,3,4,5};
-        validateInput<6>(w);
-        Game<6> game6(w);
+        Game<6> game6(toGameInput<6>(w));
         std::cout << game6 << std::endl;
     }
     
     if (0)
     {
         std::vector<Num> v={ 0,1,0,0, 3,0,1,2, 0,3,2,0, 1,0,4,3};
-        validateInput<4>(v);
-        Game<4> game(v);
+        Game<4> game(toGameInput<4>(v));
         Robot robot;
         robot.solve(game);
     }
@@ -60,8 +66,7 @@ int main()
     if (0)
     {
         std::vector<Num> v={ 3,6,0,0,5,2, 1,0,0,3,0,0, 0,0,0,4,0,3, 0,3,0,5,2,0, 5,2,1,6,0,4, 0,4,0,0,1,5};
-        validateInput<6>(v);
-        Game<6> game(v);
+        Game<6> game(toGameInput<6>(v));
         Robot robot;
         
         robot.solve<6>(game);
@@ -96,8 +101,7 @@ int main()
     if (0)
     {
         std::vector<Num> v={ 6,0,0,4,0,0, 0,0,1,6,3,5, 5,3,0,0,4,2, 0,0,2,0,0,0, 3,6,5,0,0,0, 0,0,0,0,6,0};
-        validateInput<6>(v);
-        Game<6> game(v);
+        Game<6> game(toGameInput<6>(v));
         std::cout << game;
         std::cout << "press enter to start:" << std::endl;
         waitInput();
@@ -116,8 +120,8 @@ int main()
             0,0,2,0,0,0,
         };
         
-        validateInput<6>(v);
-        Game<6> game(v);
+        Game<6> game(toGameInput<6>(v));
+
         std::cout << game;
         std::cout << "press enter to start:" << std::endl;
         waitInput();
@@ -140,8 +144,7 @@ int main()
             0,0,0,9,0,7,0,5,0,
             0,0,9,2,5,0,0,1,0,
             };
-        validateInput<9>(v);
-        Game<9> game(v);
+        Game<9> game(toGameInput<9>(v));
         std::cout << game;
         std::cout << "press enter to start:" << std::endl;
         waitInput();
