@@ -22,6 +22,12 @@ namespace {
         return outNums;
     }
     
+    template <size_t MS>
+    void waitMS()
+    {
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(std::chrono::milliseconds(MS));
+    }
 }
 
 int main()
@@ -72,32 +78,6 @@ int main()
         robot.solve<6>(game);
     }
     
-    
-    Robot::Callback wait500ms = [](){
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(500ms);
-    };
-    
-    Robot::Callback wait200ms = [](){
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(200ms);
-    };
-    
-    Robot::Callback wait20ms = [](){
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(20ms);
-    };
-    
-    Robot::Callback wait10ms = [](){
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(10ms);
-    };
-    
-    Robot::Callback wait5ms = [](){
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(5ms);
-    };
-    
     if (0)
     {
         std::vector<Num> v={ 6,0,0,4,0,0, 0,0,1,6,3,5, 5,3,0,0,4,2, 0,0,2,0,0,0, 3,6,5,0,0,0, 0,0,0,0,6,0};
@@ -106,7 +86,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         waitInput();
         Robot robot;
-        robot.solve(game, wait200ms);
+        robot.solve(game, waitMS<200>);
     }
     
     if (1)
@@ -126,7 +106,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         waitInput();
         Robot robot;
-        robot.solve(game, wait200ms);
+        robot.solve(game, waitMS<200>);
         
         robot.solve<6>(game);
     }
@@ -149,7 +129,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         waitInput();
         Robot robot;
-        robot.solve(game, wait5ms);
+        robot.solve(game, waitMS<5>);
     }
 	return 0;
 }
