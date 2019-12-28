@@ -134,7 +134,7 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
 {
     std::copy_n(inNums.begin(), N, _nums.begin());
     initIndexLUT();
-	assert(inNums.size()==N*N);
+	assert(inNums.size()==NN);
     for ( size_t i = 0; i<N; ++i)
     {
         for (size_t j = 0; j<N; ++j)
@@ -151,6 +151,7 @@ Game<N>::Game(const Game<N> & inRhs)
 , _rows(inRhs._rows)
 , _cols(inRhs._cols)
 , _grids(inRhs._grids)
+, _notations(inRhs._notations)
 {
     // deep copy
     _groups[0] = &_rows;
@@ -166,6 +167,7 @@ Game<N>& Game<N>::operator=(const Game<N> & inRhs)
     _rows = inRhs._rows;
     _cols = inRhs._cols;
     _grids = inRhs._grids;
+    _notations = inRhs._notations;
     _groups[0] = &_rows;
     _groups[1] = &_cols;
     _groups[2] = &_grids;
@@ -274,7 +276,7 @@ bool Game<N>::passed() const
 }
 
 template <size_t N>
-std::vector<size_t> Game<N>::unfilled() const
+std::vector<size_t> Game<N>::unfilled(bool most_constraints_first) const
 {
     std::vector<size_t> indexes;
     for (size_t i=0; i<_nums.size();++i)
@@ -283,6 +285,14 @@ std::vector<size_t> Game<N>::unfilled() const
         {
             indexes.push_back(i);
         }
+    }
+    
+    if (most_constraints_first)
+    {
+        auto & notations = _notations;
+        std::sort(indexes.begin(), indexes.end(), [&notations](auto & a, auto & b){
+            return notations[a].size() < notations[b].size();
+        });
     }
     return indexes;
 }
@@ -313,33 +323,6 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 }
 
 template <size_t N>
-void Game<N>::checkDomain(size_t index)
-{
-    std::set<Num> s;
-    for (size_t i=0; i<N; ++i)
-    {
-        s.insert(i+1);
-    }
-    
-    auto pair = ToRowCol<N>(index);
-    auto grid_pair = ToGridRowCol<N>(pair.first, pair.second);
-    
-    auto & row = _rows[pair.first];
-    auto & col = _cols[pair.second];
-    auto & grid = _grids[grid_pair.first];
-    std::vector<NumArray1D*> v = {&row, &col, &grid};
-    std::for_each(v.begin(), v.end(), [&s](auto & w){
-        std::for_each(w->begin(), w->end(), [&s](auto & optnum){
-            if (optnum)
-            {
-                s.erase(*optnum);
-            }
-        });
-    });
-    return;
-}
-
-template <size_t N>
 void Game<N>::makeNotations()
 {
     Notation aa;
@@ -365,36 +348,9 @@ void Game<N>::makeNotations()
             
             // if has num assigned, clear notations
             _notations[index].clear();
-            
+
             auto & num = *optNum;
-            // remove num from row
-            for (size_t i=0; i<_cols.size(); ++i)
-            {
-                auto j = ToIndex<N>(row, i);
-                if (!has(j))
-                {
-                    _notations[j].erase(num);
-                }
-            }
-            // remove num from col
-            for (size_t i=0; i<_rows.size(); ++i)
-            {
-                size_t j = ToIndex<N>(i, col);
-                if (!has(j))
-                {
-                    _notations[j].erase(num);
-                }
-            }
-            
-            auto & grid_index_pair = _lutIndexToGrid[index];
-            for (size_t i=0; i<N; ++i)
-            {
-                size_t j = _lutGridToIndex[grid_index_pair.first][i];
-                if (!has(j))
-                {
-                    _notations[j].erase(num);
-                }
-            }
+            denoteFromRowColGrid(num, index);
         }
     }
     
@@ -412,6 +368,78 @@ void Game<N>::makeNotations()
             int bp = 2;
         }
     }
+}
+
+template <size_t N>
+void Game<N>::denoteFromRowColGrid(Num num, size_t index)
+{
+    auto index_pair = ToRowCol<N>(index);
+    auto & row = index_pair.first;
+    auto & col = index_pair.second;
+
+    auto & notations = _notations;
+    auto erase_num_at = [this, num](size_t index){
+        if (!has(index))
+            _notations[index].erase(num);
+    };
+    
+    // denote num from row
+    for (size_t i=0; i<_cols.size(); ++i)
+    {
+        erase_num_at(ToIndex<N>(row, i));
+    }
+    
+    // denote num from col
+    for (size_t i=0; i<_rows.size(); ++i)
+    {
+        erase_num_at(ToIndex<N>(i, col));
+    }
+    
+    // denote num from grid
+    auto & grid_index_pair = _lutIndexToGrid[index];
+    for (size_t i=0; i<N; ++i)
+    {
+        erase_num_at(_lutGridToIndex[grid_index_pair.first][i]);
+    }
+}
+
+template <size_t N>
+void Game<N>::noteFromRowColGrid(Num num, size_t index)
+{
+    auto index_pair = ToRowCol<N>(index);
+    auto & row = index_pair.first;
+    auto & col = index_pair.second;
+    
+    auto & notations = _notations;
+    auto insert_num_at = [this, num](size_t index){
+        if (!has(index))
+            _notations[index].insert(num);
+    };
+    
+    // denote num from row
+    for (size_t i=0; i<_cols.size(); ++i)
+    {
+        insert_num_at(ToIndex<N>(row, i));
+    }
+    
+    // denote num from col
+    for (size_t i=0; i<_rows.size(); ++i)
+    {
+        insert_num_at(ToIndex<N>(i, col));
+    }
+    
+    // denote num from grid
+    auto & grid_index_pair = _lutIndexToGrid[index];
+    for (size_t i=0; i<N; ++i)
+    {
+        insert_num_at(_lutGridToIndex[grid_index_pair.first][i]);
+    }
+}
+
+template <size_t N>
+const std::vector<typename Game<N>::Notation> & Game<N>::notations() const
+{
+    return _notations;
 }
 
 template class Game<4>;

@@ -32,6 +32,9 @@ namespace {
 
 int main()
 {
+    Robot::Order order = Robot::Order::eMostConstraintsFirst;
+    
+    
     
     if (0)
     {
@@ -89,8 +92,9 @@ int main()
         robot.solve(game, waitMS<200>);
     }
     
-    if (1)
+    if (0)
     {
+        // medium 6x6
         std::vector<Num> v= {
             0,0,4,6,0,0,
             5,0,3,1,0,0,
@@ -104,11 +108,34 @@ int main()
 
         std::cout << game;
         std::cout << "press enter to start:" << std::endl;
-        waitInput();
+        //waitInput();
         Robot robot;
-        robot.solve(game, waitMS<200>);
+        robot.solve(game, waitMS<10>);
         
         robot.solve<6>(game);
+    }
+    
+    if (1)
+    {
+        // hard 6x6
+        std::vector<Num> v= {
+            0,0,6,0,0,3,
+            0,0,4,0,0,0,
+            4,5,0,0,0,0,
+            0,0,0,0,5,1,
+            0,0,0,5,0,0,
+            2,0,0,6,0,0,
+        };
+        
+        Game<6> game(toGameInput<6>(v));
+        
+        std::cout << game;
+        std::cout << "press enter to start:" << std::endl;
+        //waitInput();
+        Robot robot;
+        robot.setOrder(order);
+        robot.solve(game, waitMS<10>);
+        
     }
     
     if (0)

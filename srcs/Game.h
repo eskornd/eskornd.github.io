@@ -9,11 +9,7 @@
 #include <set>
 
 template<class T> using opt = std::optional<T>;
-//using Num = uint8_t;
 using Num = uint8_t;
-
-
-//using Num = uint8_t;
 
 template <size_t N>
 class Game
@@ -42,42 +38,26 @@ public:
     
     void unassign(size_t index);
     
-    
-    std::vector<size_t> unfilled() const;
-    
-    void checkDomain(size_t index);
-    
+    std::vector<size_t> unfilled(bool most_constraints_first = false) const;
     
 	template <size_t M>
 	friend std::ostream & operator<< (std::ostream & os, const Game<M> & game);
     
-    using NumArray1D = std::array<opt<Num>, N>;
-    using NumArray2D = std::array<NumArray1D, N>;
-    
-private:
-    static constexpr size_t NN=N*N;
-	std::array<opt<Num>, NN> _nums;
-    NumArray2D _rows;
-    NumArray2D _cols;
-    NumArray2D _grids;
-    std::array<NumArray2D*, 3> _groups;
-    
-    std::array<std::pair<size_t, size_t>, NN> _lutIndexToGrid;
-    std::array<std::array<size_t, N>,N> _lutGridToIndex;
-    
-    void initIndexLUT();
-    
-    //template <size_t N>
     class Notation
     {
     public:
         Notation()
         : _nums(defaultNums())
         {
-
+            
         }
         
         const std::set<Num> & nums() const { return _nums; }
+        
+        void insert(Num num)
+        {
+            _nums.insert(num);
+        }
         
         void erase(Num num)
         {
@@ -113,10 +93,32 @@ private:
         }
     };
     
+    const std::vector<Notation> & notations() const;
+    
+    
+    using NumArray1D = std::array<opt<Num>, N>;
+    using NumArray2D = std::array<NumArray1D, N>;
+    
+private:
+    static constexpr size_t NN=N*N;
+	std::array<opt<Num>, NN> _nums;
+    NumArray2D _rows;
+    NumArray2D _cols;
+    NumArray2D _grids;
+    std::array<NumArray2D*, 3> _groups;
+    
+    std::array<std::pair<size_t, size_t>, NN> _lutIndexToGrid;
+    std::array<std::array<size_t, N>,N> _lutGridToIndex;
+    
+    void initIndexLUT();
+
     
     std::vector<Notation> _notations;
     void makeNotations();
-    
+    // denote num from all notations for row/col/grid at index
+    void denoteFromRowColGrid(Num num, size_t index);
+    // note num from all notations for row/col/grid at index
+    void noteFromRowColGrid(Num num, size_t index);
     
 };
 

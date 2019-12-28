@@ -17,7 +17,25 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     {
         possible_nums[i] = 1+i;
     }
-    auto indexes = game.unfilled();
+    
+    std::vector<size_t> indexes;
+    switch (_order)
+    {
+        case Order::eNatural:
+            indexes = game.unfilled();
+            break;
+        case Order::eMostConstraintsFirst:
+            indexes = game.unfilled(true /*sorted most constraints first*/);
+            break;
+        case Order::eLeastConstraintsFirst:
+            indexes = game.unfilled(true /*sorted most constraints first*/);
+            std::reverse(indexes.begin(), indexes.end());
+            break;
+        default:
+            assert(false && "Should never come here");
+            break;
+    }
+    
     std::deque<size_t> unfilled(indexes.begin(), indexes.end());
     
     std::optional<Memo> rewinded;
@@ -60,25 +78,11 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             } else {
                 // rewind
                 // Can't happen
-//                while (!memos.empty())
-//                {
-//                    auto & t = memos.top();
-//                    if (t.value < N)
-//                    {
-//                        rewinded = t;
-//                        game.unassign(t.index);
-//                        unfilled.push_front(t.index);
-//                        memos.pop();
-//                        break;
-//                    } else {
-//                        // dead end
-//                        game.unassign(t.index);
-//                        unfilled.push_front(t.index);
-//                        memos.pop();
-//                    }
-//                }
-//                int bp = 2;
-                
+                // no answer
+                std::cout << " rewind: " << rewind_count << std::endl;
+                std::cout << " deadend: " << dead_end << std::endl;
+                std::cout << " NO ANSWER! " << std::endl;
+                break;
             }
         } else {
             
@@ -95,22 +99,13 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 continue;
             }
             
-            game.checkDomain(index);
+            //game.checkDomain(index);
             m.index = index;
             game.assign(m.index, m.value);
             memos.push(m);
             unfilled.pop_front();
             rewinded = std::nullopt;
-                
-//            if (game.isLegalInsert(m.index, m.value))
-//            {
-//                game.assign(m.index, m.value);
-//                memos.push(m);
-//                unfilled.pop_front();
-//                rewinded = std::nullopt;
-//            } else {
-//                rewinded = m;
-//            }
+
         }
         int  bp = 1;
     }
