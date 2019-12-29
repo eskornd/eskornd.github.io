@@ -38,7 +38,7 @@ public:
     
     void unassign(size_t index);
     
-    std::vector<size_t> unfilled(bool most_constraints_first = false) const;
+    std::vector<size_t> unfilledIndexes(bool most_constraints_first = false) const;
     
 	template <size_t M>
 	friend std::ostream & operator<< (std::ostream & os, const Game<M> & game);
@@ -111,14 +111,13 @@ private:
     std::array<std::array<size_t, N>,N> _lutGridToIndex;
     
     void initIndexLUT();
-
     
     std::vector<Notation> _notations;
     void makeNotations();
     // denote num from all notations for row/col/grid at index
-    void denoteFromRowColGrid(Num num, size_t index);
+    void denoteFromRowColGrid(size_t index, Num num);
     // note num from all notations for row/col/grid at index
-    void noteFromRowColGrid(Num num, size_t index);
+    void noteFromRowColGrid(size_t index, Num num);
     
 };
 

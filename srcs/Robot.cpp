@@ -22,13 +22,13 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     switch (_order)
     {
         case Order::eNatural:
-            indexes = game.unfilled();
+            indexes = game.unfilledIndexes();
             break;
         case Order::eMostConstraintsFirst:
-            indexes = game.unfilled(true /*sorted most constraints first*/);
+            indexes = game.unfilledIndexes(true /*sorted most constraints first*/);
             break;
         case Order::eLeastConstraintsFirst:
-            indexes = game.unfilled(true /*sorted most constraints first*/);
+            indexes = game.unfilledIndexes(true /*sorted most constraints first*/);
             std::reverse(indexes.begin(), indexes.end());
             break;
         default:
@@ -36,7 +36,10 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             break;
     }
     
-    std::deque<size_t> unfilled(indexes.begin(), indexes.end());
+    std::deque<size_t> unfilled_indexes(indexes.begin(), indexes.end());
+    std::reverse(indexes.begin(), indexes.end());
+    std::stack<size_t, std::vector<size_t>> indexes_stack(indexes);
+    
     
     std::optional<Memo> rewinded;
     std::stack<Memo> memos;
@@ -45,18 +48,22 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     
     size_t dead_end = 0;
     size_t rewind_count = 0;
-    auto rewind = [&memos, &game, &unfilled, &rewinded, &rewind_count] () {
+    auto rewind = [&memos, &game, &unfilled_indexes, &rewinded, &rewind_count, &indexes_stack] () {
         assert( !memos.empty());
         auto & t = memos.top();
         rewinded = t;
         game.unassign(t.index);
-        unfilled.push_front(t.index);
+        unfilled_indexes.push_front(t.index);
+        indexes_stack.push(t.index);
         memos.pop();
         ++rewind_count;
     };
-    
+    auto & unfilled = unfilled_indexes;
+    size_t loop_count = -1;
     while (!done)
     {
+        ++loop_count;
+        std::cout << "count: " << loop_count << std::endl;
         std::cout << game << std::endl;
         if (callback) callback();
         if (!game.isLegal())
@@ -64,6 +71,16 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             rewind();
             continue;
         }
+        
+        
+//        bool always_update_index = false;
+//        if (always_update_index)
+//        {
+//            auto iii = game.unfilled(true);
+//            unfilled = std::deque<size_t>(iii.begin(), iii.end());
+//        }
+        //std::deque<size_t> & unfilled = unfilled_indexes;
+        
         
         if (unfilled.empty() )
         {
@@ -86,10 +103,13 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             }
         } else {
             
-            size_t index = unfilled.front();
-            
             Memo m;
-            m.value = rewinded ? (++rewinded.value().value) : 1;
+            if (rewinded)
+            {
+                m.value = ++rewinded.value().value;
+            } else {
+                m.value = 1;
+            }
             
             if (m.value > N)
             {
@@ -99,13 +119,23 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 continue;
             }
             
-            //game.checkDomain(index);
-            m.index = index;
+            if (rewinded)
+            {
+                assert(unfilled.front() == rewinded.value().index);
+                assert(indexes_stack.top() == rewinded.value().index);
+                m.index = rewinded.value().index;
+            } else {
+                assert(indexes_stack.top() == unfilled.front());
+                m.index = indexes_stack.top();
+                
+            }
+            
+            unfilled.pop_front();
+            indexes_stack.pop();
+            
             game.assign(m.index, m.value);
             memos.push(m);
-            unfilled.pop_front();
             rewinded = std::nullopt;
-
         }
         int  bp = 1;
     }

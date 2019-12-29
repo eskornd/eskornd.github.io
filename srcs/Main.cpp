@@ -92,7 +92,7 @@ int main()
         robot.solve(game, waitMS<200>);
     }
     
-    if (0)
+    if (1)
     {
         // medium 6x6
         std::vector<Num> v= {
@@ -115,7 +115,7 @@ int main()
         robot.solve<6>(game);
     }
     
-    if (1)
+    if (0)
     {
         // hard 6x6
         std::vector<Num> v= {
@@ -134,7 +134,7 @@ int main()
         //waitInput();
         Robot robot;
         robot.setOrder(order);
-        robot.solve(game, waitMS<10>);
+        robot.solve(game, waitMS<1>);
         
     }
     

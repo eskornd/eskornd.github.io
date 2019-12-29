@@ -52,7 +52,7 @@ namespace
     }
     
     template <size_t N>
-    bool has_no_duplicates(const std::array<opt<Num>, N> & nums)
+    bool has_no_duplicates(const std::array<opt<Num>, N> & nums, std::pair<size_t, size_t> * outIndexPair)
     {
         bool has_duplicate = false;
         for ( size_t i=0; i<nums.size(); ++i)
@@ -68,6 +68,11 @@ namespace
                 if ( nums[i] == nums[j] )
                 {
                     has_duplicate = true;
+                    if (outIndexPair)
+                    {
+                        outIndexPair->first = i;
+                        outIndexPair->second = j;
+                    }
                     break;
                 }
             }
@@ -132,16 +137,18 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
 , _notations(inNums.size())
 , _groups({&_rows, &_cols, &_grids})
 {
-    std::copy_n(inNums.begin(), N, _nums.begin());
+    //std::copy_n(inNums.begin(), N, _nums.begin());
     initIndexLUT();
 	assert(inNums.size()==NN);
-    for ( size_t i = 0; i<N; ++i)
+    assert(std::all_of(_nums.begin(), _nums.end(), [](auto & optNum){ return !optNum; }));
+    for ( size_t i=0; i<inNums.size(); ++i)
     {
-        for (size_t j = 0; j<N; ++j)
-        {
-            assign(i, j, inNums[i*N+j]);
-        }
+        if (!inNums[i])
+            continue;
+        
+        assign(i, inNums[i]);
     }
+    
     makeNotations();
 }
 
@@ -152,6 +159,8 @@ Game<N>::Game(const Game<N> & inRhs)
 , _cols(inRhs._cols)
 , _grids(inRhs._grids)
 , _notations(inRhs._notations)
+, _lutIndexToGrid(inRhs._lutIndexToGrid)
+, _lutGridToIndex(inRhs._lutGridToIndex)
 {
     // deep copy
     _groups[0] = &_rows;
@@ -167,10 +176,13 @@ Game<N>& Game<N>::operator=(const Game<N> & inRhs)
     _rows = inRhs._rows;
     _cols = inRhs._cols;
     _grids = inRhs._grids;
-    _notations = inRhs._notations;
     _groups[0] = &_rows;
     _groups[1] = &_cols;
     _groups[2] = &_grids;
+    
+    _notations = inRhs._notations;
+    _lutIndexToGrid = inRhs._lutIndexToGrid;
+    _lutGridToIndex = inRhs._lutGridToIndex;
     return *this;
 }
 
@@ -199,20 +211,35 @@ void Game<N>::assign(size_t index, const opt<Num> & num)
 }
 
 template <size_t N>
-void Game<N>::assign(size_t row, size_t col, const opt<Num> & num)
+void Game<N>::assign(size_t row, size_t col, const opt<Num> & optNum)
 {
-    if (num && num.value()>N)
+    if (optNum && optNum.value()>N)
     {
-        bool cannot_happen = true;
+        assert( false && "Cannot happen");
     }
     
-    _nums[ToIndex<N>(row, col)] = num;
-    _rows[row][col] = num;
-    _cols[col][row] = num;
+    auto index = ToIndex<N>(row, col);
+    if ( optNum)
+    {
+        assert ( !_nums[index]);
+    } else {
+        assert ( _nums[index]);
+    }
+    Num theNum = optNum ? *optNum : *_nums[index];
+    
+    _nums[ToIndex<N>(row, col)] = optNum;
+    _rows[row][col] = optNum;
+    _cols[col][row] = optNum;
     auto grid_index_pair = ToGridRowCol<N>(row, col);
 
     //std::cout << "[" << row << "][" << col <<"] -> " << grid_index << ", " << cell_index <<std::endl;
-    _grids[grid_index_pair.first][grid_index_pair.second] = num;
+    _grids[grid_index_pair.first][grid_index_pair.second] = optNum;
+    if (optNum)
+    {
+        denoteFromRowColGrid(ToIndex<N>(row, col), theNum);
+    } else {
+        noteFromRowColGrid(ToIndex<N>(row, col), theNum);
+    }
 }
 
 template <size_t N>
@@ -248,20 +275,19 @@ bool Game<N>::has(size_t row, size_t col) const
 template <size_t N>
 bool Game<N>::isLegal() const
 {
-    return std::all_of(_groups.begin(), _groups.end(), [](auto & group){
-        return std::all_of(group->begin(), group->end(), [](auto & v){
-            return has_no_duplicates(v);
+    int level_one_count = -1;
+    int level_two_count = -1;
+    std::pair<size_t, size_t> pair;
+    bool is_legal = std::all_of(_groups.begin(), _groups.end(), [&level_one_count, &level_two_count, &pair](auto & group){
+        ++level_one_count;
+        level_two_count = -1;
+        return std::all_of(group->begin(), group->end(), [&level_two_count, &pair](auto & v){
+            ++level_two_count;
+            return has_no_duplicates(v, &pair);
         });
     });
+    return is_legal;
 }
-
-//template <size_t N>
-//bool Game<N>::isLegalInsert(size_t index, const Num & num)
-//{
-//    Game<N> copy = *this;
-//    copy.assign(index, num);
-//    return copy.isLegal();
-//}
 
 template <size_t N>
 bool Game<N>::passed() const
@@ -276,7 +302,7 @@ bool Game<N>::passed() const
 }
 
 template <size_t N>
-std::vector<size_t> Game<N>::unfilled(bool most_constraints_first) const
+std::vector<size_t> Game<N>::unfilledIndexes(bool most_constraints_first) const
 {
     std::vector<size_t> indexes;
     for (size_t i=0; i<_nums.size();++i)
@@ -291,7 +317,8 @@ std::vector<size_t> Game<N>::unfilled(bool most_constraints_first) const
     {
         auto & notations = _notations;
         std::sort(indexes.begin(), indexes.end(), [&notations](auto & a, auto & b){
-            return notations[a].size() < notations[b].size();
+            
+            return notations[a].size() == notations[b].size() ? a<b : notations[a].size() < notations[b].size();
         });
     }
     return indexes;
@@ -300,7 +327,13 @@ std::vector<size_t> Game<N>::unfilled(bool most_constraints_first) const
 template <size_t M>
 std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 {
-	os << "Dumping " << M << "x" << M<< " game" << std::endl;
+    size_t assigned = 0;
+    for (size_t i =0; i<game.NN; ++i)
+    {
+        if (game.has(i))
+            ++assigned;
+    }
+    os << "Dumping " << M << "x" << M<< " game, assigned: " << assigned << std::endl;
 
 	for (size_t i=0; i<game.size(); ++i)
 	{
@@ -347,10 +380,10 @@ void Game<N>::makeNotations()
             auto index = ToIndex<N>(row, col);
             
             // if has num assigned, clear notations
-            _notations[index].clear();
+            //_notations[index].clear();
 
             auto & num = *optNum;
-            denoteFromRowColGrid(num, index);
+            denoteFromRowColGrid(index, num);
         }
     }
     
@@ -371,7 +404,7 @@ void Game<N>::makeNotations()
 }
 
 template <size_t N>
-void Game<N>::denoteFromRowColGrid(Num num, size_t index)
+void Game<N>::denoteFromRowColGrid(size_t index, Num num)
 {
     auto index_pair = ToRowCol<N>(index);
     auto & row = index_pair.first;
@@ -379,7 +412,7 @@ void Game<N>::denoteFromRowColGrid(Num num, size_t index)
 
     auto & notations = _notations;
     auto erase_num_at = [this, num](size_t index){
-        if (!has(index))
+        //if (!has(index))
             _notations[index].erase(num);
     };
     
@@ -404,7 +437,7 @@ void Game<N>::denoteFromRowColGrid(Num num, size_t index)
 }
 
 template <size_t N>
-void Game<N>::noteFromRowColGrid(Num num, size_t index)
+void Game<N>::noteFromRowColGrid(size_t index, Num num)
 {
     auto index_pair = ToRowCol<N>(index);
     auto & row = index_pair.first;
@@ -412,7 +445,7 @@ void Game<N>::noteFromRowColGrid(Num num, size_t index)
     
     auto & notations = _notations;
     auto insert_num_at = [this, num](size_t index){
-        if (!has(index))
+        //if (!has(index))
             _notations[index].insert(num);
     };
     
