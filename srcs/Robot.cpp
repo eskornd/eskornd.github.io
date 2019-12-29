@@ -4,20 +4,13 @@
 
 struct Memo
 {
-    size_t value; // filled value
     size_t index; // which index filled?
+    size_t value; // filled value
 };
 
 template <size_t N>
-void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
+std::vector<size_t> Robot::unfilledIndexes(const Game<N> & game) const
 {
-    Game<N> game = inGame;
-    std::vector<size_t> possible_nums(N);
-    for ( size_t i=0; i<N; ++i)
-    {
-        possible_nums[i] = 1+i;
-    }
-    
     std::vector<size_t> indexes;
     switch (_order)
     {
@@ -35,8 +28,20 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             assert(false && "Should never come here");
             break;
     }
+    return indexes;
+}
+
+template <size_t N>
+void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
+{
+    Game<N> game = inGame;
+    std::vector<size_t> possible_nums(N);
+    for ( size_t i=0; i<N; ++i)
+    {
+        possible_nums[i] = 1+i;
+    }
     
-    std::deque<size_t> unfilled_indexes(indexes.begin(), indexes.end());
+    std::vector<size_t> indexes = unfilledIndexes(game);
     std::reverse(indexes.begin(), indexes.end());
     std::stack<size_t, std::vector<size_t>> indexes_stack(indexes);
     
@@ -48,17 +53,16 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     
     size_t dead_end = 0;
     size_t rewind_count = 0;
-    auto rewind = [&memos, &game, &unfilled_indexes, &rewinded, &rewind_count, &indexes_stack] () {
+    auto rewind = [&memos, &game, &rewinded, &rewind_count, &indexes_stack] () {
         assert( !memos.empty());
         auto & t = memos.top();
         rewinded = t;
         game.unassign(t.index);
-        unfilled_indexes.push_front(t.index);
         indexes_stack.push(t.index);
         memos.pop();
         ++rewind_count;
     };
-    auto & unfilled = unfilled_indexes;
+    
     size_t loop_count = -1;
     while (!done)
     {
@@ -82,7 +86,7 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
         //std::deque<size_t> & unfilled = unfilled_indexes;
         
         
-        if (unfilled.empty() )
+        if (indexes_stack.empty() )
         {
             // we're at leaf nodes
             if (game.isLegal())
@@ -121,16 +125,12 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             
             if (rewinded)
             {
-                assert(unfilled.front() == rewinded.value().index);
                 assert(indexes_stack.top() == rewinded.value().index);
                 m.index = rewinded.value().index;
             } else {
-                assert(indexes_stack.top() == unfilled.front());
                 m.index = indexes_stack.top();
-                
             }
             
-            unfilled.pop_front();
             indexes_stack.pop();
             
             game.assign(m.index, m.value);

@@ -22,7 +22,11 @@ public:
     void setOrder(Order order) { _order = order;}
     
 private:
+    // strategies
     Order _order = Order::eNatural;
+    
+    template <size_t N>
+    std::vector<size_t> unfilledIndexes(const Game<N> & game) const;
 };
 
 #endif // SUDOKU_ROBOT_H_INCLUDED
