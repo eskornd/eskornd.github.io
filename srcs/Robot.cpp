@@ -54,6 +54,11 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     size_t dead_end = 0;
     size_t rewind_count = 0;
     auto rewind = [&memos, &game, &rewinded, &indexes_stack, &rewind_count] () {
+        if (memos.empty())
+        {
+            // no solution!
+        }
+            
         assert( !memos.empty());
         auto & t = memos.top();
         rewinded = t;
@@ -117,9 +122,9 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             Memo m;
             if (rewinded)
             {
-                m.value = ++rewinded.value().value;
                 assert(indexes_stack.top() == rewinded.value().index);
-                m.index = rewinded.value().index;
+                m = rewinded.value();
+                ++ m.value;
                 if (m.value > N)
                 {
                     // dead end, rewind again,
@@ -129,7 +134,16 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 }
             } else {
                 m.value = 1; // TODO: 1..6 order or arbitary
-                m.index = indexes_stack.top();
+                if (_useDynamicOrder)
+                {
+                    auto iii = unfilledIndexes(game);
+                    std::reverse(iii.begin(), iii.end());
+                    std::stack<size_t, std::vector<size_t>> ss(iii);
+                    std::swap(ss, indexes_stack);
+                    m.index = indexes_stack.top();
+                } else {
+                    m.index = indexes_stack.top();
+                }
             }
             
             assert(m.value<=N);

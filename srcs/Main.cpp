@@ -74,7 +74,14 @@ int main()
     
     if (0)
     {
-        std::vector<Num> v={ 3,6,0,0,5,2, 1,0,0,3,0,0, 0,0,0,4,0,3, 0,3,0,5,2,0, 5,2,1,6,0,4, 0,4,0,0,1,5};
+        std::vector<Num> v={
+            3,6,0,0,5,2,
+            1,0,0,3,0,0,
+            0,0,0,4,0,3,
+            0,3,0,5,2,0,
+            5,2,1,6,0,4,
+            0,4,0,0,1,5,
+        };
         Game<6> game(toGameInput<6>(v));
         Robot robot;
         
@@ -83,7 +90,14 @@ int main()
     
     if (0)
     {
-        std::vector<Num> v={ 6,0,0,4,0,0, 0,0,1,6,3,5, 5,3,0,0,4,2, 0,0,2,0,0,0, 3,6,5,0,0,0, 0,0,0,0,6,0};
+        std::vector<Num> v={
+            6,0,0,4,0,0,
+            0,0,1,6,3,5,
+            5,3,0,0,4,2,
+            0,0,2,0,0,0,
+            3,6,5,0,0,0,
+            0,0,0,0,6,0,
+        };
         Game<6> game(toGameInput<6>(v));
         std::cout << game;
         std::cout << "press enter to start:" << std::endl;
@@ -92,7 +106,7 @@ int main()
         robot.solve(game, waitMS<200>);
     }
     
-    if (1)
+    if (0)
     {
         // medium 6x6
         std::vector<Num> v= {
@@ -110,6 +124,31 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         //waitInput();
         Robot robot;
+        robot.setOrder(order);
+        robot.solve(game, waitMS<10>);
+        
+        robot.solve<6>(game);
+    }
+    
+    if (0)
+    {
+        // medium 6x6
+        std::vector<Num> v= {
+            0,0,0,0,0,1,
+            0,0,0,0,0,0,
+            0,0,0,0,0,0,
+            0,0,0,0,0,0,
+            0,0,0,0,0,0,
+            0,0,0,0,0,0,
+        };
+        
+        Game<6> game(toGameInput<6>(v));
+        
+        std::cout << game;
+        std::cout << "press enter to start:" << std::endl;
+        //waitInput();
+        Robot robot;
+        robot.setOrder(order);
         robot.solve(game, waitMS<10>);
         
         robot.solve<6>(game);
@@ -138,7 +177,7 @@ int main()
         
     }
     
-    if (0)
+    if (1)
     {
         std::vector<Num> v={
             7,0,0,0,0,6,5,0,0,
@@ -156,6 +195,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         waitInput();
         Robot robot;
+        robot.setOrder(order);
         robot.solve(game, waitMS<5>);
     }
 	return 0;
