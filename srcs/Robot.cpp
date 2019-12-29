@@ -53,7 +53,7 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     
     size_t dead_end = 0;
     size_t rewind_count = 0;
-    auto rewind = [&memos, &game, &rewinded, &rewind_count, &indexes_stack] () {
+    auto rewind = [&memos, &game, &rewinded, &indexes_stack, &rewind_count] () {
         assert( !memos.empty());
         auto & t = memos.top();
         rewinded = t;
@@ -61,6 +61,13 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
         indexes_stack.push(t.index);
         memos.pop();
         ++rewind_count;
+    };
+    
+    auto forward = [&memos, &game, &rewinded, &indexes_stack](const Memo & m){
+        indexes_stack.pop();
+        game.assign(m.index, m.value);
+        memos.push(m);
+        rewinded = std::nullopt;
     };
     
     size_t loop_count = -1;
@@ -111,31 +118,22 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             if (rewinded)
             {
                 m.value = ++rewinded.value().value;
-            } else {
-                m.value = 1;
-            }
-            
-            if (m.value > N)
-            {
-                ++dead_end;
-                // dead end, rewind again,
-                rewind();
-                continue;
-            }
-            
-            if (rewinded)
-            {
                 assert(indexes_stack.top() == rewinded.value().index);
                 m.index = rewinded.value().index;
+                if (m.value > N)
+                {
+                    // dead end, rewind again,
+                    ++dead_end;
+                    rewind();
+                    continue;
+                }
             } else {
+                m.value = 1; // TODO: 1..6 order or arbitary
                 m.index = indexes_stack.top();
             }
             
-            indexes_stack.pop();
-            
-            game.assign(m.index, m.value);
-            memos.push(m);
-            rewinded = std::nullopt;
+            assert(m.value<=N);
+            forward(m);
         }
         int  bp = 1;
     }
