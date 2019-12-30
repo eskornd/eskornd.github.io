@@ -30,11 +30,14 @@ namespace {
     }
 }
 
-int main()
+void test()
 {
-    Robot::Order order = Robot::Order::eMostConstraintsFirst;
-    
-    
+    if (0)
+    {
+        std::vector<Num> v={ 1,2,3,4,2,3,4,1, 3,4,1,2, 4,1,2,3};
+        Game<4> game(toGameInput<4>(v));
+        std::cout << game << std::endl;
+    }
     
     if (0)
     {
@@ -42,8 +45,7 @@ int main()
         Game<4> game(toGameInput<4>(v));
         std::cout << game << std::endl;
     }
-
-   
+    
     if (0)
     {
         std::vector<Num> v={ 2,1,3,4, 3,4,1,2, 4,3,2,1, 1,2,4,3};
@@ -58,14 +60,22 @@ int main()
         std::cout << game6 << std::endl;
     }
     
-    if (0)
+    if (1)
     {
         std::vector<Num> v={ 0,1,0,0, 3,0,1,2, 0,3,2,0, 1,0,4,3};
         Game<4> game(toGameInput<4>(v));
         Robot robot;
-        robot.solve(game);
+        auto solution = robot.solve(game);
+        assert(solution);
     }
+}
+
+int main()
+{
+    Robot::Order order = Robot::Order::eMostConstraintsFirst;
     
+    test();
+
     Robot::Callback waitInput = []()
     {
         std::string line;

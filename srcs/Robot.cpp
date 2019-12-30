@@ -2,10 +2,24 @@
 #include <deque>
 #include <stack>
 
+template <size_t N>
 struct Memo
 {
     size_t index; // which index filled?
     size_t value; // filled value
+    std::vector<typename Game<N>::Notation> notations;
+};
+
+template <size_t N>
+struct Brain
+{
+    Game<N> game;
+    std::stack<Memo<N>> memos; // stack of the last action
+    opt<Memo<N>> rewinded; // last step is rewinded?
+    //std::stack<size_t> indexes; // indexes to be visited
+    std::stack<size_t, std::vector<size_t>> indexes;
+    size_t rewind_count = 0;
+    size_t dead_end = 0;
 };
 
 template <size_t N>
@@ -32,9 +46,12 @@ std::vector<size_t> Robot::unfilledIndexes(const Game<N> & game) const
 }
 
 template <size_t N>
-void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
+opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
 {
-    Game<N> game = inGame;
+    opt<Game<N>> solution;
+    Brain<N> brain;
+    brain.game = inGame;
+    Game<N> & game = brain.game;
     std::vector<size_t> possible_nums(N);
     for ( size_t i=0; i<N; ++i)
     {
@@ -43,36 +60,36 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     
     std::vector<size_t> indexes = unfilledIndexes(game);
     std::reverse(indexes.begin(), indexes.end());
-    std::stack<size_t, std::vector<size_t>> indexes_stack(indexes);
     
-    
-    std::optional<Memo> rewinded;
-    std::stack<Memo> memos;
+
+    auto & indexes_stack = brain.indexes;
+    indexes_stack = std::stack<size_t, std::vector<size_t>>(indexes);
+    opt<Memo<N>> & rewinded = brain.rewinded;
+    std::stack<Memo<N>> & memos = brain.memos;
     assert(game.isLegal());
     bool done = false;
     
-    size_t dead_end = 0;
-    size_t rewind_count = 0;
-    auto rewind = [&memos, &game, &rewinded, &indexes_stack, &rewind_count] () {
-        if (memos.empty())
+    auto rewind = [&brain] () {
+        if (brain.memos.empty())
         {
             // no solution!
+            std::cout << " Bad Game, NO ANSWER! " << std::endl;
         }
-            
-        assert( !memos.empty());
-        auto & t = memos.top();
-        rewinded = t;
-        game.unassign(t.index);
-        indexes_stack.push(t.index);
-        memos.pop();
-        ++rewind_count;
+        
+        assert( !brain.memos.empty());
+        auto & t = brain.memos.top();
+        brain.rewinded = t;
+        brain.game.unassign(t.index);
+        brain.indexes.push(t.index);
+        brain.memos.pop();
+        ++brain.rewind_count;
     };
     
-    auto forward = [&memos, &game, &rewinded, &indexes_stack](const Memo & m){
-        indexes_stack.pop();
-        game.assign(m.index, m.value);
-        memos.push(m);
-        rewinded = std::nullopt;
+    auto forward = [&brain](const Memo<N> & m){
+        brain.indexes.pop();
+        brain.game.assign(m.index, m.value);
+        brain.memos.push(m);
+        brain.rewinded = std::nullopt;
     };
     
     size_t loop_count = -1;
@@ -88,38 +105,29 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             continue;
         }
         
-        
-//        bool always_update_index = false;
-//        if (always_update_index)
-//        {
-//            auto iii = game.unfilled(true);
-//            unfilled = std::deque<size_t>(iii.begin(), iii.end());
-//        }
-        //std::deque<size_t> & unfilled = unfilled_indexes;
-        
-        
         if (indexes_stack.empty() )
         {
             // we're at leaf nodes
             if (game.isLegal())
             {
                 assert(game.passed());
+                solution = brain.game;
                 done = true;
-                std::cout << " rewind: " << rewind_count << std::endl;
-                std::cout << " deadend: " << dead_end << std::endl;
+                std::cout << " rewind: " << brain.rewind_count << std::endl;
+                std::cout << " deadend: " << brain.dead_end << std::endl;
                 break;
             } else {
                 // rewind
                 // Can't happen
                 // no answer
-                std::cout << " rewind: " << rewind_count << std::endl;
-                std::cout << " deadend: " << dead_end << std::endl;
+                std::cout << " rewind: " << brain.rewind_count << std::endl;
+                std::cout << " deadend: " << brain.dead_end << std::endl;
                 std::cout << " NO ANSWER! " << std::endl;
                 break;
             }
         } else {
             
-            Memo m;
+            Memo<N> m;
             if (rewinded)
             {
                 assert(indexes_stack.top() == rewinded.value().index);
@@ -128,12 +136,11 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 if (m.value > N)
                 {
                     // dead end, rewind again,
-                    ++dead_end;
+                    ++brain.dead_end;
                     rewind();
                     continue;
                 }
             } else {
-                m.value = 1; // TODO: 1..6 order or arbitary
                 if (_useDynamicOrder)
                 {
                     auto iii = unfilledIndexes(game);
@@ -144,17 +151,44 @@ void Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 } else {
                     m.index = indexes_stack.top();
                 }
+                
+                if (_onlyUseValidValue)
+                {
+                    auto optNextNum = game.notations()[m.index].nextNum(std::nullopt);
+                    if (!optNextNum)
+                    {
+                        ++brain.dead_end;
+                        rewind();
+                        continue;
+                    }
+                    assert(optNextNum);
+                    m.value = optNextNum.value();
+//                    auto nums = game.notations()[m.index].nums();
+//                    for (auto it = nums.begin(); it!=nums.end(); ++it)
+//                    {
+//
+//                        auto & v = *it;
+//                        m.value = v;
+//                        int bp = 1;
+//                        break;
+//                    }
+                    
+                } else {
+                    m.value = 1;
+                }
             }
             
             assert(m.value<=N);
+            m.notations = brain.game.notations();
             forward(m);
         }
         int  bp = 1;
     }
     int bp = 1;
+    return solution;
 }
 
 
-template void Robot::solve<4>(const Game<4> &, Robot::Callback );
-template void Robot::solve<6>(const Game<6> &, Robot::Callback );
-template void Robot::solve<9>(const Game<9> &, Robot::Callback );
+template opt<Game<4>> Robot::solve<4>(const Game<4> &, Robot::Callback );
+template opt<Game<6>> Robot::solve<6>(const Game<6> &, Robot::Callback );
+template opt<Game<9>> Robot::solve<9>(const Game<9> &, Robot::Callback );

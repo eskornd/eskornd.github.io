@@ -16,14 +16,16 @@ public:
     
     using Callback = std::function<void()>;
     
+    // return the solution if solved, otherwise empty
 	template <size_t N>
-    void solve(const Game<N> & game, Callback callback = nullptr);
+    opt<Game<N>> solve(const Game<N> & game, Callback callback = nullptr);
 
     void setOrder(Order order) { _order = order;}
     
 private:
     // strategies
     Order _order = Order::eNatural; // which order to use for the next index
+    bool _onlyUseValidValue = true; // recalculate order on each level
     bool _useDynamicOrder = true; // recalculate order on each level
     
     template <size_t N>

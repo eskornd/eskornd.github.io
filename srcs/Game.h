@@ -15,6 +15,7 @@ template <size_t N>
 class Game
 {
 public:
+    Game();
 	Game(const std::vector<opt<Num>> & inNums);
     
     Game(const Game<N> & inRhs);
@@ -52,6 +53,11 @@ public:
             
         }
         
+        void reset()
+        {
+            _nums = defaultNums();
+        }
+        
         const std::set<Num> & nums() const { return _nums; }
         
         void insert(Num num)
@@ -72,6 +78,30 @@ public:
         void clear()
         {
             _nums.clear();
+        }
+        
+        bool contains(Num num) const
+        {
+            return _nums.end()!=_nums.find(num);
+        }
+        
+        opt<Num> nextNum(const opt<Num> &currentNum) const
+        {
+            opt<Num> next;
+            for (auto it = _nums.begin(); it!=_nums.end(); ++it)
+            {
+                if (!currentNum)
+                {
+                    next = *it;
+                    break;
+                }
+                if (currentNum.value()<*it)
+                {
+                    next = *it;
+                    break;
+                }
+            }
+            return next;
         }
         
     private:
@@ -113,12 +143,16 @@ private:
     void initIndexLUT();
     
     std::vector<Notation> _notations;
-    void makeNotations();
+    void initNotations();
     // denote num from all notations for row/col/grid at index
     void denoteFromRowColGrid(size_t index, Num num);
     // note num from all notations for row/col/grid at index
     void noteFromRowColGrid(size_t index, Num num);
+    // note unique num at index
+    void noteUnique(size_t index, Num num);
     
+    
+    void checkSinglePosition();
 };
 
 #endif // SUDOKU_GAME_H_INCLUDED

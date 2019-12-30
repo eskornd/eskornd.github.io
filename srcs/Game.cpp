@@ -132,6 +132,12 @@ namespace
 }
 
 template <size_t N>
+Game<N>::Game()
+: _groups({&_rows, &_cols, &_grids})
+{
+}
+
+template <size_t N>
 Game<N>::Game(const std::vector<opt<Num>> & inNums)
 : _nums()
 , _notations(inNums.size())
@@ -149,7 +155,7 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
         assign(i, inNums[i]);
     }
     
-    makeNotations();
+    initNotations();
 }
 
 template <size_t N>
@@ -240,6 +246,8 @@ void Game<N>::assign(size_t row, size_t col, const opt<Num> & optNum)
     } else {
         noteFromRowColGrid(ToIndex<N>(row, col), theNum);
     }
+    
+    initNotations();
 }
 
 template <size_t N>
@@ -356,18 +364,16 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 }
 
 template <size_t N>
-void Game<N>::makeNotations()
+void Game<N>::initNotations()
 {
     Notation aa;
     auto s = aa.size();
     auto & nums = aa.nums();
-    for ( auto & n : nums)
-    {
-        int bp = 1;
-    }
-    aa.erase(2);
-    s = aa.size();
     
+    for ( size_t i = 0; i<_notations.size(); ++i)
+    {
+        _notations[i].reset();
+    }
     
     for (size_t row = 0; row<_rows.size(); ++row)
     {
@@ -401,6 +407,11 @@ void Game<N>::makeNotations()
             int bp = 2;
         }
     }
+    
+    // now check for notations;
+    int bp = 0;
+    checkSinglePosition();
+    
 }
 
 template <size_t N>
@@ -467,6 +478,80 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
     {
         insert_num_at(_lutGridToIndex[grid_index_pair.first][i]);
     }
+}
+
+template <size_t N>
+void Game<N>::checkSinglePosition()
+{
+    // find unique notation in grid
+    for (size_t i=0; i<N; ++i)
+    {
+        // for a grid check if n
+        for (size_t n=1; n<=N; ++n)
+        {
+            std::vector<size_t> index_containsN;
+            for (size_t j=0; j<N; ++j)
+            {
+                size_t index = _lutGridToIndex[i][j];
+                if (_notations[index].contains(n))
+                    index_containsN.push_back(index);
+            }
+            if (1 ==index_containsN.size())
+            {
+                int bb = 1;
+                noteUnique(index_containsN.front(), n);
+            }
+        }
+    }
+    
+    // find unique notation in row
+    for (size_t i=0; i<N; ++i)
+    {
+        // for a row check if n
+        for (size_t n=1; n<=N; ++n)
+        {
+            std::vector<size_t> index_containsN;
+            for (size_t j=0; j<N; ++j)
+            {
+                size_t index = ToIndex<N>(i,j);
+                if (_notations[index].contains(n))
+                    index_containsN.push_back(index);
+            }
+            if (1 ==index_containsN.size())
+            {
+                int bb = 1;
+                noteUnique(index_containsN.front(), n);
+            }
+        }
+    }
+    
+    // find unique notation in col
+    for (size_t i=0; i<N; ++i)
+    {
+        // for a col check if n
+        for (size_t n=1; n<=N; ++n)
+        {
+            std::vector<size_t> index_containsN;
+            for (size_t j=0; j<N; ++j)
+            {
+                size_t index = ToIndex<N>(j,i);
+                if (_notations[index].contains(n))
+                    index_containsN.push_back(index);
+            }
+            if (1 ==index_containsN.size())
+            {
+                int bb = 1;
+                noteUnique(index_containsN.front(), n);
+            }
+        }
+    }
+}
+
+template <size_t N>
+void Game<N>::noteUnique(size_t index, Num num)
+{
+    _notations[index].clear();
+    _notations[index].insert(num);
 }
 
 template <size_t N>
