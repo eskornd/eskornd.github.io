@@ -74,7 +74,7 @@ int main()
 {
     Robot::Order order = Robot::Order::eMostConstraintsFirst;
     
-    test();
+    //test();
 
     Robot::Callback waitInput = []()
     {
@@ -200,6 +200,29 @@ int main()
             0,0,0,9,0,7,0,5,0,
             0,0,9,2,5,0,0,1,0,
             };
+        Game<9> game(toGameInput<9>(v));
+        std::cout << game;
+        std::cout << "press enter to start:" << std::endl;
+        waitInput();
+        Robot robot;
+        robot.setOrder(order);
+        robot.solve(game, waitMS<5>);
+    }
+    
+    if (0)
+    {
+        // Patrick game
+        std::vector<Num> v={
+            0,8,0,0,6,1,0,0,0,
+            0,0,9,0,0,3,5,0,6,
+            6,3,0,0,0,0,0,1,0,
+            0,0,0,2,0,0,0,0,4,
+            0,0,0,0,0,0,0,0,0,
+            8,0,0,0,0,7,0,0,0,
+            0,1,0,0,0,0,0,3,8,
+            3,0,4,5,0,0,7,0,0,
+            0,0,0,7,3,0,0,4,0,
+        };
         Game<9> game(toGameInput<9>(v));
         std::cout << game;
         std::cout << "press enter to start:" << std::endl;

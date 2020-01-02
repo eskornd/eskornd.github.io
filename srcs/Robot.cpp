@@ -154,6 +154,11 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                 
                 if (_onlyUseValidValue)
                 {
+                    size_t numNum = game.notations()[m.index].nums().size();
+                    if (numNum >1)
+                    {
+                        int lets_find_new_constratins = 1;
+                    }
                     auto optNextNum = game.notations()[m.index].nextNum(std::nullopt);
                     if (!optNextNum)
                     {

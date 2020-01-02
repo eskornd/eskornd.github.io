@@ -493,7 +493,7 @@ void Game<N>::checkSinglePosition()
             for (size_t j=0; j<N; ++j)
             {
                 size_t index = _lutGridToIndex[i][j];
-                if (_notations[index].contains(n))
+                if (!_nums[index] && _notations[index].contains(n))
                     index_containsN.push_back(index);
             }
             if (1 ==index_containsN.size())
@@ -514,7 +514,7 @@ void Game<N>::checkSinglePosition()
             for (size_t j=0; j<N; ++j)
             {
                 size_t index = ToIndex<N>(i,j);
-                if (_notations[index].contains(n))
+                if (!_nums[index] && _notations[index].contains(n))
                     index_containsN.push_back(index);
             }
             if (1 ==index_containsN.size())
@@ -535,7 +535,7 @@ void Game<N>::checkSinglePosition()
             for (size_t j=0; j<N; ++j)
             {
                 size_t index = ToIndex<N>(j,i);
-                if (_notations[index].contains(n))
+                if (!_nums[index] && _notations[index].contains(n))
                     index_containsN.push_back(index);
             }
             if (1 ==index_containsN.size())
