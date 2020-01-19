@@ -157,7 +157,7 @@ private:
     
     void checkSinglePosition(bool * outChanged = nullptr);
     void checkPairs();
-    void checkTriples();
+    void checkTriplets();
     void checkXWings();
     void becomeUnique(size_t index, Num num);
 };

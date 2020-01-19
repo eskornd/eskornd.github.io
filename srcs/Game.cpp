@@ -438,7 +438,7 @@ void Game<N>::initNotations()
             // run out of single candidate;
             int bp = 1;
             checkPairs();
-            checkTriples();
+            checkTriplets();
             checkXWings();
         }
     }
@@ -650,7 +650,7 @@ void Game<N>::checkPairs()
 }
 
 template <size_t N>
-void Game<N>::checkTriples()
+void Game<N>::checkTriplets()
 {
     // for all grids
     for ( size_t i=0; i<N; ++i)
