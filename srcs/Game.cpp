@@ -440,6 +440,7 @@ void Game<N>::initNotations()
             checkPairs();
             checkTriplets();
             checkXWings();
+            checkSingleLine();
         }
     }
 
@@ -601,6 +602,7 @@ void Game<N>::becomeUnique(size_t index, Num num)
 template <size_t N>
 void Game<N>::checkPairs()
 {
+    // TODO: we can do this for row col as well
     // for all grids
     for ( size_t i=0; i<N; ++i)
     {
@@ -761,26 +763,13 @@ void Game<N>::checkXWings()
                     size_t & row_1 = row_col_2.first;
                     size_t & col_0 = row_col_0.second;
                     size_t & col_1 = row_col_1.second;
+                    std::array<size_t, 2> cols = {col_0, col_1};
+                    std::array<size_t, 2> rows = {row_0, row_1};
+                    denoteRowExcept(row_0, n, cols);
+                    denoteRowExcept(row_1, n, cols);
                     
-                    // denote
-                    for ( size_t col =0; col<N; ++col)
-                    {
-                        if (col==col_0 || col==col_1)
-                            continue;
-                        
-                        denote(ToIndex<N>(row_0, col), n);
-                        denote(ToIndex<N>(row_1, col), n);
-                    }
-                    
-                    for ( size_t row =0; row<N; ++row)
-                    {
-                        if (row==row_0 || row==row_1)
-                            continue;
-                        
-                        denote(ToIndex<N>(row, col_0), n);
-                        denote(ToIndex<N>(row, col_1), n);
-                    }
-                    int bp = 1;
+                    denoteColExcept(col_0, n, rows);
+                    denoteColExcept(col_1, n, rows);
                 }
             }
         }
@@ -789,9 +778,105 @@ void Game<N>::checkXWings()
     for (Num n=1; n<=N; ++n)
     {
         check_xwings(n, toIndexRow);
+        // no need to check col,
         //check_xwings(n, toIndexCol);
     }
-    
+}
+
+template <size_t N>
+void Game<N>::checkSingleLine()
+{
+    auto & lutGridToIndex = _lutGridToIndex;
+    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
+    // for each num
+    for ( Num n = 0; n<N; ++n)
+    {
+        // for each grid
+        for (size_t i =0; i<N; ++i)
+        {
+            std::vector<size_t> cell_indexes;
+            // for each grid cell
+            for (size_t j=0; j<N; ++j)
+            {
+                auto index = toIndexGrid(i,j);
+                if (_nums[index]) // skip filled ones
+                    continue;
+                
+                if (_notations[index].contains(n))
+                    cell_indexes.push_back(index);
+            }
+            
+            // check single line only possible for 1,2,3
+            if (!cell_indexes.empty() && cell_indexes.size()<=3)
+            {
+                std::vector<std::pair<size_t, size_t>> pairs;
+                std::transform(cell_indexes.begin(), cell_indexes.end(), std::back_inserter(pairs), [](auto & index){
+                    return ToRowCol<N>(index);
+                });
+                
+                std::set<size_t> row_set;
+                std::set<size_t> col_set;
+                for ( auto & pair : pairs)
+                {
+                    row_set.insert(pair.first);
+                    col_set.insert(pair.second);
+                }
+                
+                if (row_set.size()==1)
+                {
+                    size_t single_row = *row_set.begin();
+                    denoteRowExcept(single_row, n, col_set);
+                    int bp = 1;
+                }
+                if (col_set.size()==1)
+                {
+                    size_t single_col = *col_set.begin();
+                    denoteColExcept(single_col, n, row_set);
+                    int bp = 1;
+                }
+            }
+        }
+    }
+}
+
+template <size_t N>
+template <typename IndexContainer>
+void Game<N>::denoteRowExcept(size_t row, Num num, const IndexContainer & exclusion)
+{
+    for ( size_t col=0;col<N;++col)
+    {
+        if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), col))
+            continue;
+        
+        auto index = ToIndex<N>(row, col);
+        if (_nums[index])
+            continue;
+        
+        if (_notations[index].contains(num))
+        {
+            denote(index, num);
+        }
+    }
+}
+
+template <size_t N>
+template <typename IndexContainer>
+void Game<N>::denoteColExcept(size_t col, Num num, const IndexContainer & exclusion)
+{
+    for ( size_t row=0;row<N;++row)
+    {
+        if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), row))
+            continue;
+        
+        auto index = ToIndex<N>(row, col);
+        if (_nums[index])
+            continue;
+        
+        if (_notations[index].contains(num))
+        {
+            denote(index, num);
+        }
+    }
 }
 
 template class Game<4>;

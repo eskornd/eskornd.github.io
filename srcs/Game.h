@@ -159,7 +159,14 @@ private:
     void checkPairs();
     void checkTriplets();
     void checkXWings();
+    void checkSingleLine();
     void becomeUnique(size_t index, Num num);
+    
+    template <typename IndexContainer>
+    void denoteRowExcept(size_t row, Num num, const IndexContainer & container);
+    
+    template <typename IndexContainer>
+    void denoteColExcept(size_t row, Num num, const IndexContainer & container);
 };
 
 #endif // SUDOKU_GAME_H_INCLUDED
