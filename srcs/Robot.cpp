@@ -1,7 +1,7 @@
 #include "Robot.h"
 #include <deque>
 #include <stack>
-
+extern bool sCheckPairs;
 template <size_t N>
 struct Memo
 {
@@ -168,16 +168,6 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                     }
                     assert(optNextNum);
                     m.value = optNextNum.value();
-//                    auto nums = game.notations()[m.index].nums();
-//                    for (auto it = nums.begin(); it!=nums.end(); ++it)
-//                    {
-//
-//                        auto & v = *it;
-//                        m.value = v;
-//                        int bp = 1;
-//                        break;
-//                    }
-                    
                 } else {
                     m.value = 1;
                 }

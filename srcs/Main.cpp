@@ -187,7 +187,7 @@ int main()
         
     }
     
-    if (1)
+    if (0)
     {
         std::vector<Num> v={
             7,0,0,0,0,6,5,0,0,
@@ -202,14 +202,37 @@ int main()
             };
         Game<9> game(toGameInput<9>(v));
         std::cout << game;
-        std::cout << "press enter to start:" << std::endl;
-        waitInput();
+//        std::cout << "press enter to start:" << std::endl;
+//        waitInput();
         Robot robot;
         robot.setOrder(order);
         robot.solve(game, waitMS<5>);
     }
     
     if (0)
+    {
+        // XWing test row 0, 6
+        std::vector<Num> v={
+            0,4,1,0,0,6,0,8,0,
+            0,9,0,8,0,4,1,0,0,
+            5,0,0,0,2,0,0,0,4,
+            4,7,5,2,1,8,0,9,0,
+            1,3,6,0,4,0,2,5,8,
+            8,2,9,0,0,0,4,1,7,
+            0,1,7,4,0,0,0,3,0,
+            0,5,0,0,0,2,0,0,1,
+            9,0,0,0,3,0,5,0,0,
+        };
+        Game<9> game(toGameInput<9>(v));
+        std::cout << game;
+        std::cout << "Patrick game, press enter to start:" << std::endl;
+        waitInput();
+        Robot robot;
+        robot.setOrder(order);
+        robot.solve(game, waitMS<5>);
+    }
+    
+    if (1)
     {
         // Patrick game
         std::vector<Num> v={
@@ -225,12 +248,37 @@ int main()
         };
         Game<9> game(toGameInput<9>(v));
         std::cout << game;
-        std::cout << "press enter to start:" << std::endl;
+        std::cout << "Patrick game, press enter to start:" << std::endl;
         waitInput();
         Robot robot;
         robot.setOrder(order);
         robot.solve(game, waitMS<5>);
     }
+    
+    if (0)
+    {
+        // World hardest sudoku
+        // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424
+        std::vector<Num> v={
+            8,0,0,0,0,0,0,0,0,
+            0,0,3,6,0,0,0,0,0,
+            0,7,0,0,9,0,2,0,0,
+            0,5,0,0,0,7,0,0,0,
+            0,0,0,0,4,5,7,0,0,
+            0,0,0,1,0,0,0,3,0,
+            0,0,1,0,0,0,0,6,8,
+            0,0,8,5,0,0,0,1,0,
+            0,9,0,0,0,0,4,0,0,
+        };
+        Game<9> game(toGameInput<9>(v));
+        std::cout << game;
+        std::cout << "World Hardest sudoku, press enter to start:" << std::endl;
+        waitInput();
+        Robot robot;
+        robot.setOrder(order);
+        robot.solve(game, waitMS<1>);
+    }
+    
 	return 0;
 }
 

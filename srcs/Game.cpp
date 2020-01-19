@@ -2,6 +2,8 @@
 #include <cassert>
 #include <set>
 #include <utility>
+
+bool sCheckPairs = false;
 namespace
 {
     size_t gridWidth(size_t N)
@@ -21,6 +23,8 @@ namespace
                 assert(false && "can't happen");
                 break;
         }
+        assert(false && "can't happen");
+        return 0;
     }
     
     size_t gridHeight(size_t N)
@@ -40,6 +44,8 @@ namespace
                 assert(false && "can't happen");
                 break;
         }
+        assert(false && "can't happen");
+        return 0;
     }
     
     template <size_t N>
@@ -142,6 +148,7 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
 : _nums()
 , _notations(inNums.size())
 , _groups({&_rows, &_cols, &_grids})
+, _initializing(true)
 {
     //std::copy_n(inNums.begin(), N, _nums.begin());
     initIndexLUT();
@@ -155,6 +162,7 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
         assign(i, inNums[i]);
     }
     
+    _initializing = false;
     initNotations();
 }
 
@@ -366,6 +374,9 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 template <size_t N>
 void Game<N>::initNotations()
 {
+    if (_initializing)
+        return;
+    
     Notation aa;
     auto s = aa.size();
     auto & nums = aa.nums();
@@ -410,8 +421,28 @@ void Game<N>::initNotations()
     
     // now check for notations;
     int bp = 0;
-    checkSinglePosition();
+    bool changed = false;
+    do
+    {
+        changed = false;
+        checkSinglePosition(&changed);
+    } while(changed);
+    //checkSinglePosition();
     
+    auto indexes = unfilledIndexes(true /*most constraints first*/);
+    if (!indexes.empty() )
+    {
+        auto index = indexes.front();
+        if (_notations[index].nums().size()>1)
+        {
+            // run out of single candidate;
+            int bp = 1;
+            checkPairs();
+            checkTriples();
+            checkXWings();
+        }
+    }
+
 }
 
 template <size_t N>
@@ -422,28 +453,24 @@ void Game<N>::denoteFromRowColGrid(size_t index, Num num)
     auto & col = index_pair.second;
 
     auto & notations = _notations;
-    auto erase_num_at = [this, num](size_t index){
-        //if (!has(index))
-            _notations[index].erase(num);
-    };
     
     // denote num from row
     for (size_t i=0; i<_cols.size(); ++i)
     {
-        erase_num_at(ToIndex<N>(row, i));
+        denote(ToIndex<N>(row, i), num);
     }
     
     // denote num from col
     for (size_t i=0; i<_rows.size(); ++i)
     {
-        erase_num_at(ToIndex<N>(i, col));
+        denote(ToIndex<N>(i, col), num);
     }
     
     // denote num from grid
     auto & grid_index_pair = _lutIndexToGrid[index];
     for (size_t i=0; i<N; ++i)
     {
-        erase_num_at(_lutGridToIndex[grid_index_pair.first][i]);
+        denote(_lutGridToIndex[grid_index_pair.first][i], num);
     }
 }
 
@@ -481,83 +508,290 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
 }
 
 template <size_t N>
-void Game<N>::checkSinglePosition()
+void Game<N>::checkSinglePosition(bool * outChanged)
 {
-    // find unique notation in grid
-    for (size_t i=0; i<N; ++i)
+    
+    auto & nums = _nums;
+    auto & notations = _notations;
+    auto & lutGridToIndex = _lutGridToIndex;
+
+    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
+    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
+    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    
+    auto noteUniqueFunc = std::bind(&Game<N>::noteUnique, this, std::placeholders::_1, std::placeholders::_2);
+    auto for_each_cells = [noteUniqueFunc, &nums, &notations](Num n, IndexFunc toIndex, bool * outChanged)
     {
-        // for a grid check if n
-        for (size_t n=1; n<=N; ++n)
+        assert(outChanged);
+        for (size_t i =0; i<N; ++i)
         {
             std::vector<size_t> index_containsN;
-            for (size_t j=0; j<N; ++j)
+            for (size_t j = 0; j<N; ++j)
             {
-                size_t index = _lutGridToIndex[i][j];
-                if (!_nums[index] && _notations[index].contains(n))
+                size_t index = toIndex(i,j);
+                if (!nums[index] && notations[index].contains(n))
                     index_containsN.push_back(index);
             }
+            
             if (1 ==index_containsN.size())
             {
-                int bb = 1;
-                noteUnique(index_containsN.front(), n);
+                size_t theIndex = index_containsN.front();
+                if (notations[theIndex].size()>1)
+                {
+                    *outChanged = true;
+                    noteUniqueFunc(theIndex, n);
+                }
             }
+        }
+    };
+    
+    // for a grid check if n
+    for (size_t n=1; n<=N; ++n)
+    {
+        bool changed = false;
+        for_each_cells( n, toIndexGrid, &changed);
+        for_each_cells( n, toIndexRow, &changed);
+        for_each_cells( n, toIndexCol, &changed);
+        
+        if (outChanged && changed)
+        {
+            *outChanged = true;
         }
     }
     
-    // find unique notation in row
-    for (size_t i=0; i<N; ++i)
+}
+
+template <size_t N>
+void Game<N>::denote(size_t index, Num num)
+{
+    size_t size_before = _notations[index].size();
+    //if (!has(index))
+    _notations[index].erase(num);
+    size_t size_after = _notations[index].size();
+    if (size_after==1 && size_before>1)
     {
-        // for a row check if n
-        for (size_t n=1; n<=N; ++n)
-        {
-            std::vector<size_t> index_containsN;
-            for (size_t j=0; j<N; ++j)
-            {
-                size_t index = ToIndex<N>(i,j);
-                if (!_nums[index] && _notations[index].contains(n))
-                    index_containsN.push_back(index);
-            }
-            if (1 ==index_containsN.size())
-            {
-                int bb = 1;
-                noteUnique(index_containsN.front(), n);
-            }
-        }
-    }
-    
-    // find unique notation in col
-    for (size_t i=0; i<N; ++i)
-    {
-        // for a col check if n
-        for (size_t n=1; n<=N; ++n)
-        {
-            std::vector<size_t> index_containsN;
-            for (size_t j=0; j<N; ++j)
-            {
-                size_t index = ToIndex<N>(j,i);
-                if (!_nums[index] && _notations[index].contains(n))
-                    index_containsN.push_back(index);
-            }
-            if (1 ==index_containsN.size())
-            {
-                int bb = 1;
-                noteUnique(index_containsN.front(), n);
-            }
-        }
+        becomeUnique(index, *_notations[index].nums().begin());
     }
 }
 
 template <size_t N>
 void Game<N>::noteUnique(size_t index, Num num)
 {
-    _notations[index].clear();
-    _notations[index].insert(num);
+    assert(_notations[index].size()>=1);
+    if (_notations[index].size()>1)
+    {
+        _notations[index].clear();
+        _notations[index].insert(num);
+        becomeUnique(index, num);
+    }
 }
 
 template <size_t N>
 const std::vector<typename Game<N>::Notation> & Game<N>::notations() const
 {
     return _notations;
+}
+
+template <size_t N>
+void Game<N>::becomeUnique(size_t index, Num num)
+{
+    int bp = 1;
+}
+
+template <size_t N>
+void Game<N>::checkPairs()
+{
+    // for all grids
+    for ( size_t i=0; i<N; ++i)
+    {
+        // for each unfilled cells pairs
+        for (size_t j=0; j<N; ++j)
+        {
+            auto index_j = _lutGridToIndex[i][j];
+            if (_nums[index_j])
+                continue;
+            
+            for (size_t k=j+1; k<N; ++k)
+            {
+                auto index_k = _lutGridToIndex[i][k];
+                if (_nums[index_k])
+                    continue;
+                
+                std::set<Num> candidates;
+                auto & nums_j = _notations[index_j].nums();
+                candidates.insert(nums_j.begin(), nums_j.end());
+                auto & nums_k = _notations[index_k].nums();
+                candidates.insert(nums_k.begin(), nums_k.end());
+                size_t num_candidates = candidates.size();
+                if ( num_candidates == 2)
+                {
+                    int we_found_pair = 1;
+                    // denote from grids who
+                    for (auto it= candidates.begin(); it!=candidates.end(); ++it)
+                    {
+                        for (size_t u=0; u<N;++u)
+                        {
+                            if (u==j || u==k)
+                                continue;
+                            
+                            auto denote_index = _lutGridToIndex[i][u];
+                            if (!_nums[denote_index] && _notations[denote_index].contains(*it))
+                            {
+                                denote(denote_index, *it);
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+}
+
+template <size_t N>
+void Game<N>::checkTriples()
+{
+    // for all grids
+    for ( size_t i=0; i<N; ++i)
+    {
+        // for each unfilled cells pairs
+        for (size_t j=0; j<N; ++j)
+        {
+            auto index_j = _lutGridToIndex[i][j];
+            if (_nums[index_j])
+                continue;
+            
+            for (size_t k=j+1; k<N; ++k)
+            {
+                auto index_k = _lutGridToIndex[i][k];
+                if (_nums[index_k])
+                    continue;
+                
+                for (size_t l=k+1; l<N; ++l)
+                {
+                    auto index_l = _lutGridToIndex[i][l];
+                    if (_nums[index_l])
+                        continue;
+                    
+                    std::set<Num> candidates;
+                    auto & nums_j = _notations[index_j].nums();
+                    candidates.insert(nums_j.begin(), nums_j.end());
+                    auto & nums_k = _notations[index_k].nums();
+                    candidates.insert(nums_k.begin(), nums_k.end());
+                    auto & nums_l = _notations[index_l].nums();
+                    candidates.insert(nums_l.begin(), nums_l.end());
+                    size_t num_candidates = candidates.size();
+                    if ( num_candidates == 3)
+                    {
+                        int we_found_triple = 1;
+                        // denote from grids who
+                        for (auto it= candidates.begin(); it!=candidates.end(); ++it)
+                        {
+                            for (size_t u=0; u<N;++u)
+                            {
+                                if (u==j || u==k || u==l)
+                                    continue;
+                                
+                                auto denote_index = _lutGridToIndex[i][u];
+                                Num denote_num = *it;
+                                if (!_nums[denote_index] && _notations[denote_index].contains(denote_num))
+                                {
+                                    denote(denote_index, denote_num);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+template <size_t N>
+void Game<N>::checkXWings()
+{
+    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
+    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    
+    auto check_xwings = [this](Num n, IndexFunc indexFunc)
+    {
+        // 1st scan, first: outer index, inner: inner indexes which notates n
+        std::vector<std::pair<size_t, std::vector<size_t>>> v;
+        for (size_t i=0;i<N;++i)
+        {
+            std::vector<size_t> indexes;
+            for (size_t j=0;j<N;++j)
+            {
+                size_t index = indexFunc(i,j);
+                if ( _nums[index])
+                    continue;
+                
+                if ( _notations[index].contains(n))
+                {
+                    indexes.push_back(j);
+                }
+            }
+
+            if (indexes.size()==2)
+            {
+                v.emplace_back(std::make_pair(i, std::move(indexes)));
+            }
+        }
+        
+        // check if two outer indexes has the exact same inner index
+        for ( size_t a=0; a<v.size(); ++a)
+        {
+            for (size_t b=a+1; b<v.size(); ++b)
+            {
+                if (v[a].second == v[b].second)
+                {
+                    bool found_xwing = true;
+                    auto row_col_0 = ToRowCol<N>(indexFunc(v[a].first, v[a].second[0]));
+                    auto row_col_1 = ToRowCol<N>(indexFunc(v[a].first, v[a].second[1]));
+                    auto row_col_2 = ToRowCol<N>(indexFunc(v[b].first, v[b].second[0]));
+                    auto row_col_3 = ToRowCol<N>(indexFunc(v[b].first, v[b].second[1]));
+                    assert(row_col_0.first == row_col_1.first);
+                    assert(row_col_2.first == row_col_3.first);
+                    assert(row_col_0.second == row_col_2.second);
+                    assert(row_col_1.second == row_col_3.second);
+                    
+                    size_t & row_0 = row_col_0.first;
+                    size_t & row_1 = row_col_2.first;
+                    size_t & col_0 = row_col_0.second;
+                    size_t & col_1 = row_col_1.second;
+                    
+                    // denote
+                    for ( size_t col =0; col<N; ++col)
+                    {
+                        if (col==col_0 || col==col_1)
+                            continue;
+                        
+                        denote(ToIndex<N>(row_0, col), n);
+                        denote(ToIndex<N>(row_1, col), n);
+                    }
+                    
+                    for ( size_t row =0; row<N; ++row)
+                    {
+                        if (row==row_0 || row==row_1)
+                            continue;
+                        
+                        denote(ToIndex<N>(row, col_0), n);
+                        denote(ToIndex<N>(row, col_1), n);
+                    }
+                    int bp = 1;
+                }
+            }
+        }
+    };
+
+    for (Num n=1; n<=N; ++n)
+    {
+        check_xwings(n, toIndexRow);
+        //check_xwings(n, toIndexCol);
+    }
+    
 }
 
 template class Game<4>;

@@ -130,6 +130,8 @@ public:
     using NumArray2D = std::array<NumArray1D, N>;
     
 private:
+    using IndexFunc = std::function<size_t(size_t, size_t)>;
+    
     static constexpr size_t NN=N*N;
 	std::array<opt<Num>, NN> _nums;
     NumArray2D _rows;
@@ -139,7 +141,7 @@ private:
     
     std::array<std::pair<size_t, size_t>, NN> _lutIndexToGrid;
     std::array<std::array<size_t, N>,N> _lutGridToIndex;
-    
+    bool _initializing;
     void initIndexLUT();
     
     std::vector<Notation> _notations;
@@ -150,9 +152,14 @@ private:
     void noteFromRowColGrid(size_t index, Num num);
     // note unique num at index
     void noteUnique(size_t index, Num num);
+    void denote(size_t index, Num num);
     
     
-    void checkSinglePosition();
+    void checkSinglePosition(bool * outChanged = nullptr);
+    void checkPairs();
+    void checkTriples();
+    void checkXWings();
+    void becomeUnique(size_t index, Num num);
 };
 
 #endif // SUDOKU_GAME_H_INCLUDED
