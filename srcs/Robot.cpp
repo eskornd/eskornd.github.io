@@ -81,6 +81,7 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
         brain.rewinded = t;
         brain.game.unassign(t.index);
         brain.indexes.push(t.index);
+        brain.game.notations().swap(t.notations);
         brain.memos.pop();
         ++brain.rewind_count;
     };
@@ -97,7 +98,7 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     {
         ++loop_count;
         std::cout << "count: " << loop_count << std::endl;
-        std::cout << game << std::endl;
+//        std::cout << game << std::endl;
         if (callback) callback();
         if (!game.isLegal())
         {

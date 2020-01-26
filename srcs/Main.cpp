@@ -255,6 +255,30 @@ int main()
         robot.solve(game, waitMS<5>);
     }
     
+    if (0)
+    {
+        // Finnish Guy hard sudoku 2006
+        // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424
+        std::vector<Num> v={
+            8,5,0,0,0,2,4,0,0,
+            7,2,0,0,0,0,0,0,9,
+            0,0,4,0,0,0,0,0,0,
+            0,0,0,1,0,7,0,0,2,
+            3,0,5,0,0,0,9,0,0,
+            0,4,0,0,0,0,0,0,0,
+            0,0,0,0,8,0,0,7,0,
+            0,1,7,0,0,0,0,0,0,
+            0,0,0,0,3,6,0,4,0,
+        };
+        Game<9> game(toGameInput<9>(v));
+        std::cout << game;
+        std::cout << "World Hardest sudoku, press enter to start:" << std::endl;
+        waitInput();
+        Robot robot;
+        robot.setOrder(order);
+        robot.solve(game, waitMS<1>);
+    }
+    
     if (1)
     {
         // World hardest sudoku

@@ -124,7 +124,7 @@ public:
     };
     
     const std::vector<Notation> & notations() const;
-    
+    std::vector<Notation> & notations();
     
     using NumArray1D = std::array<opt<Num>, N>;
     using NumArray2D = std::array<NumArray1D, N>;

@@ -594,6 +594,12 @@ const std::vector<typename Game<N>::Notation> & Game<N>::notations() const
 }
 
 template <size_t N>
+std::vector<typename Game<N>::Notation> & Game<N>::notations()
+{
+    return _notations;
+}
+
+template <size_t N>
 void Game<N>::becomeUnique(size_t index, Num num)
 {
     int bp = 1;
