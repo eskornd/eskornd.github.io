@@ -248,12 +248,7 @@ void Game<N>::assign(size_t row, size_t col, const opt<Num> & optNum)
 
     //std::cout << "[" << row << "][" << col <<"] -> " << grid_index << ", " << cell_index <<std::endl;
     _grids[grid_index_pair.first][grid_index_pair.second] = optNum;
-    if (optNum)
-    {
-        denoteFromRowColGrid(ToIndex<N>(row, col), theNum);
-    } else {
-        noteFromRowColGrid(ToIndex<N>(row, col), theNum);
-    }
+    
     
     initNotations();
 }
@@ -262,6 +257,30 @@ template <size_t N>
 size_t Game<N>::size() const
 {
 	return N;
+}
+
+template <size_t N>
+size_t Game<N>::gridRowSize() const
+{
+	return gridWidth(N);
+}
+
+template <size_t N>
+size_t Game<N>::gridColSize() const
+{
+	return gridHeight(N);
+}
+
+template <size_t N>
+size_t Game<N>::cellRowSize() const
+{
+	return gridColSize();
+}
+
+template <size_t N>
+size_t Game<N>::cellColSize() const
+{
+	return gridRowSize();
 }
 
 template <size_t N>
@@ -341,10 +360,10 @@ std::vector<size_t> Game<N>::unfilledIndexes(bool most_constraints_first) const
 }
 
 template <size_t M>
-std::ostream & operator<<(std::ostream & os , const Game<M> & game)
+std::ostream & dump_simple(std::ostream & os , const Game<M> & game)
 {
     size_t assigned = 0;
-    for (size_t i =0; i<game.NN; ++i)
+    for (size_t i =0; i<(M*M); ++i)
     {
         if (game.has(i))
             ++assigned;
@@ -371,19 +390,117 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 	return os;
 }
 
+template <size_t M>
+const char * dump_complex(const Game<M> & game)
+{
+	static const size_t cell_buf_len = 11;
+    static char cell_buf[cell_buf_len+5];// = "{123456789}";
+	static const char cell_split[] = ", ";
+    static constexpr size_t cell_split_len = sizeof(cell_split) - 1;
+	static const char linebreak[] = "\n";
+	static constexpr size_t linebreak_len = sizeof(linebreak) - 1;
+    static const char col_begin[] = "[";
+    static constexpr size_t col_begin_len = sizeof(col_begin) - 1;
+    static const char col_end[] = "]  ";
+    static constexpr size_t col_end_len = sizeof(col_end) - 1;
+
+	static constexpr size_t game_buf_len =
+    ((cell_buf_len + cell_split_len) * M + linebreak_len)  * M +
+    3* (3 * (col_begin_len + col_end_len)) +
+    (3 * linebreak_len *2) +
+    (M * linebreak_len);
+
+	static char game_buf[game_buf_len];
+	char * p = game_buf;
+
+	for ( size_t row=0; row<M; ++row)
+	{
+		for ( size_t col=0; col<M; ++col)
+		{
+            bool is_col_begin = 1==(1+col)%game.cellColSize();
+            bool is_col_end = 0==(1+col)%game.cellColSize();
+            if (is_col_begin)
+            {
+                memcpy(p, col_begin, col_begin_len);
+                p += col_begin_len;
+            }
+            
+			size_t index = row * M + col;
+			auto & optNum = game._nums[index];
+			if (optNum)
+			{
+				sprintf(cell_buf , "     %d     ", optNum.value());
+			} else {
+                static const bool print_notations = true;
+                if (!print_notations)
+                {
+                    sprintf(cell_buf, "           ");
+                } else {
+                    auto & nums = game._notations[index].nums();
+                    sprintf(cell_buf, "{         }");
+                    size_t pos = 0;
+                    std::for_each(nums.begin(), nums.end(), [](auto & num){
+                        cell_buf[num]=(0x30+num);
+                    });
+                    int bp=1;
+                }
+			}
+
+			memcpy(p, cell_buf, cell_buf_len);
+			p+=cell_buf_len;
+            
+            if (!is_col_end)
+            {
+                memcpy(p, cell_split, cell_split_len);
+                p+=cell_split_len;
+            } else {
+                memcpy(p, col_end, col_end_len);
+                p += col_end_len;
+            }
+		}
+		memcpy(p, linebreak, linebreak_len);
+		p+=linebreak_len;
+        
+        
+        bool is_row_splitter = 0==(1+row)%game.cellRowSize();
+        if (is_row_splitter)
+        {
+            memcpy(p, linebreak, linebreak_len);
+            p+=linebreak_len;
+//            memcpy(p, linebreak, linebreak_len);
+//            p+=linebreak_len;
+        } else {
+//            memcpy(p, linebreak, linebreak_len);
+//            p+=linebreak_len;
+            
+        }
+	}
+	return game_buf;
+
+}
+
+template <size_t M>
+std::ostream & operator<<(std::ostream & os , const Game<M> & game)
+{
+	os << dump_complex(game);
+	return os;
+	return dump_simple(os, game);
+}
+
 template <size_t N>
 void Game<N>::initNotations()
 {
     if (_initializing)
         return;
     
-    Notation aa;
-    auto s = aa.size();
-    auto & nums = aa.nums();
-    
     for ( size_t i = 0; i<_notations.size(); ++i)
     {
-        _notations[i].reset();
+        if (_nums[i])
+        {
+            _notations[i].clear();
+        } else {
+            _notations[i].reset();
+        }
     }
     
     for (size_t row = 0; row<_rows.size(); ++row)
@@ -395,10 +512,6 @@ void Game<N>::initNotations()
                 continue;
             
             auto index = ToIndex<N>(row, col);
-            
-            // if has num assigned, clear notations
-            //_notations[index].clear();
-
             auto & num = *optNum;
             denoteFromRowColGrid(index, num);
         }
@@ -427,7 +540,6 @@ void Game<N>::initNotations()
         changed = false;
         checkSinglePosition(&changed);
     } while(changed);
-    //checkSinglePosition();
     
     auto indexes = unfilledIndexes(true /*most constraints first*/);
     if (!indexes.empty() )
@@ -440,6 +552,7 @@ void Game<N>::initNotations()
             checkPairs();
             checkTriplets();
             checkXWings();
+            checkSingleLine();
             checkSingleLine();
         }
     }
@@ -511,7 +624,6 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
 template <size_t N>
 void Game<N>::checkSinglePosition(bool * outChanged)
 {
-    
     auto & nums = _nums;
     auto & notations = _notations;
     auto & lutGridToIndex = _lutGridToIndex;
@@ -795,7 +907,7 @@ void Game<N>::checkSingleLine()
     auto & lutGridToIndex = _lutGridToIndex;
     IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
     // for each num
-    for ( Num n = 0; n<N; ++n)
+    for ( Num n = 1; n<=N; ++n)
     {
         // for each grid
         for (size_t i =0; i<N; ++i)

@@ -232,7 +232,7 @@ int main()
         robot.solve(game, waitMS<5>);
     }
     
-    if (0)
+    if (1)
     {
         // Patrick game
         std::vector<Num> v={
@@ -279,7 +279,7 @@ int main()
         robot.solve(game, waitMS<1>);
     }
     
-    if (1)
+    if (0)
     {
         // World hardest sudoku
         // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424

@@ -22,6 +22,10 @@ public:
     Game& operator=(const Game<N> & inRhs);
 	
 	size_t size() const;
+	size_t gridRowSize() const;
+	size_t gridColSize() const;
+	size_t cellRowSize() const;
+	size_t cellColSize() const;
 
     const opt<Num> & at(size_t index) const;
     bool has(size_t index) const;
@@ -43,6 +47,9 @@ public:
     
 	template <size_t M>
 	friend std::ostream & operator<< (std::ostream & os, const Game<M> & game);
+	
+	template <size_t M>
+	friend const char * dump_complex(const Game<M> & game);
     
     class Notation
     {

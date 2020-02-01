@@ -7,6 +7,7 @@ struct Memo
 {
     size_t index; // which index filled?
     size_t value; // filled value
+    bool isSingleChoice; //is the only choice
     std::vector<typename Game<N>::Notation> notations;
 };
 
@@ -16,7 +17,6 @@ struct Brain
     Game<N> game;
     std::stack<Memo<N>> memos; // stack of the last action
     opt<Memo<N>> rewinded; // last step is rewinded?
-    //std::stack<size_t> indexes; // indexes to be visited
     std::stack<size_t, std::vector<size_t>> indexes;
     size_t rewind_count = 0;
     size_t dead_end = 0;
@@ -60,7 +60,6 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     
     std::vector<size_t> indexes = unfilledIndexes(game);
     std::reverse(indexes.begin(), indexes.end());
-    
 
     auto & indexes_stack = brain.indexes;
     indexes_stack = std::stack<size_t, std::vector<size_t>>(indexes);
@@ -78,6 +77,7 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
         
         assert( !brain.memos.empty());
         auto & t = brain.memos.top();
+
         brain.rewinded = t;
         brain.game.unassign(t.index);
         brain.indexes.push(t.index);
@@ -98,7 +98,7 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     {
         ++loop_count;
         std::cout << "count: " << loop_count << std::endl;
-//        std::cout << game << std::endl;
+        std::cout << game << std::endl;
         if (callback) callback();
         if (!game.isLegal())
         {
@@ -159,7 +159,13 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
                     if (numNum >1)
                     {
                         int lets_find_new_constratins = 1;
+                        m.isSingleChoice = false;
+                    } else if (numNum == 1){
+                        m.isSingleChoice = true;
+                    } else {
+                        assert ("Can't happen");
                     }
+                    
                     auto optNextNum = game.notations()[m.index].nextNum(std::nullopt);
                     if (!optNextNum)
                     {
@@ -176,11 +182,11 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             
             assert(m.value<=N);
             m.notations = brain.game.notations();
+            
             forward(m);
         }
-        int  bp = 1;
     }
-    int bp = 1;
+
     return solution;
 }
 
