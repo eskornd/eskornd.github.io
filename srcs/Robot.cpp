@@ -3,20 +3,30 @@
 #include <stack>
 extern bool sCheckPairs;
 
+void Robot::setIndexOrder(IndexOrder order)
+{
+    _indexOrder = order;
+}
+
+void Robot::setNumOrder(NumOrder order)
+{
+    _numOrder = order;
+}
+
 template <size_t N>
-std::vector<size_t> Robot::unfilledIndexes(const Game<N> & game) const
+std::vector<size_t> Robot::unfilledIndices(const Game<N> & game) const
 {
     std::vector<size_t> indexes;
-    switch (_order)
+    switch (_indexOrder)
     {
-        case Order::eNatural:
-            indexes = game.unfilledIndexes();
+        case IndexOrder::eNatural:
+            indexes = game.unfilledIndices();
             break;
-        case Order::eMostConstraintsFirst:
-            indexes = game.unfilledIndexes(true /*sorted most constraints first*/);
+        case IndexOrder::eMostConstraintsFirst:
+            indexes = game.unfilledIndices(true /*sorted most constraints first*/);
             break;
-        case Order::eLeastConstraintsFirst:
-            indexes = game.unfilledIndexes(true /*sorted most constraints first*/);
+        case IndexOrder::eLeastConstraintsFirst:
+            indexes = game.unfilledIndices(true /*sorted most constraints first*/);
             std::reverse(indexes.begin(), indexes.end());
             break;
         default:
@@ -27,9 +37,9 @@ std::vector<size_t> Robot::unfilledIndexes(const Game<N> & game) const
 }
 
 template <size_t N>
-opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
+Solution<N> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
 {
-    opt<Game<N>> solution;
+    Solution<N> solution;
     Brain<N> brain;
     brain.game = inGame;
     Game<N> & game = brain.game;
@@ -39,12 +49,12 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
         possible_nums[i] = 1+i;
     }
     
-    std::vector<size_t> indexes = unfilledIndexes(game);
+    std::vector<size_t> indexes = unfilledIndices(game);
     std::reverse(indexes.begin(), indexes.end());
 
     
     brain.unfilledIndices = std::stack<size_t, std::vector<size_t>>(indexes);
-    auto & indexes_stack = brain.unfilledIndices;
+    auto & unfilled_indices = brain.unfilledIndices;
     opt<Memo<N>> & rewinded = brain.rewinded;
     std::stack<Memo<N>> & memos = brain.memos;
     assert(game.isLegal());
@@ -68,13 +78,13 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             continue;
         }
         
-        if (indexes_stack.empty() )
+        if (unfilled_indices.empty() )
         {
             // we're at leaf nodes
             if (game.isLegal())
             {
                 assert(game.passed());
-                solution = brain.game;
+                solution.endGame = brain.game;
                 done = true;
                 break;
             } else {
@@ -96,10 +106,7 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
             forward(m);
         }
     }
-
-    std::cout << " rewind: " << brain.rewind_count << std::endl;
-    std::cout << " deadend: " << brain.dead_end << std::endl;
-    std::cout << "Has solution? " << (solution? "YES!" : "NO!") << std::endl;
+    solution.deadEnd = brain.dead_end;
     return solution;
 }
 
@@ -138,12 +145,12 @@ template <size_t N>
 opt<Robot::Memo<N>> Robot::findNextStep(Brain<N> & brain)
 {
     Game<N> & game = brain.game;
-    auto & indexes_stack = brain.unfilledIndices;
+    auto & unfilled_indices = brain.unfilledIndices;
     opt<Memo<N>> & rewinded = brain.rewinded;
     std::stack<Memo<N>> & memos = brain.memos;
     
     assert( (!rewinded) ||
-           (indexes_stack.top() == rewinded.value().index && "For rewinded index stack top matches the next index"));
+           (unfilled_indices.top() == rewinded.value().index && "For rewinded index stack top matches the next index"));
     size_t next_index = rewinded ? rewinded.value().index : nextIndex(brain);
     opt<Num> current_value = rewinded ? (opt<Num>)rewinded.value().value : std::nullopt;
     
@@ -169,17 +176,17 @@ size_t Robot::nextIndex(Brain<N> & brain)
     const auto & game = brain.game;
     size_t nextIndex = 0;
     
-    auto & indexes_stack = brain.unfilledIndices;
+    auto & unfilled_indices = brain.unfilledIndices;
     if (_useDynamicOrder)
     {
-        auto unfilled = unfilledIndexes(game);
+        auto unfilled = unfilledIndices(game);
         std::reverse(unfilled.begin(), unfilled.end());
         
         std::stack<size_t, std::vector<size_t>> ss(unfilled);
-        std::swap(ss, indexes_stack);
-        nextIndex = indexes_stack.top();
+        std::swap(ss, unfilled_indices);
+        nextIndex = unfilled_indices.top();
     } else {
-        nextIndex = indexes_stack.top();
+        nextIndex = unfilled_indices.top();
     }
     return nextIndex;
 }
@@ -197,7 +204,8 @@ opt<Num> Robot::nextNum(const Brain<N> & brain, size_t index, opt<Num> currentVa
         {
             *outIsSingleChoice = 1==notation.nums().size();
         }
-        optNextNum = notation.nextNum(currentValue);
+        bool ascending = (NumOrder::eAscending == _numOrder);
+        optNextNum = notation.nextNum(currentValue, ascending);
     } else {
         optNextNum = 1;
     }
@@ -205,6 +213,6 @@ opt<Num> Robot::nextNum(const Brain<N> & brain, size_t index, opt<Num> currentVa
     return optNextNum;
 }
 
-template opt<Game<4>> Robot::solve<4>(const Game<4> &, Robot::Callback );
-template opt<Game<6>> Robot::solve<6>(const Game<6> &, Robot::Callback );
-template opt<Game<9>> Robot::solve<9>(const Game<9> &, Robot::Callback );
+template Solution<4> Robot::solve<4>(const Game<4> &, Robot::Callback );
+template Solution<6> Robot::solve<6>(const Game<6> &, Robot::Callback );
+template Solution<9> Robot::solve<9>(const Game<9> &, Robot::Callback );

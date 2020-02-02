@@ -43,7 +43,7 @@ public:
     
     void unassign(size_t index);
     
-    std::vector<size_t> unfilledIndexes(bool most_constraints_first = false) const;
+    std::vector<size_t> unfilledIndices(bool most_constraints_first = false) const;
     
 	template <size_t M>
 	friend std::ostream & operator<< (std::ostream & os, const Game<M> & game);
@@ -92,20 +92,37 @@ public:
             return _nums.end()!=_nums.find(num);
         }
         
-        opt<Num> nextNum(const opt<Num> &currentNum) const
+        opt<Num> nextNum(const opt<Num> &currentNum, bool ascending = true) const
         {
             opt<Num> next;
-            for (auto it = _nums.begin(); it!=_nums.end(); ++it)
+            if (ascending)
             {
-                if (!currentNum)
+                for (auto it = _nums.begin(); it!=_nums.end(); ++it)
                 {
-                    next = *it;
-                    break;
+                    if (!currentNum)
+                    {
+                        next = *it;
+                        break;
+                    }
+                    if (currentNum.value()<*it)
+                    {
+                        next = *it;
+                        break;
+                    }
                 }
-                if (currentNum.value()<*it)
+            } else {
+                for (auto it = _nums.rbegin(); it!=_nums.rend(); ++it)
                 {
-                    next = *it;
-                    break;
+                    if (!currentNum)
+                    {
+                        next = *it;
+                        break;
+                    }
+                    if (currentNum.value()>*it)
+                    {
+                        next = *it;
+                        break;
+                    }
                 }
             }
             return next;

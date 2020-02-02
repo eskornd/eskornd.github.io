@@ -66,20 +66,35 @@ void test()
         Game<4> game(toGameInput<4>(v));
         Robot robot;
         auto solution = robot.solve(game);
-        assert(solution);
+        assert(solution.endGame);
     }
 }
 
 int main()
 {
-    Robot::Order order = Robot::Order::eMostConstraintsFirst;
-    
+    Robot::IndexOrder order = Robot::IndexOrder::eMostConstraintsFirst;
     //test();
 
     Robot::Callback waitInput = []()
     {
         std::string line;
         std::getline(std::cin, line);
+    };
+    
+    auto run9x9Game = [&waitInput](const std::vector<Num> & v, const std::string & gameName)
+    {
+        Game<9> game(toGameInput<9>(v));
+        std::cout << game;
+        std::cout << "Game " << gameName << " press enter to start:" << std::endl;
+        waitInput();
+        Robot robot;
+        robot.setIndexOrder(Robot::IndexOrder::eMostConstraintsFirst);
+        auto solution = robot.solve(game, waitMS<1>);
+        
+        std::cout << "# of deadend: " << solution.deadEnd << std::endl;
+        std::cout << "Has solution? " << (solution.endGame ? "YES!" : "NO!") << std::endl;
+        
+        return solution;
     };
     
     if (0)
@@ -134,7 +149,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         //waitInput();
         Robot robot;
-        robot.setOrder(order);
+        robot.setIndexOrder(order);
         robot.solve(game, waitMS<10>);
         
         robot.solve<6>(game);
@@ -158,7 +173,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         //waitInput();
         Robot robot;
-        robot.setOrder(order);
+        robot.setIndexOrder(order);
         robot.solve(game, waitMS<10>);
         
         robot.solve<6>(game);
@@ -182,7 +197,7 @@ int main()
         std::cout << "press enter to start:" << std::endl;
         //waitInput();
         Robot robot;
-        robot.setOrder(order);
+        robot.setIndexOrder(order);
         robot.solve(game, waitMS<1>);
         
     }
@@ -200,13 +215,7 @@ int main()
             0,0,0,9,0,7,0,5,0,
             0,0,9,2,5,0,0,1,0,
             };
-        Game<9> game(toGameInput<9>(v));
-        std::cout << game;
-//        std::cout << "press enter to start:" << std::endl;
-//        waitInput();
-        Robot robot;
-        robot.setOrder(order);
-        robot.solve(game, waitMS<5>);
+        run9x9Game(v, "Very Simple Game");
     }
     
     if (0)
@@ -223,13 +232,7 @@ int main()
             0,5,0,0,0,2,0,0,1,
             9,0,0,0,3,0,5,0,0,
         };
-        Game<9> game(toGameInput<9>(v));
-        std::cout << game;
-        std::cout << "Patrick game, press enter to start:" << std::endl;
-        waitInput();
-        Robot robot;
-        robot.setOrder(order);
-        robot.solve(game, waitMS<5>);
+        run9x9Game(v, "XWing test");
     }
     
     if (1)
@@ -246,13 +249,7 @@ int main()
             3,0,4,5,0,0,7,0,0,
             0,0,0,7,3,0,0,4,0,
         };
-        Game<9> game(toGameInput<9>(v));
-        std::cout << game;
-        std::cout << "Patrick game, press enter to start:" << std::endl;
-        waitInput();
-        Robot robot;
-        robot.setOrder(order);
-        robot.solve(game, waitMS<5>);
+        run9x9Game(v, "Patrick game");
     }
     
     if (0)
@@ -269,13 +266,7 @@ int main()
             9,0,0,0,0,7,2,0,4,
             0,0,5,8,1,0,0,0,6,
         };
-        Game<9> game(toGameInput<9>(v));
-        std::cout << game;
-        std::cout << "Medium game, press enter to start:" << std::endl;
-        waitInput();
-        Robot robot;
-        robot.setOrder(order);
-        robot.solve(game, waitMS<5>);
+        run9x9Game(v, "Medium level");
     }
     if (0)
     {
@@ -292,13 +283,7 @@ int main()
             0,1,7,0,0,0,0,0,0,
             0,0,0,0,3,6,0,4,0,
         };
-        Game<9> game(toGameInput<9>(v));
-        std::cout << game;
-        std::cout << "World Hardest sudoku, press enter to start:" << std::endl;
-        waitInput();
-        Robot robot;
-        robot.setOrder(order);
-        robot.solve(game, waitMS<1>);
+        run9x9Game(v, "Finnish Guy hard 2006");
     }
     
     if (0)
@@ -316,13 +301,7 @@ int main()
             0,0,8,5,0,0,0,1,0,
             0,9,0,0,0,0,4,0,0,
         };
-        Game<9> game(toGameInput<9>(v));
-        std::cout << game;
-        std::cout << "World Hardest sudoku, press enter to start:" << std::endl;
-        waitInput();
-        Robot robot;
-        robot.setOrder(order);
-        robot.solve(game, waitMS<1>);
+        run9x9Game(v, "World hardest sudoku");
     }
     
 	return 0;

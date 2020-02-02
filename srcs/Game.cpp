@@ -337,7 +337,7 @@ bool Game<N>::passed() const
 }
 
 template <size_t N>
-std::vector<size_t> Game<N>::unfilledIndexes(bool most_constraints_first) const
+std::vector<size_t> Game<N>::unfilledIndices(bool most_constraints_first) const
 {
     std::vector<size_t> indexes;
     for (size_t i=0; i<_nums.size();++i)
@@ -534,7 +534,7 @@ void Game<N>::initNotations()
         checkSinglePosition(&changed);
     } while(changed);
     
-    auto indexes = unfilledIndexes(true /*most constraints first*/);
+    auto indexes = unfilledIndices(true /*most constraints first*/);
     if (!indexes.empty() )
     {
         auto index = indexes.front();

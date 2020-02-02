@@ -5,33 +5,48 @@
 #include <functional>
 #include <stack>
 
+template <size_t N>
+struct Solution
+{
+    opt<Game<N>> endGame;
+    size_t deadEnd = 0;
+};
+
 class Robot
 {
 public:
-    enum class Order
+    enum class IndexOrder
     {
         eNatural = 0, // natural order
         eMostConstraintsFirst = 1, // most constraints first
         eLeastConstraintsFirst = 2, // least constraints first
     };
     
+    enum class NumOrder
+    {
+        eAscending = 0, // from 1 to N
+        eDescending = 1, // from N to 1
+    };
+    
     using Callback = std::function<void()>;
     
     // return the solution if solved, otherwise empty
 	template <size_t N>
-    opt<Game<N>> solve(const Game<N> & game, Callback callback = nullptr);
+    Solution<N> solve(const Game<N> & game, Callback callback = nullptr);
 
-    void setOrder(Order order) { _order = order;}
+    void setIndexOrder(IndexOrder order);
+    void setNumOrder(NumOrder order);
     
 private:
     // strategies
-    Order _order = Order::eNatural; // which order to use for the next index
+    IndexOrder _indexOrder = IndexOrder::eNatural; // which order to use for the next index
+    NumOrder _numOrder = NumOrder::eAscending; // which order to use for the next index
     bool _onlyUseValidValue = true; // recalculate order on each level
     bool _useDynamicOrder = true; // recalculate order on each level
     size_t _loopCount = 0;
     
     template <size_t N>
-    std::vector<size_t> unfilledIndexes(const Game<N> & game) const;
+    std::vector<size_t> unfilledIndices(const Game<N> & game) const;
     
     //
     template <size_t N>
