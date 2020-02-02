@@ -169,28 +169,35 @@ private:
     void initIndexLUT();
     
     std::vector<Notation> _notations;
-    void initNotations();
+    void resetNotations();
+
+    void checkNotations();
+    
     // denote num from all notations for row/col/grid at index
-    void denoteFromRowColGrid(size_t index, Num num);
+    bool denoteFromRowColGrid(size_t index, Num num);
     // note num from all notations for row/col/grid at index
     void noteFromRowColGrid(size_t index, Num num);
     // note unique num at index
     void noteUnique(size_t index, Num num);
-    void denote(size_t index, Num num);
+    
+    // return true if changed
+    bool denote(size_t index, Num num);
     
     
-    void checkSinglePosition(bool * outChanged = nullptr);
-    void checkPairs();
-    void checkTriplets();
-    void checkXWings();
-    void checkSingleLine();
+    // check*(): @return true if changed
+    bool checkSinglePosition();
+    bool checkPairs();
+    bool checkTriplets();
+    bool checkXWings();
+    bool checkSingleLine();
+    
     void becomeUnique(size_t index, Num num);
     
     template <typename IndexContainer>
-    void denoteRowExcept(size_t row, Num num, const IndexContainer & container);
+    bool denoteRowExcept(size_t row, Num num, const IndexContainer & container);
     
     template <typename IndexContainer>
-    void denoteColExcept(size_t row, Num num, const IndexContainer & container);
+    bool denoteColExcept(size_t row, Num num, const IndexContainer & container);
 };
 
 #endif // SUDOKU_GAME_H_INCLUDED

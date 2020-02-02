@@ -124,9 +124,9 @@ void Robot::rewind(Brain<N> & brain)
     auto & t = brain.memos.top();
     
     brain.rewinded = t;
+    brain.game.notations().swap(t.notations);
     brain.game.unassign(t.index);
     brain.unfilledIndices.push(t.index);
-    brain.game.notations().swap(t.notations);
     brain.memos.pop();
     ++brain.rewind_count;
 }

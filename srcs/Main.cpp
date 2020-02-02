@@ -235,23 +235,6 @@ int main()
         run9x9Game(v, "XWing test");
     }
     
-    if (1)
-    {
-        // Patrick game
-        std::vector<Num> v={
-            0,8,0,0,6,1,0,0,0,
-            0,0,9,0,0,3,5,0,6,
-            6,3,0,0,0,0,0,1,0,
-            0,0,0,2,0,0,0,0,4,
-            0,0,0,0,0,0,0,0,0,
-            8,0,0,0,0,7,0,0,0,
-            0,1,0,0,0,0,0,3,8,
-            3,0,4,5,0,0,7,0,0,
-            0,0,0,7,3,0,0,4,0,
-        };
-        run9x9Game(v, "Patrick game");
-    }
-    
     if (0)
     {
         // Medium game
@@ -286,7 +269,24 @@ int main()
         run9x9Game(v, "Finnish Guy hard 2006");
     }
     
-    if (0)
+    if (1)
+    {
+        // Patrick game
+        std::vector<Num> v={
+            0,8,0,0,6,1,0,0,0,
+            0,0,9,0,0,3,5,0,6,
+            6,3,0,0,0,0,0,1,0,
+            0,0,0,2,0,0,0,0,4,
+            0,0,0,0,0,0,0,0,0,
+            8,0,0,0,0,7,0,0,0,
+            0,1,0,0,0,0,0,3,8,
+            3,0,4,5,0,0,7,0,0,
+            0,0,0,7,3,0,0,4,0,
+        };
+        run9x9Game(v, "Patrick game");
+    }
+    
+    if (1)
     {
         // World hardest sudoku
         // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424

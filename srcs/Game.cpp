@@ -150,7 +150,6 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
 , _groups({&_rows, &_cols, &_grids})
 , _initializing(true)
 {
-    //std::copy_n(inNums.begin(), N, _nums.begin());
     initIndexLUT();
 	assert(inNums.size()==NN);
     assert(std::all_of(_nums.begin(), _nums.end(), [](auto & optNum){ return !optNum; }));
@@ -163,7 +162,8 @@ Game<N>::Game(const std::vector<opt<Num>> & inNums)
     }
     
     _initializing = false;
-    initNotations();
+    resetNotations();
+    checkNotations();
 }
 
 template <size_t N>
@@ -227,30 +227,22 @@ void Game<N>::assign(size_t index, const opt<Num> & num)
 template <size_t N>
 void Game<N>::assign(size_t row, size_t col, const opt<Num> & optNum)
 {
-    if (optNum && optNum.value()>N)
-    {
-        assert( false && "Cannot happen");
-    }
-    
+    assert( (!optNum ||  optNum.value()<=N ) && "Num must less equal than N");
+
     auto index = ToIndex<N>(row, col);
-    if ( optNum)
-    {
-        assert ( !_nums[index]);
-    } else {
-        assert ( _nums[index]);
-    }
-    Num theNum = optNum ? *optNum : *_nums[index];
+    assert( (!!optNum) != (!!_nums[index]) && "No double assign of the values");
     
-    _nums[ToIndex<N>(row, col)] = optNum;
+    _nums[index] = optNum;
     _rows[row][col] = optNum;
     _cols[col][row] = optNum;
-    auto grid_index_pair = ToGridRowCol<N>(row, col);
-
-    //std::cout << "[" << row << "][" << col <<"] -> " << grid_index << ", " << cell_index <<std::endl;
+    auto & grid_index_pair = _lutIndexToGrid[index];
     _grids[grid_index_pair.first][grid_index_pair.second] = optNum;
     
-    
-    initNotations();
+    if (optNum)
+    {
+        denoteFromRowColGrid(index, optNum.value());
+    }
+    checkNotations();
 }
 
 template <size_t N>
@@ -481,11 +473,9 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 }
 
 template <size_t N>
-void Game<N>::initNotations()
+void Game<N>::resetNotations()
 {
-    if (_initializing)
-        return;
-    
+    // Initiate fill, 1..9 notations for empty cell, null notations for filled cell
     for ( size_t i = 0; i<_notations.size(); ++i)
     {
         if (_nums[i])
@@ -496,65 +486,61 @@ void Game<N>::initNotations()
         }
     }
     
-    for (size_t row = 0; row<_rows.size(); ++row)
+    // for each filled cell, denote its number from col row grid
+    for ( size_t i=0; i<_nums.size(); ++i)
     {
-        for (size_t col =0; col < _cols.size(); ++col)
-        {
-            auto optNum = at(row, col);
-            if (!optNum)
-                continue;
-            
-            auto index = ToIndex<N>(row, col);
-            auto & num = *optNum;
-            denoteFromRowColGrid(index, num);
-        }
+        auto & optNum = _nums[i];
+        if (!optNum)
+            continue;
+        
+        denoteFromRowColGrid(i, optNum.value());
     }
-    
-    for ( auto i = 0; i<_notations.size(); ++i)
-    {
-        size_t size =_notations[i].size();
-        if ( 0 == size)
-        {
-            int bp = 0;
-        } else  if (1==size)
-        {
-            int bp = 1;
-        } else  if (2==size)
-        {
-            int bp = 2;
-        }
-    }
-    
-    // now check for notations;
-    int bp = 0;
-    bool changed = false;
-    do
-    {
-        changed = false;
-        checkSinglePosition(&changed);
-    } while(changed);
-    
-    auto indexes = unfilledIndices(true /*most constraints first*/);
-    if (!indexes.empty() )
-    {
-        auto index = indexes.front();
-        if (_notations[index].nums().size()>1)
-        {
-            // run out of single candidate;
-            int bp = 1;
-            checkPairs();
-            checkTriplets();
-            checkXWings();
-            checkSingleLine();
-            checkSingleLine();
-        }
-    }
-
 }
 
 template <size_t N>
-void Game<N>::denoteFromRowColGrid(size_t index, Num num)
+void Game<N>::checkNotations()
 {
+    if (_initializing)
+        return;
+    
+    // now check for notations;
+    bool changed = true;
+    size_t outer_iterations = 0;
+    while ( changed )
+    {
+        size_t single_position_iterations = 0;
+        do
+        {
+            changed = checkSinglePosition();
+            if (changed) ++single_position_iterations;
+        } while(changed);
+        
+        auto unfilled_indices = unfilledIndices(true /*most constraints first*/);
+        if (!unfilled_indices.empty() )
+        {
+            auto index = unfilled_indices.front();
+            if (_notations[index].nums().size()>1)
+            {
+                // run out of single candidate;
+                bool check_pairs_changed = checkPairs();
+                bool check_triplets_changed = checkTriplets();
+                bool check_xwings_changed = checkXWings();
+                bool check_single_line = checkSingleLine();
+                changed |= check_pairs_changed;
+                changed |= check_triplets_changed;
+                changed |= check_xwings_changed;
+                changed |= check_single_line;
+            }
+        }
+        ++outer_iterations;
+    }
+    int bp = 1;
+}
+
+template <size_t N>
+bool Game<N>::denoteFromRowColGrid(size_t index, Num num)
+{
+    bool changed = false;
     auto index_pair = ToRowCol<N>(index);
     auto & row = index_pair.first;
     auto & col = index_pair.second;
@@ -562,23 +548,24 @@ void Game<N>::denoteFromRowColGrid(size_t index, Num num)
     auto & notations = _notations;
     
     // denote num from row
-    for (size_t i=0; i<_cols.size(); ++i)
+    for (size_t i=0; i<N; ++i)
     {
-        denote(ToIndex<N>(row, i), num);
+        changed |= denote(ToIndex<N>(row, i), num);
     }
     
     // denote num from col
-    for (size_t i=0; i<_rows.size(); ++i)
+    for (size_t i=0; i<N; ++i)
     {
-        denote(ToIndex<N>(i, col), num);
+        changed |= denote(ToIndex<N>(i, col), num);
     }
     
     // denote num from grid
     auto & grid_index_pair = _lutIndexToGrid[index];
     for (size_t i=0; i<N; ++i)
     {
-        denote(_lutGridToIndex[grid_index_pair.first][i], num);
+        changed |= denote(_lutGridToIndex[grid_index_pair.first][i], num);
     }
+    return changed;
 }
 
 template <size_t N>
@@ -595,13 +582,13 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
     };
     
     // denote num from row
-    for (size_t i=0; i<_cols.size(); ++i)
+    for (size_t i=0; i<N; ++i)
     {
         insert_num_at(ToIndex<N>(row, i));
     }
     
     // denote num from col
-    for (size_t i=0; i<_rows.size(); ++i)
+    for (size_t i=0; i<N; ++i)
     {
         insert_num_at(ToIndex<N>(i, col));
     }
@@ -615,8 +602,9 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
 }
 
 template <size_t N>
-void Game<N>::checkSinglePosition(bool * outChanged)
+bool Game<N>::checkSinglePosition()
 {
+    bool changed = false;
     auto & nums = _nums;
     auto & notations = _notations;
     auto & lutGridToIndex = _lutGridToIndex;
@@ -654,30 +642,35 @@ void Game<N>::checkSinglePosition(bool * outChanged)
     // for a grid check if n
     for (size_t n=1; n<=N; ++n)
     {
-        bool changed = false;
-        for_each_cells( n, toIndexGrid, &changed);
-        for_each_cells( n, toIndexRow, &changed);
-        for_each_cells( n, toIndexCol, &changed);
-        
-        if (outChanged && changed)
-        {
-            *outChanged = true;
-        }
+        bool scan_changed = false;
+        for_each_cells( n, toIndexGrid, &scan_changed);
+        changed |= scan_changed;
+        for_each_cells( n, toIndexRow, &scan_changed);
+        changed |= scan_changed;
+        for_each_cells( n, toIndexCol, &scan_changed);
+        changed |= scan_changed;
     }
     
+    return changed;
 }
 
 template <size_t N>
-void Game<N>::denote(size_t index, Num num)
+bool Game<N>::denote(size_t index, Num num)
 {
-    size_t size_before = _notations[index].size();
-    //if (!has(index))
-    _notations[index].erase(num);
-    size_t size_after = _notations[index].size();
+    bool changed = false;
+    auto & notation = _notations[index];
+    size_t size_before = notation.size();
+    if (notation.contains(num))
+    {
+        changed = true;
+        _notations[index].erase(num);
+    }
+    size_t size_after = notation.size();
     if (size_after==1 && size_before>1)
     {
         becomeUnique(index, *_notations[index].nums().begin());
     }
+    return changed;
 }
 
 template <size_t N>
@@ -711,8 +704,9 @@ void Game<N>::becomeUnique(size_t index, Num num)
 }
 
 template <size_t N>
-void Game<N>::checkPairs()
+bool Game<N>::checkPairs()
 {
+    bool changed = false;
     // TODO: we can do this for row col as well
     // for all grids
     for ( size_t i=0; i<N; ++i)
@@ -750,7 +744,9 @@ void Game<N>::checkPairs()
                             auto denote_index = _lutGridToIndex[i][u];
                             if (!_nums[denote_index] && _notations[denote_index].contains(*it))
                             {
-                                denote(denote_index, *it);
+                                bool notation_changed = denote(denote_index, *it);
+                                assert(notation_changed);
+                                changed |= notation_changed;
                             }
                         }
                     }
@@ -758,13 +754,14 @@ void Game<N>::checkPairs()
                 }
             }
         }
-        
     }
+    return changed;
 }
 
 template <size_t N>
-void Game<N>::checkTriplets()
+bool Game<N>::checkTriplets()
 {
+    bool changed = false;
     // for all grids
     for ( size_t i=0; i<N; ++i)
     {
@@ -810,7 +807,9 @@ void Game<N>::checkTriplets()
                                 Num denote_num = *it;
                                 if (!_nums[denote_index] && _notations[denote_index].contains(denote_num))
                                 {
-                                    denote(denote_index, denote_num);
+                                    bool denote_changed = denote(denote_index, denote_num);;
+                                    assert (denote_changed);
+                                    
                                 }
                             }
                         }
@@ -818,18 +817,20 @@ void Game<N>::checkTriplets()
                 }
             }
         }
-        
     }
+    return changed;
 }
 
 template <size_t N>
-void Game<N>::checkXWings()
+bool Game<N>::checkXWings()
 {
+    bool changed = false;
     IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
     IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
     
-    auto check_xwings = [this](Num n, IndexFunc indexFunc)
+    auto check_xwings = [this](Num n, IndexFunc indexFunc)-> bool
     {
+        bool check_xwings_changed = false;
         // 1st scan, first: outer index, inner: inner indexes which notates n
         std::vector<std::pair<size_t, std::vector<size_t>>> v;
         for (size_t i=0;i<N;++i)
@@ -876,27 +877,31 @@ void Game<N>::checkXWings()
                     size_t & col_1 = row_col_1.second;
                     std::array<size_t, 2> cols = {col_0, col_1};
                     std::array<size_t, 2> rows = {row_0, row_1};
-                    denoteRowExcept(row_0, n, cols);
-                    denoteRowExcept(row_1, n, cols);
+                    check_xwings_changed |= denoteRowExcept(row_0, n, cols);
+                    check_xwings_changed |= denoteRowExcept(row_1, n, cols);
                     
-                    denoteColExcept(col_0, n, rows);
-                    denoteColExcept(col_1, n, rows);
+                    check_xwings_changed |= denoteColExcept(col_0, n, rows);
+                    check_xwings_changed |= denoteColExcept(col_1, n, rows);
                 }
             }
         }
+        return check_xwings_changed;
     };
 
     for (Num n=1; n<=N; ++n)
     {
-        check_xwings(n, toIndexRow);
+        bool check_xwings_changed = check_xwings(n, toIndexRow);
+        check_xwings_changed |= check_xwings_changed;
         // no need to check col,
         //check_xwings(n, toIndexCol);
     }
+    return changed;
 }
 
 template <size_t N>
-void Game<N>::checkSingleLine()
+bool Game<N>::checkSingleLine()
 {
+    bool changed = false;
     auto & lutGridToIndex = _lutGridToIndex;
     IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
     // for each num
@@ -936,24 +941,26 @@ void Game<N>::checkSingleLine()
                 if (row_set.size()==1)
                 {
                     size_t single_row = *row_set.begin();
-                    denoteRowExcept(single_row, n, col_set);
+                    changed |= denoteRowExcept(single_row, n, col_set);
                     int bp = 1;
                 }
                 if (col_set.size()==1)
                 {
                     size_t single_col = *col_set.begin();
-                    denoteColExcept(single_col, n, row_set);
+                    changed |= denoteColExcept(single_col, n, row_set);
                     int bp = 1;
                 }
             }
         }
     }
+    return changed;
 }
 
 template <size_t N>
 template <typename IndexContainer>
-void Game<N>::denoteRowExcept(size_t row, Num num, const IndexContainer & exclusion)
+bool Game<N>::denoteRowExcept(size_t row, Num num, const IndexContainer & exclusion)
 {
+    bool changed = false;
     for ( size_t col=0;col<N;++col)
     {
         if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), col))
@@ -965,15 +972,19 @@ void Game<N>::denoteRowExcept(size_t row, Num num, const IndexContainer & exclus
         
         if (_notations[index].contains(num))
         {
-            denote(index, num);
+            bool denote_changed = denote(index, num);
+            assert(denote_changed);
+            changed |= denote_changed;
         }
     }
+    return changed;
 }
 
 template <size_t N>
 template <typename IndexContainer>
-void Game<N>::denoteColExcept(size_t col, Num num, const IndexContainer & exclusion)
+bool Game<N>::denoteColExcept(size_t col, Num num, const IndexContainer & exclusion)
 {
+    bool changed = false;
     for ( size_t row=0;row<N;++row)
     {
         if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), row))
@@ -985,9 +996,12 @@ void Game<N>::denoteColExcept(size_t col, Num num, const IndexContainer & exclus
         
         if (_notations[index].contains(num))
         {
-            denote(index, num);
+            bool denote_changed = denote(index, num);
+            assert(denote_changed);
+            changed |= denote_changed;
         }
     }
+    return changed;
 }
 
 template class Game<4>;
