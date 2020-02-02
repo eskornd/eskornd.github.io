@@ -53,7 +53,8 @@ opt<Game<N>> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
     auto rewind = [this, &brain] () { this->rewind(brain); };
     auto forward = [this, &brain](const Memo<N> & m){ this->forward(brain, m); };
     
-    size_t loop_count = -1;
+    size_t & loop_count = _loopCount;
+    loop_count = -1;
     while (!done)
     {
         ++loop_count;
@@ -146,53 +147,72 @@ opt<Robot::Memo<N>> Robot::findNextStep(Brain<N> & brain)
     {
         assert(indexes_stack.top() == rewinded.value().index);
         m = rewinded.value();
-        ++m.value;
-        if (m.value > N)
+        
+        bool isSingleChoice = false;
+        auto optNextNum = nextNum(brain, m.index, m.value, &isSingleChoice);
+        if (optNextNum)
         {
-            // dead end, rewind again,
+            m.value = optNextNum.value();
+        } else {
             ++brain.dead_end;
             return std::nullopt;
         }
     } else {
-        if (_useDynamicOrder)
+        m.index = nextIndex(brain);
+        bool isSingleChoice = false;
+        auto optNextNum = nextNum(brain, m.index, std::nullopt /* no current value*/, &isSingleChoice);
+        if (!optNextNum)
         {
-            auto iii = unfilledIndexes(game);
-            std::reverse(iii.begin(), iii.end());
-            std::stack<size_t, std::vector<size_t>> ss(iii);
-            std::swap(ss, indexes_stack);
-            m.index = indexes_stack.top();
-        } else {
-            m.index = indexes_stack.top();
+            ++brain.dead_end;
+            return std::nullopt;
         }
-
-        if (_onlyUseValidValue)
-        {
-            size_t numNum = game.notations()[m.index].nums().size();
-            if (numNum >1)
-            {
-                int lets_find_new_constratins = 1;
-                m.isSingleChoice = false;
-            } else if (numNum == 1){
-                m.isSingleChoice = true;
-            } else {
-                assert ("Can't happen");
-            }
-
-            auto optNextNum = game.notations()[m.index].nextNum(std::nullopt);
-            if (!optNextNum)
-            {
-                ++brain.dead_end;
-                return std::nullopt;
-            }
-            assert(optNextNum);
-            m.value = optNextNum.value();
-        } else {
-            m.value = 1;
-        }
+        m.value = optNextNum.value();
+        m.isSingleChoice = isSingleChoice;
     }
     return m;
 }
 
+template <size_t N>
+size_t Robot::nextIndex(Brain<N> & brain)
+{
+    const auto & game = brain.game;
+    size_t nextIndex = 0;
+    
+    auto & indexes_stack = brain.unfilledIndices;
+    if (_useDynamicOrder)
+    {
+        auto unfilled = unfilledIndexes(game);
+        std::reverse(unfilled.begin(), unfilled.end());
+        
+        std::stack<size_t, std::vector<size_t>> ss(unfilled);
+        std::swap(ss, indexes_stack);
+        nextIndex = indexes_stack.top();
+    } else {
+        nextIndex = indexes_stack.top();
+    }
+    return nextIndex;
+}
+
+template <size_t N>
+opt<Num> Robot::nextNum(const Brain<N> & brain, size_t index, opt<Num> currentValue, bool * outIsSingleChoice)
+{
+    const auto & game = brain.game;
+    auto & notation = game.notations()[index];
+    
+    opt<Num> optNextNum = std::nullopt;
+    if (_onlyUseValidValue)
+    {
+        if (outIsSingleChoice)
+        {
+            *outIsSingleChoice = 1==notation.nums().size();
+        }
+        optNextNum = notation.nextNum(currentValue);
+    } else {
+        optNextNum = 1;
+    }
+    
+    return optNextNum;
+}
 
 template opt<Game<4>> Robot::solve<4>(const Game<4> &, Robot::Callback );
 template opt<Game<6>> Robot::solve<6>(const Game<6> &, Robot::Callback );
