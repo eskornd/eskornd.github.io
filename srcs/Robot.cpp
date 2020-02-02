@@ -142,33 +142,24 @@ opt<Robot::Memo<N>> Robot::findNextStep(Brain<N> & brain)
     opt<Memo<N>> & rewinded = brain.rewinded;
     std::stack<Memo<N>> & memos = brain.memos;
     
-    Memo<N> m;
-    if (rewinded)
+    assert( (!rewinded) ||
+           (indexes_stack.top() == rewinded.value().index && "For rewinded index stack top matches the next index"));
+    size_t next_index = rewinded ? rewinded.value().index : nextIndex(brain);
+    opt<Num> current_value = rewinded ? (opt<Num>)rewinded.value().value : std::nullopt;
+    
+    bool isSingleChoice = false;
+    auto optNextNum = nextNum(brain, next_index, current_value, &isSingleChoice);
+    if (!optNextNum)
     {
-        assert(indexes_stack.top() == rewinded.value().index);
-        m = rewinded.value();
-        
-        bool isSingleChoice = false;
-        auto optNextNum = nextNum(brain, m.index, m.value, &isSingleChoice);
-        if (optNextNum)
-        {
-            m.value = optNextNum.value();
-        } else {
-            ++brain.dead_end;
-            return std::nullopt;
-        }
-    } else {
-        m.index = nextIndex(brain);
-        bool isSingleChoice = false;
-        auto optNextNum = nextNum(brain, m.index, std::nullopt /* no current value*/, &isSingleChoice);
-        if (!optNextNum)
-        {
-            ++brain.dead_end;
-            return std::nullopt;
-        }
-        m.value = optNextNum.value();
-        m.isSingleChoice = isSingleChoice;
+        ++brain.dead_end;
+        return std::nullopt;
     }
+    
+    Memo<N> m;
+    m.index = next_index;
+    m.value = optNextNum.value();
+    m.isSingleChoice = isSingleChoice;
+
     return m;
 }
 
