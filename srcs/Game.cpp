@@ -407,8 +407,7 @@ const char * dump_complex(const Game<M> & game)
 	static constexpr size_t game_buf_len =
     ((cell_buf_len + cell_split_len) * M + linebreak_len)  * M +
     3* (3 * (col_begin_len + col_end_len)) +
-    (3 * linebreak_len *2) +
-    (M * linebreak_len);
+    (3 * linebreak_len);
 
 	static char game_buf[game_buf_len];
 	char * p = game_buf;
@@ -467,12 +466,6 @@ const char * dump_complex(const Game<M> & game)
         {
             memcpy(p, linebreak, linebreak_len);
             p+=linebreak_len;
-//            memcpy(p, linebreak, linebreak_len);
-//            p+=linebreak_len;
-        } else {
-//            memcpy(p, linebreak, linebreak_len);
-//            p+=linebreak_len;
-            
         }
 	}
 	return game_buf;

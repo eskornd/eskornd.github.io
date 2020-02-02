@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include <functional>
+#include <stack>
 
 class Robot
 {
@@ -30,6 +31,41 @@ private:
     
     template <size_t N>
     std::vector<size_t> unfilledIndexes(const Game<N> & game) const;
+    
+    //
+    template <size_t N>
+    struct Memo
+    {
+        size_t index; // which index filled?
+        Num value; // filled value
+        bool isSingleChoice; //is the only choice
+        std::vector<typename Game<N>::Notation> notations;
+    };
+    
+    template <size_t N>
+    struct Brain
+    {
+        Game<N> game;
+        std::stack<Memo<N>> memos; // stack of the last action
+        opt<Memo<N>> rewinded; // last step is rewinded?
+        std::stack<size_t, std::vector<size_t>> unfilledIndices; // to be filled indexes
+        size_t rewind_count = 0;
+        size_t dead_end = 0;
+    };
+    
+    
+    template <size_t N>
+    void rewind(Brain<N> & brain);
+    
+    template <size_t N>
+    void forward(Brain<N> & brain, const Memo<N> & m);
+    
+    template <size_t N>
+    opt<Robot::Memo<N>> findNextStep(Brain<N> & brain);
+    
+    
+    
+
 };
 
 #endif // SUDOKU_ROBOT_H_INCLUDED

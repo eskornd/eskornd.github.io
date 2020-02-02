@@ -232,7 +232,7 @@ int main()
         robot.solve(game, waitMS<5>);
     }
     
-    if (0)
+    if (1)
     {
         // Patrick game
         std::vector<Num> v={
@@ -255,7 +255,7 @@ int main()
         robot.solve(game, waitMS<5>);
     }
     
-    if (1)
+    if (0)
     {
         // Medium game
         std::vector<Num> v={
@@ -327,4 +327,3 @@ int main()
     
 	return 0;
 }
-
