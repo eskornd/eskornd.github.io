@@ -286,7 +286,7 @@ int main()
         run9x9Game(v, "Patrick game");
     }
     
-    if (1)
+    if (0)
     {
         // World hardest sudoku
         // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424

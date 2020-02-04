@@ -505,36 +505,60 @@ void Game<N>::checkNotations()
     
     // now check for notations;
     bool changed = true;
+    size_t single_position_iterations = 0;
+    size_t single_line_iterations = 0;
+    size_t check_pairs_iterations = 0;
     size_t outer_iterations = 0;
-    while ( changed )
-    {
-        size_t single_position_iterations = 0;
-        do
-        {
-            changed = checkSinglePosition();
-            if (changed) ++single_position_iterations;
-        } while(changed);
-        
+    
+    
+    std::vector<std::function<bool()>> checkFunctions = {
+        std::bind(&Game<N>::checkSinglePosition, this),
+        std::bind(&Game<N>::checkSingleLine, this),
+        std::bind(&Game<N>::checkPairs, this),
+        std::bind(&Game<N>::checkTriplets, this),
+        std::bind(&Game<N>::checkXWings, this),
+    };
+    
+    auto hasUniqueChoice = [this]()->bool{
         auto unfilled_indices = unfilledIndices(true /*most constraints first*/);
-        if (!unfilled_indices.empty() )
+        return unfilled_indices.empty() || _notations[unfilled_indices.front()].size()==1;
+    };
+
+    size_t check_level = 1;
+    do
+    {
+        bool has_unique_choice = false;
+        for (size_t i=0; i<std::min(check_level, checkFunctions.size()); ++i)
         {
-            auto index = unfilled_indices.front();
-            if (_notations[index].nums().size()>1)
+            auto & check = checkFunctions[i];
+            changed = check();
+            if (changed)
+                break;
+            
+            has_unique_choice = hasUniqueChoice();
+            if (!has_unique_choice)
             {
-                // run out of single candidate;
-                bool check_pairs_changed = checkPairs();
-                bool check_triplets_changed = checkTriplets();
-                bool check_xwings_changed = checkXWings();
-                bool check_single_line = checkSingleLine();
-                changed |= check_pairs_changed;
-                changed |= check_triplets_changed;
-                changed |= check_xwings_changed;
-                changed |= check_single_line;
+                // allow entering next level of check
+                assert(!changed);
+                ++check_level;
+            } else {
+                // no ambiguous step, fair enough, we can break now.
+                break;
             }
         }
-        ++outer_iterations;
-    }
-    int bp = 1;
+        
+        if (changed)
+            continue;
+        
+        if (has_unique_choice)
+        {
+            // no ambiguous step, fair enough, we can break now.
+            break;
+        }
+    } while(changed || (!changed && check_level<=checkFunctions.size()));
+    
+    int bp = 2;
+
 }
 
 template <size_t N>
@@ -809,7 +833,7 @@ bool Game<N>::checkTriplets()
                                 {
                                     bool denote_changed = denote(denote_index, denote_num);;
                                     assert (denote_changed);
-                                    
+                                    changed |= denote_changed;
                                 }
                             }
                         }
