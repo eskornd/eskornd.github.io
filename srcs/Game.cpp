@@ -504,7 +504,7 @@ void Game<N>::checkNotations()
         return;
     
     // now check for notations;
-    bool changed = true;
+    
     size_t single_position_iterations = 0;
     size_t single_line_iterations = 0;
     size_t check_pairs_iterations = 0;
@@ -524,8 +524,9 @@ void Game<N>::checkNotations()
         return unfilled_indices.empty() || _notations[unfilled_indices.front()].size()==1;
     };
 
+    bool changed = true;
     size_t check_level = 1;
-    do
+    while (changed || (!changed && check_level<=checkFunctions.size()))
     {
         bool has_unique_choice = false;
         for (size_t i=0; i<std::min(check_level, checkFunctions.size()); ++i)
@@ -534,31 +535,24 @@ void Game<N>::checkNotations()
             changed = check();
             if (changed)
                 break;
-            
-            has_unique_choice = hasUniqueChoice();
-            if (!has_unique_choice)
-            {
-                // allow entering next level of check
-                assert(!changed);
-                ++check_level;
-            } else {
-                // no ambiguous step, fair enough, we can break now.
-                break;
-            }
         }
         
         if (changed)
             continue;
         
-        if (has_unique_choice)
+        assert(!changed);
+        if (hasUniqueChoice())
         {
-            // no ambiguous step, fair enough, we can break now.
+            // changed && no ambiguous step, fair enough, we can break now.
             break;
+        } else {
+            // allow entering next level of check
+            assert(!changed);
+            ++check_level;
         }
-    } while(changed || (!changed && check_level<=checkFunctions.size()));
+    }
     
     int bp = 2;
-
 }
 
 template <size_t N>
