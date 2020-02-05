@@ -153,6 +153,19 @@ public:
     using NumArray1D = std::array<opt<Num>, N>;
     using NumArray2D = std::array<NumArray1D, N>;
     
+    struct CheckCounter
+    {
+        size_t usageCountSinglePosition = 0;
+        size_t usageCountSingleLine = 0;
+        size_t usageCountPairs = 0;
+        size_t usageCountTriplets = 0;
+        size_t usageCountXWings = 0;
+    };
+    
+    const CheckCounter& checkCounter() const
+    {
+        return _counter;
+    }
 private:
     using IndexFunc = std::function<size_t(size_t, size_t)>;
     
@@ -185,12 +198,12 @@ private:
     
     
     // check*(): @return true if changed
-    bool checkSinglePosition();
-    bool checkPairs();
-    bool checkTriplets();
-    bool checkXWings();
-    bool checkSingleLine();
-    
+    size_t checkSinglePosition();
+    size_t checkSingleLine();
+    size_t checkPairs();
+    size_t checkTriplets();
+    size_t checkXWings();
+
     void becomeUnique(size_t index, Num num);
     
     template <typename IndexContainer>
@@ -198,6 +211,8 @@ private:
     
     template <typename IndexContainer>
     bool denoteColExcept(size_t row, Num num, const IndexContainer & container);
+
+    CheckCounter _counter;
 };
 
 #endif // SUDOKU_GAME_H_INCLUDED

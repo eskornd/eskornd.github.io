@@ -91,8 +91,18 @@ int main()
         robot.setIndexOrder(Robot::IndexOrder::eMostConstraintsFirst);
         auto solution = robot.solve(game, waitMS<1>);
         
-        std::cout << "# of deadend: " << solution.deadEnd << std::endl;
+        std::cout << std::endl;
         std::cout << "Has solution? " << (solution.endGame ? "YES!" : "NO!") << std::endl;
+        std::cout << "\t# of deadend: " << solution.deadEnd << std::endl;
+        if (solution.endGame)
+        {
+            const auto & counter = solution.endGame->checkCounter();
+            std::cout << "\tusageCountSinglePosition: " << counter.usageCountSinglePosition << std::endl;
+            std::cout << "\tusageCountSingleLine: " << counter.usageCountSingleLine << std::endl;
+            std::cout << "\tusageCountPairs: " << counter.usageCountPairs << std::endl;
+            std::cout << "\tusageCountTriplets: " << counter.usageCountTriplets << std::endl;
+            std::cout << "\tusageCountXWings: " << counter.usageCountXWings << std::endl;
+        }
         
         return solution;
     };
@@ -284,7 +294,7 @@ int main()
 		};
 		run9x9Game(v, "Today's hard sudoku");
 	}
-    if (1)
+    if (0)
     {
         // Patrick game
         std::vector<Num> v={
@@ -301,7 +311,7 @@ int main()
         run9x9Game(v, "Patrick game");
     }
     
-    if (0)
+    if (1)
     {
         // World hardest sudoku
         // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424

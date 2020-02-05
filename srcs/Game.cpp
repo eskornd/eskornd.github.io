@@ -2,6 +2,7 @@
 #include <cassert>
 #include <set>
 #include <utility>
+#include <functional>
 
 bool sCheckPairs = false;
 namespace
@@ -175,6 +176,8 @@ Game<N>::Game(const Game<N> & inRhs)
 , _notations(inRhs._notations)
 , _lutIndexToGrid(inRhs._lutIndexToGrid)
 , _lutGridToIndex(inRhs._lutGridToIndex)
+, _initializing(inRhs._initializing)
+, _counter(inRhs._counter)
 {
     // deep copy
     _groups[0] = &_rows;
@@ -193,10 +196,12 @@ Game<N>& Game<N>::operator=(const Game<N> & inRhs)
     _groups[0] = &_rows;
     _groups[1] = &_cols;
     _groups[2] = &_grids;
-    
+
     _notations = inRhs._notations;
     _lutIndexToGrid = inRhs._lutIndexToGrid;
     _lutGridToIndex = inRhs._lutGridToIndex;
+    _initializing = inRhs._initializing;
+    _counter = inRhs._counter;
     return *this;
 }
 
@@ -497,28 +502,47 @@ void Game<N>::resetNotations()
     }
 }
 
+using CheckFunction = std::function<size_t()>;
+
 template <size_t N>
 void Game<N>::checkNotations()
 {
     if (_initializing)
         return;
     
-    // now check for notations;
     
-    size_t single_position_iterations = 0;
-    size_t single_line_iterations = 0;
-    size_t check_pairs_iterations = 0;
-    size_t outer_iterations = 0;
+
     
-    
-    std::vector<std::function<bool()>> checkFunctions = {
-        std::bind(&Game<N>::checkSinglePosition, this),
-        std::bind(&Game<N>::checkSingleLine, this),
-        std::bind(&Game<N>::checkPairs, this),
-        std::bind(&Game<N>::checkTriplets, this),
-        std::bind(&Game<N>::checkXWings, this),
+    //typedef std::function<size_t()> = CheckFunction;
+    struct Check
+    {
+    public:
+        Check(CheckFunction inFunction, size_t & inCounter)
+        : check_function(inFunction)
+        , usage_count(inCounter)
+        {}
+        
+        size_t operator()()
+        {
+            size_t count = check_function();
+            usage_count += count;
+            return count;
+        }
+        
+    private:
+        CheckFunction check_function;
+        size_t & usage_count;
     };
     
+    std::vector<Check> checks =
+    {
+        Check{[this](){ return checkSinglePosition(); }, _counter.usageCountSinglePosition},
+        Check{[this](){ return checkSingleLine(); }, _counter.usageCountSingleLine},
+        Check{[this](){ return checkPairs(); }, _counter.usageCountPairs},
+        Check{[this](){ return checkTriplets(); }, _counter.usageCountTriplets},
+        Check{[this](){ return checkXWings(); }, _counter.usageCountXWings},
+    };
+
     auto hasUniqueChoice = [this]()->bool{
         auto unfilled_indices = unfilledIndices(true /*most constraints first*/);
         return unfilled_indices.empty() || _notations[unfilled_indices.front()].size()==1;
@@ -526,13 +550,13 @@ void Game<N>::checkNotations()
 
     bool changed = true;
     size_t check_level = 1;
-    while (changed || (!changed && check_level<=checkFunctions.size()))
+    while (changed || (!changed && check_level<=checks.size()))
     {
         bool has_unique_choice = false;
-        for (size_t i=0; i<std::min(check_level, checkFunctions.size()); ++i)
+        for (size_t i=0; i<std::min(check_level, checks.size()); ++i)
         {
-            auto & check = checkFunctions[i];
-            changed = check();
+            size_t change_count = checks[i]();
+            changed = 0 != change_count;
             if (changed)
                 break;
         }
@@ -541,7 +565,8 @@ void Game<N>::checkNotations()
             continue;
         
         assert(!changed);
-        if (hasUniqueChoice())
+        bool has_unique = hasUniqueChoice();
+        if (has_unique)
         {
             // changed && no ambiguous step, fair enough, we can break now.
             break;
@@ -620,9 +645,10 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
 }
 
 template <size_t N>
-bool Game<N>::checkSinglePosition()
+size_t Game<N>::checkSinglePosition()
 {
-    bool changed = false;
+    //bool changed = false;
+    size_t change_count = 0;
     auto & nums = _nums;
     auto & notations = _notations;
     auto & lutGridToIndex = _lutGridToIndex;
@@ -632,9 +658,10 @@ bool Game<N>::checkSinglePosition()
     IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
     
     auto noteUniqueFunc = std::bind(&Game<N>::noteUnique, this, std::placeholders::_1, std::placeholders::_2);
-    auto for_each_cells = [noteUniqueFunc, &nums, &notations](Num n, IndexFunc toIndex, bool * outChanged)
+    auto for_each_cells = [noteUniqueFunc, &nums, &notations](Num n, IndexFunc toIndex, size_t * outChangeCount)
     {
-        assert(outChanged);
+        assert(outChangeCount);
+        *outChangeCount = 0;
         for (size_t i =0; i<N; ++i)
         {
             std::vector<size_t> index_containsN;
@@ -650,7 +677,7 @@ bool Game<N>::checkSinglePosition()
                 size_t theIndex = index_containsN.front();
                 if (notations[theIndex].size()>1)
                 {
-                    *outChanged = true;
+                    ++(*outChangeCount);
                     noteUniqueFunc(theIndex, n);
                 }
             }
@@ -661,15 +688,16 @@ bool Game<N>::checkSinglePosition()
     for (size_t n=1; n<=N; ++n)
     {
         bool scan_changed = false;
-        for_each_cells( n, toIndexGrid, &scan_changed);
-        changed |= scan_changed;
-        for_each_cells( n, toIndexRow, &scan_changed);
-        changed |= scan_changed;
-        for_each_cells( n, toIndexCol, &scan_changed);
-        changed |= scan_changed;
+        size_t scan_change_count = 0;
+        for_each_cells( n, toIndexGrid, &scan_change_count);
+        change_count += scan_change_count;
+        for_each_cells( n, toIndexRow, &scan_change_count);
+        change_count += scan_change_count;
+        for_each_cells( n, toIndexCol, &scan_change_count);
+        change_count += scan_change_count;
     }
     
-    return changed;
+    return change_count;
 }
 
 template <size_t N>
@@ -722,9 +750,9 @@ void Game<N>::becomeUnique(size_t index, Num num)
 }
 
 template <size_t N>
-bool Game<N>::checkPairs()
+size_t Game<N>::checkPairs()
 {
-    bool changed = false;
+    size_t change_count = 0;
     // TODO: we can do this for row col as well
     // for all grids
     for ( size_t i=0; i<N; ++i)
@@ -752,6 +780,7 @@ bool Game<N>::checkPairs()
                 {
                     int we_found_pair = 1;
                     // denote from grids who
+                    bool changed = false;
                     for (auto it= candidates.begin(); it!=candidates.end(); ++it)
                     {
                         for (size_t u=0; u<N;++u)
@@ -768,18 +797,20 @@ bool Game<N>::checkPairs()
                             }
                         }
                     }
+                    if (changed)
+                        ++change_count;
                     
                 }
             }
         }
     }
-    return changed;
+    return change_count;
 }
 
 template <size_t N>
-bool Game<N>::checkTriplets()
+size_t Game<N>::checkTriplets()
 {
-    bool changed = false;
+    size_t change_count = 0;
     // for all grids
     for ( size_t i=0; i<N; ++i)
     {
@@ -812,7 +843,8 @@ bool Game<N>::checkTriplets()
                     size_t num_candidates = candidates.size();
                     if ( num_candidates == 3)
                     {
-                        int we_found_triple = 1;
+                        // Found triplets!
+                        bool changed = false;
                         // denote from grids who
                         for (auto it= candidates.begin(); it!=candidates.end(); ++it)
                         {
@@ -831,24 +863,25 @@ bool Game<N>::checkTriplets()
                                 }
                             }
                         }
+                        if (changed)
+                            ++change_count;
                     }
                 }
             }
         }
     }
-    return changed;
+    return change_count;
 }
 
 template <size_t N>
-bool Game<N>::checkXWings()
+size_t Game<N>::checkXWings()
 {
-    bool changed = false;
+    size_t change_count = 0;
     IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
     IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
     
-    auto check_xwings = [this](Num n, IndexFunc indexFunc)-> bool
+    auto check_xwings = [this](Num n, IndexFunc indexFunc, bool isRowBased)-> bool
     {
-        bool check_xwings_changed = false;
         // 1st scan, first: outer index, inner: inner indexes which notates n
         std::vector<std::pair<size_t, std::vector<size_t>>> v;
         for (size_t i=0;i<N;++i)
@@ -873,6 +906,7 @@ bool Game<N>::checkXWings()
         }
         
         // check if two outer indexes has the exact same inner index
+        bool check_xwings_changed = false;
         for ( size_t a=0; a<v.size(); ++a)
         {
             for (size_t b=a+1; b<v.size(); ++b)
@@ -884,10 +918,10 @@ bool Game<N>::checkXWings()
                     auto row_col_1 = ToRowCol<N>(indexFunc(v[a].first, v[a].second[1]));
                     auto row_col_2 = ToRowCol<N>(indexFunc(v[b].first, v[b].second[0]));
                     auto row_col_3 = ToRowCol<N>(indexFunc(v[b].first, v[b].second[1]));
-                    assert(row_col_0.first == row_col_1.first);
-                    assert(row_col_2.first == row_col_3.first);
-                    assert(row_col_0.second == row_col_2.second);
-                    assert(row_col_1.second == row_col_3.second);
+                    if (!isRowBased)
+                    {
+                        std::swap(row_col_1, row_col_2);
+                    }
                     
                     size_t & row_0 = row_col_0.first;
                     size_t & row_1 = row_col_2.first;
@@ -895,11 +929,16 @@ bool Game<N>::checkXWings()
                     size_t & col_1 = row_col_1.second;
                     std::array<size_t, 2> cols = {col_0, col_1};
                     std::array<size_t, 2> rows = {row_0, row_1};
-                    check_xwings_changed |= denoteRowExcept(row_0, n, cols);
-                    check_xwings_changed |= denoteRowExcept(row_1, n, cols);
+                    bool check0 = denoteRowExcept(row_0, n, cols);
+                    bool check1 = denoteRowExcept(row_1, n, cols);
+                    bool check2 = denoteColExcept(col_0, n, rows);
+                    bool check3 = denoteColExcept(col_1, n, rows);
+                    check_xwings_changed = check0 || check1 || check2 || check3;
+                    if (!isRowBased && check_xwings_changed)
+                    {
+                        int bp = 1;
+                    }
                     
-                    check_xwings_changed |= denoteColExcept(col_0, n, rows);
-                    check_xwings_changed |= denoteColExcept(col_1, n, rows);
                 }
             }
         }
@@ -908,18 +947,22 @@ bool Game<N>::checkXWings()
 
     for (Num n=1; n<=N; ++n)
     {
-        bool check_xwings_changed = check_xwings(n, toIndexRow);
-        check_xwings_changed |= check_xwings_changed;
-        // no need to check col,
-        //check_xwings(n, toIndexCol);
+        bool row_check_changed = check_xwings(n, toIndexRow, true /*row based*/);
+        if (row_check_changed)
+            ++change_count;
+
+        bool col_check_changed = check_xwings(n, toIndexCol, false /*col based*/);
+        if (col_check_changed)
+            ++change_count;
+        
     }
-    return changed;
+    return change_count;
 }
 
 template <size_t N>
-bool Game<N>::checkSingleLine()
+size_t Game<N>::checkSingleLine()
 {
-    bool changed = false;
+    size_t change_count = 0;
     auto & lutGridToIndex = _lutGridToIndex;
     IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
     // for each num
@@ -959,19 +1002,25 @@ bool Game<N>::checkSingleLine()
                 if (row_set.size()==1)
                 {
                     size_t single_row = *row_set.begin();
-                    changed |= denoteRowExcept(single_row, n, col_set);
-                    int bp = 1;
+                    bool changed = denoteRowExcept(single_row, n, col_set);
+                    if (changed)
+                    {
+                        ++change_count;
+                    }
                 }
                 if (col_set.size()==1)
                 {
                     size_t single_col = *col_set.begin();
-                    changed |= denoteColExcept(single_col, n, row_set);
-                    int bp = 1;
+                    bool changed = denoteColExcept(single_col, n, row_set);
+                    if (changed)
+                    {
+                        ++change_count;
+                    }
                 }
             }
         }
     }
-    return changed;
+    return change_count;
 }
 
 template <size_t N>
