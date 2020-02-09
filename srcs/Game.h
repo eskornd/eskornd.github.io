@@ -82,6 +82,11 @@ public:
             return _nums.size();
         }
         
+        bool empty() const
+        {
+            return _nums.empty();
+        }
+        
         void clear()
         {
             _nums.clear();
@@ -160,6 +165,7 @@ public:
         size_t usageCountPairs = 0;
         size_t usageCountTriplets = 0;
         size_t usageCountXWings = 0;
+        size_t usageCountQuads = 0;
     };
     
     const CheckCounter& checkCounter() const
@@ -203,15 +209,18 @@ private:
     size_t checkPairs();
     size_t checkTriplets();
     size_t checkXWings();
-
+    size_t checkQuads();
     void becomeUnique(size_t index, Num num);
     
     template <typename IndexContainer>
     bool denoteRowExcept(size_t row, Num num, const IndexContainer & container);
     
     template <typename IndexContainer>
-    bool denoteColExcept(size_t row, Num num, const IndexContainer & container);
+    bool denoteColExcept(size_t col, Num num, const IndexContainer & container);
 
+    template <typename IndexContainer>
+    bool denoteGridExcept(size_t grid, Num num, const IndexContainer & container);
+    
     CheckCounter _counter;
 };
 

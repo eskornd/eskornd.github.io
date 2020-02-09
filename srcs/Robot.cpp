@@ -1,7 +1,6 @@
 #include "Robot.h"
 #include <deque>
 #include <stack>
-extern bool sCheckPairs;
 
 void Robot::setIndexOrder(IndexOrder order)
 {
@@ -107,6 +106,7 @@ Solution<N> Robot::solve(const Game<N> & inGame, Robot::Callback callback)
         }
     }
     solution.deadEnd = brain.dead_end;
+    solution.numGuess = brain.num_guess;
     return solution;
 }
 
@@ -137,6 +137,8 @@ void Robot::forward(Brain<N> & brain, const Memo<N> & m)
     brain.unfilledIndices.pop();
     brain.game.assign(m.index, m.value);
     brain.memos.push(m);
+    if (!m.isSingleChoice)
+        ++brain.num_guess;
     brain.rewinded = std::nullopt;
 }
 
@@ -158,7 +160,7 @@ opt<Robot::Memo<N>> Robot::findNextStep(Brain<N> & brain)
     auto optNextNum = nextNum(brain, next_index, current_value, &isSingleChoice);
     if (!optNextNum)
     {
-        ++brain.dead_end;
+        ++brain.dead_end; // We ran out of choices
         return std::nullopt;
     }
     

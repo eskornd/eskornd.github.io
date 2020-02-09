@@ -4,7 +4,6 @@
 #include <utility>
 #include <functional>
 
-bool sCheckPairs = false;
 namespace
 {
     size_t gridWidth(size_t N)
@@ -510,8 +509,13 @@ void Game<N>::checkNotations()
     if (_initializing)
         return;
     
+    auto unfilled_indices = unfilledIndices(true /*most constraints first*/);
+    if (unfilled_indices.empty())
+        return;
     
-
+    // first unfilled indices has no choice, this is a dead end, no need to check
+    if (_notations[unfilled_indices.front()].empty())
+        return;
     
     //typedef std::function<size_t()> = CheckFunction;
     struct Check
@@ -541,11 +545,16 @@ void Game<N>::checkNotations()
         Check{[this](){ return checkPairs(); }, _counter.usageCountPairs},
         Check{[this](){ return checkTriplets(); }, _counter.usageCountTriplets},
         Check{[this](){ return checkXWings(); }, _counter.usageCountXWings},
+        Check{[this](){ return checkQuads(); }, _counter.usageCountQuads},
     };
 
     auto hasUniqueChoice = [this]()->bool{
         auto unfilled_indices = unfilledIndices(true /*most constraints first*/);
-        return unfilled_indices.empty() || _notations[unfilled_indices.front()].size()==1;
+        if (unfilled_indices.empty())
+            return true;
+        
+        auto first_index = unfilled_indices.front();
+        return _notations[first_index].size()==1;
     };
 
     bool changed = true;
@@ -752,124 +761,350 @@ void Game<N>::becomeUnique(size_t index, Num num)
 template <size_t N>
 size_t Game<N>::checkPairs()
 {
-    size_t change_count = 0;
-    // TODO: we can do this for row col as well
-    // for all grids
-    for ( size_t i=0; i<N; ++i)
+    static constexpr size_t what_size = 2;
+    struct PairResult
     {
-        // for each unfilled cells pairs
-        for (size_t j=0; j<N; ++j)
+        size_t outerIndex;
+        std::array<size_t, 2> innerIndices;
+        std::array<Num, 2> nums;
+    };
+    
+    auto for_each_cells = [this](IndexFunc indexFunc )
+    {
+        std::vector<PairResult> results;
+        for ( size_t i=0; i<N; ++i)
         {
-            auto index_j = _lutGridToIndex[i][j];
-            if (_nums[index_j])
-                continue;
-            
-            for (size_t k=j+1; k<N; ++k)
+            // for each unfilled cells pairs
+            std::vector<size_t> num_notations(N, 0);
+            for (size_t j=0; j<N; ++j)
             {
-                auto index_k = _lutGridToIndex[i][k];
-                if (_nums[index_k])
+                size_t index_j = indexFunc(i, j);
+                if (_nums[index_j])
                     continue;
                 
-                std::set<Num> candidates;
-                auto & nums_j = _notations[index_j].nums();
-                candidates.insert(nums_j.begin(), nums_j.end());
-                auto & nums_k = _notations[index_k].nums();
-                candidates.insert(nums_k.begin(), nums_k.end());
-                size_t num_candidates = candidates.size();
-                if ( num_candidates == 2)
+                if (_notations[index_j].size()>what_size)
+                    continue; // too many candidates
+                
+                for (size_t k=j+1; k<N; ++k)
                 {
-                    int we_found_pair = 1;
-                    // denote from grids who
-                    bool changed = false;
-                    for (auto it= candidates.begin(); it!=candidates.end(); ++it)
-                    {
-                        for (size_t u=0; u<N;++u)
-                        {
-                            if (u==j || u==k)
-                                continue;
-                            
-                            auto denote_index = _lutGridToIndex[i][u];
-                            if (!_nums[denote_index] && _notations[denote_index].contains(*it))
-                            {
-                                bool notation_changed = denote(denote_index, *it);
-                                assert(notation_changed);
-                                changed |= notation_changed;
-                            }
-                        }
-                    }
-                    if (changed)
-                        ++change_count;
+                    size_t index_k = indexFunc(i, k);
+                    if (_nums[index_k])
+                        continue;
                     
+                    if (_notations[index_k].size()>what_size)
+                        continue; // too many candidates
+                    
+                    std::set<Num> nums_union;
+                    auto & nums_j = _notations[index_j].nums();
+                    nums_union.insert(nums_j.begin(), nums_j.end());
+                    
+                    auto & nums_k = _notations[index_k].nums();
+                    nums_union.insert(nums_k.begin(), nums_k.end());
+                    if (nums_union.size() == 2)
+                    {
+                        PairResult r;
+                        r.outerIndex = i;
+                        r.innerIndices = {j, k};
+                        r.nums = {*(nums_union.cbegin()), *(++nums_union.cbegin())};
+                        results.push_back(r);
+                    }
                 }
             }
         }
+        return results;
+    };
+    
+    auto & lutGridToIndex = _lutGridToIndex;
+    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
+    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
+    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    
+    
+    size_t change_count = 0;
+    auto pairResults = for_each_cells(toIndexGrid);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteGridExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
     }
+    
+    pairResults = for_each_cells(toIndexRow);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteRowExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+    
+    pairResults = for_each_cells(toIndexCol);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteColExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+    
     return change_count;
 }
+
 
 template <size_t N>
 size_t Game<N>::checkTriplets()
 {
-    size_t change_count = 0;
-    // for all grids
-    for ( size_t i=0; i<N; ++i)
+    static constexpr size_t what_size = 3;
+    struct TripletResult
     {
-        // for each unfilled cells pairs
-        for (size_t j=0; j<N; ++j)
+        size_t outerIndex;
+        std::array<size_t, 3> innerIndices;
+        std::array<Num, 3> nums;
+    };
+    
+    auto for_each_cells = [this](IndexFunc indexFunc )
+    {
+        std::vector<TripletResult> results;
+        for ( size_t i=0; i<N; ++i)
         {
-            auto index_j = _lutGridToIndex[i][j];
-            if (_nums[index_j])
-                continue;
-            
-            for (size_t k=j+1; k<N; ++k)
+            // for each unfilled cells pairs
+            std::vector<size_t> num_notations(N, 0);
+            for (size_t j=0; j<N; ++j)
             {
-                auto index_k = _lutGridToIndex[i][k];
-                if (_nums[index_k])
+                size_t index_j = indexFunc(i, j);
+                if (_nums[index_j])
                     continue;
                 
-                for (size_t l=k+1; l<N; ++l)
+                if (_notations[index_j].size()>what_size)
+                    continue; // too many candidates
+                
+                for (size_t k=j+1; k<N; ++k)
                 {
-                    auto index_l = _lutGridToIndex[i][l];
-                    if (_nums[index_l])
+                    size_t index_k = indexFunc(i, k);
+                    if (_nums[index_k])
                         continue;
                     
-                    std::set<Num> candidates;
-                    auto & nums_j = _notations[index_j].nums();
-                    candidates.insert(nums_j.begin(), nums_j.end());
-                    auto & nums_k = _notations[index_k].nums();
-                    candidates.insert(nums_k.begin(), nums_k.end());
-                    auto & nums_l = _notations[index_l].nums();
-                    candidates.insert(nums_l.begin(), nums_l.end());
-                    size_t num_candidates = candidates.size();
-                    if ( num_candidates == 3)
+                    if (_notations[index_k].size()>what_size)
+                        continue; // too many candidates
+                    
+                    for (size_t l=k+1; l<N; ++l)
                     {
-                        // Found triplets!
-                        bool changed = false;
-                        // denote from grids who
-                        for (auto it= candidates.begin(); it!=candidates.end(); ++it)
+                        size_t index_l = indexFunc(i, l);
+                        if (_nums[index_l])
+                            continue;
+                        
+                        if (_notations[index_l].size()>what_size)
+                            continue; // too many candidates
+                        
+                        std::set<Num> nums_union;
+                        auto & nums_j = _notations[index_j].nums();
+                        nums_union.insert(nums_j.begin(), nums_j.end());
+                        
+                        auto & nums_k = _notations[index_k].nums();
+                        nums_union.insert(nums_k.begin(), nums_k.end());
+                        
+                        auto & nums_l = _notations[index_l].nums();
+                        nums_union.insert(nums_l.begin(), nums_l.end());
+                        if (nums_union.size() == what_size)
                         {
-                            for (size_t u=0; u<N;++u)
-                            {
-                                if (u==j || u==k || u==l)
-                                    continue;
-                                
-                                auto denote_index = _lutGridToIndex[i][u];
-                                Num denote_num = *it;
-                                if (!_nums[denote_index] && _notations[denote_index].contains(denote_num))
-                                {
-                                    bool denote_changed = denote(denote_index, denote_num);;
-                                    assert (denote_changed);
-                                    changed |= denote_changed;
-                                }
-                            }
+                            TripletResult r;
+                            r.outerIndex = i;
+                            r.innerIndices = {j, k, l};
+                            auto it = nums_union.cbegin();
+                            r.nums = {*(it), *(++it), *(++it)};
+                            results.push_back(r);
                         }
-                        if (changed)
-                            ++change_count;
                     }
                 }
             }
         }
+        return results;
+    };
+    
+    auto & lutGridToIndex = _lutGridToIndex;
+    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
+    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
+    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    
+    
+    size_t change_count = 0;
+    auto pairResults = for_each_cells(toIndexGrid);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteGridExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
     }
+    
+    pairResults = for_each_cells(toIndexRow);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteRowExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+
+    pairResults = for_each_cells(toIndexCol);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteColExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+    
+    return change_count;
+}
+
+template <size_t N>
+size_t Game<N>::checkQuads()
+{
+    return 0;
+    static constexpr size_t what_size = 4;
+    struct QuadResult
+    {
+        size_t outerIndex;
+        std::array<size_t, what_size> innerIndices;
+        std::array<Num, what_size> nums;
+    };
+    
+    
+    auto for_each_cells = [this](IndexFunc indexFunc )
+    {
+        std::vector<QuadResult> results;
+        for ( size_t i=0; i<N; ++i)
+        {
+            // for each unfilled cells pairs
+            std::vector<size_t> num_notations(N, 0);
+            for (size_t j=0; j<N; ++j)
+            {
+                size_t index_j = indexFunc(i, j);
+                if (_nums[index_j])
+                    continue;
+                
+                if (_notations[index_j].size()>what_size)
+                    continue; // too many candidates
+                
+                for (size_t k=j+1; k<N; ++k)
+                {
+                    size_t index_k = indexFunc(i, k);
+                    if (_nums[index_k])
+                        continue;
+                    
+                    if (_notations[index_k].size()>what_size)
+                        continue; // too many candidates
+                    
+                    for (size_t l=k+1; l<N; ++l)
+                    {
+                        size_t index_l = indexFunc(i, l);
+                        if (_nums[index_l])
+                            continue;
+                        
+                        if (_notations[index_l].size()>what_size)
+                            continue; // too many candidates
+                        
+                        for (size_t m=l+1; m<N; ++m)
+                        {
+                            size_t index_m = indexFunc(i, m);
+                            if (_nums[index_m])
+                                continue;
+                            
+                            if (_notations[index_m].size()>what_size)
+                                continue; // too many candidates
+                            
+                            std::set<Num> nums_union;
+                            auto & nums_j = _notations[index_j].nums();
+                            nums_union.insert(nums_j.begin(), nums_j.end());
+                            
+                            auto & nums_k = _notations[index_k].nums();
+                            nums_union.insert(nums_k.begin(), nums_k.end());
+                            
+                            auto & nums_l = _notations[index_l].nums();
+                            nums_union.insert(nums_l.begin(), nums_l.end());
+                            
+                            auto & nums_m = _notations[index_m].nums();
+                            nums_union.insert(nums_m.begin(), nums_m.end());
+                            if (nums_union.size() == what_size)
+                            {
+                                QuadResult r;
+                                r.outerIndex = i;
+                                r.innerIndices = {j, k, l, m};
+                                auto it = nums_union.cbegin();
+                                r.nums = {*(it), *(++it), *(++it), *(++it)};
+                                results.push_back(r);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return results;
+    };
+    
+    auto & lutGridToIndex = _lutGridToIndex;
+    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
+    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
+    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    
+    
+    size_t change_count = 0;
+    auto pairResults = for_each_cells(toIndexGrid);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteGridExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+    
+    pairResults = for_each_cells(toIndexRow);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteRowExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+    
+    pairResults = for_each_cells(toIndexCol);
+    for ( auto & pairResult : pairResults)
+    {
+        bool changed = false;
+        for (auto & num : pairResult.nums)
+        {
+            changed |= denoteColExcept(pairResult.outerIndex, num, pairResult.innerIndices);
+        }
+        if (changed)
+            ++change_count;
+    }
+    
     return change_count;
 }
 
@@ -922,6 +1157,19 @@ size_t Game<N>::checkXWings()
                     {
                         std::swap(row_col_1, row_col_2);
                     }
+                    // DEBUG/TODO: use row_set, col_set
+                    std::set<size_t> row_set;
+                    std::set<size_t> col_set;
+                    row_set.insert(row_col_0.first);
+                    row_set.insert(row_col_1.first);
+                    row_set.insert(row_col_2.first);
+                    row_set.insert(row_col_3.first);
+                    col_set.insert(row_col_0.second);
+                    col_set.insert(row_col_1.second);
+                    col_set.insert(row_col_2.second);
+                    col_set.insert(row_col_3.second);
+                    assert(row_set.size()==2);
+                    assert(col_set.size()==2);
                     
                     size_t & row_0 = row_col_0.first;
                     size_t & row_1 = row_col_2.first;
@@ -1058,6 +1306,30 @@ bool Game<N>::denoteColExcept(size_t col, Num num, const IndexContainer & exclus
             continue;
         
         auto index = ToIndex<N>(row, col);
+        if (_nums[index])
+            continue;
+        
+        if (_notations[index].contains(num))
+        {
+            bool denote_changed = denote(index, num);
+            assert(denote_changed);
+            changed |= denote_changed;
+        }
+    }
+    return changed;
+}
+
+template <size_t N>
+template <typename IndexContainer>
+bool Game<N>::denoteGridExcept(size_t grid, Num num, const IndexContainer & exclusion)
+{
+    bool changed = false;
+    for ( size_t cell=0;cell<N;++cell)
+    {
+        if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), cell))
+            continue;
+        
+        auto index = _lutGridToIndex[grid][cell];
         if (_nums[index])
             continue;
         

@@ -10,6 +10,7 @@ struct Solution
 {
     opt<Game<N>> endGame;
     size_t deadEnd = 0;
+    size_t numGuess = 0;
 };
 
 class Robot
@@ -43,7 +44,6 @@ private:
     NumOrder _numOrder = NumOrder::eAscending; // which order to use for the next index
     bool _onlyUseValidValue = true; // recalculate order on each level
     bool _useDynamicOrder = true; // recalculate order on each level
-    size_t _loopCount = 0;
     
     template <size_t N>
     std::vector<size_t> unfilledIndices(const Game<N> & game) const;
@@ -67,6 +67,7 @@ private:
         std::stack<size_t, std::vector<size_t>> unfilledIndices; // to be filled indexes
         size_t rewind_count = 0;
         size_t dead_end = 0;
+        size_t num_guess = 0;
     };
     
     
@@ -85,6 +86,7 @@ private:
     template <size_t N>
     opt<Num> nextNum(const Brain<N> & brain, size_t index, opt<Num> currentValue, bool * outIsSingleChoice);
     
+    size_t _loopCount=0;
 };
 
 #endif // SUDOKU_ROBOT_H_INCLUDED

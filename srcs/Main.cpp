@@ -86,7 +86,7 @@ int main()
         Game<9> game(toGameInput<9>(v));
         std::cout << game;
         std::cout << "Game " << gameName << " press enter to start:" << std::endl;
-        waitInput();
+//        waitInput();
         Robot robot;
         robot.setIndexOrder(Robot::IndexOrder::eMostConstraintsFirst);
         auto solution = robot.solve(game, waitMS<1>);
@@ -94,6 +94,7 @@ int main()
         std::cout << std::endl;
         std::cout << "Has solution? " << (solution.endGame ? "YES!" : "NO!") << std::endl;
         std::cout << "\t# of deadend: " << solution.deadEnd << std::endl;
+        std::cout << "\t# of guess: " << solution.numGuess << std::endl;
         if (solution.endGame)
         {
             const auto & counter = solution.endGame->checkCounter();
@@ -102,8 +103,9 @@ int main()
             std::cout << "\tusageCountPairs: " << counter.usageCountPairs << std::endl;
             std::cout << "\tusageCountTriplets: " << counter.usageCountTriplets << std::endl;
             std::cout << "\tusageCountXWings: " << counter.usageCountXWings << std::endl;
+            std::cout << "\tusageCountQuads: " << counter.usageCountQuads << std::endl;
+            std::cout << std::endl;
         }
-        
         return solution;
     };
     
@@ -325,6 +327,24 @@ int main()
             0,0,1,0,0,0,0,6,8,
             0,0,8,5,0,0,0,1,0,
             0,9,0,0,0,0,4,0,0,
+        };
+        run9x9Game(v, "World hardest sudoku");
+    }
+    
+    if (0)
+    {
+        // Challenge
+        std::vector<Num> v={
+            0,0,0,9,0,0,6,0,0,
+            4,6,9,0,0,0,8,0,0,
+            2,0,7,6,3,0,5,9,4,
+            1,0,8,7,0,0,3,0,0,
+            0,0,0,0,0,3,0,0,0,
+            0,0,0,0,0,0,0,4,0,
+            6,9,0,3,8,7,0,5,1,
+            8,0,5,0,9,2,7,0,0,
+            7,3,0,5,0,6,0,0,0,
+            
         };
         run9x9Game(v, "World hardest sudoku");
     }
