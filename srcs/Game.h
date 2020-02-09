@@ -192,6 +192,11 @@ private:
 
     void checkNotations();
     
+    
+    size_t gridBasedIndex(size_t gridIndex, size_t cellIndex) const ;
+    size_t rowBasedIndex(size_t rowIndex, size_t colIndex) const ;
+    size_t colBasedIndex(size_t colIndex, size_t rowIndex) const ;
+    
     // denote num from all notations for row/col/grid at index
     bool denoteFromRowColGrid(size_t index, Num num);
     // note num from all notations for row/col/grid at index

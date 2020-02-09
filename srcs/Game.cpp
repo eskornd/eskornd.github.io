@@ -233,7 +233,7 @@ void Game<N>::assign(size_t row, size_t col, const opt<Num> & optNum)
 {
     assert( (!optNum ||  optNum.value()<=N ) && "Num must less equal than N");
 
-    auto index = ToIndex<N>(row, col);
+    auto index = rowBasedIndex(row, col);
     assert( (!!optNum) != (!!_nums[index]) && "No double assign of the values");
     
     _nums[index] = optNum;
@@ -300,7 +300,7 @@ const opt<Num> & Game<N>::at(size_t row, size_t col) const
 template <size_t N>
 bool Game<N>::has(size_t row, size_t col) const
 {
-    return has(ToIndex<N>(row, col));
+    return has(rowBasedIndex(row, col));
 }
 
 template <size_t N>
@@ -477,6 +477,24 @@ std::ostream & operator<<(std::ostream & os , const Game<M> & game)
 }
 
 template <size_t N>
+size_t Game<N>::gridBasedIndex(size_t gridIndex, size_t cellIndex) const
+{
+    return _lutGridToIndex[gridIndex][cellIndex];
+}
+
+template <size_t N>
+size_t Game<N>::rowBasedIndex(size_t rowIndex, size_t colIndex) const
+{
+    return ToIndex<N>(rowIndex, colIndex);
+}
+
+template <size_t N>
+size_t Game<N>::colBasedIndex(size_t colIndex, size_t rowIndex) const
+{
+    return ToIndex<N>(rowIndex, colIndex);
+}
+
+template <size_t N>
 void Game<N>::resetNotations()
 {
     // Initiate fill, 1..9 notations for empty cell, null notations for filled cell
@@ -602,13 +620,13 @@ bool Game<N>::denoteFromRowColGrid(size_t index, Num num)
     // denote num from row
     for (size_t i=0; i<N; ++i)
     {
-        changed |= denote(ToIndex<N>(row, i), num);
+        changed |= denote(rowBasedIndex(row, i), num);
     }
     
     // denote num from col
     for (size_t i=0; i<N; ++i)
     {
-        changed |= denote(ToIndex<N>(i, col), num);
+        changed |= denote(colBasedIndex(col, i), num);
     }
     
     // denote num from grid
@@ -636,20 +654,20 @@ void Game<N>::noteFromRowColGrid(size_t index, Num num)
     // denote num from row
     for (size_t i=0; i<N; ++i)
     {
-        insert_num_at(ToIndex<N>(row, i));
+        insert_num_at(rowBasedIndex(row, i));
     }
     
     // denote num from col
     for (size_t i=0; i<N; ++i)
     {
-        insert_num_at(ToIndex<N>(i, col));
+        insert_num_at(colBasedIndex(col, i));
     }
     
     // denote num from grid
     auto & grid_index_pair = _lutIndexToGrid[index];
     for (size_t i=0; i<N; ++i)
     {
-        insert_num_at(_lutGridToIndex[grid_index_pair.first][i]);
+        insert_num_at(gridBasedIndex(grid_index_pair.first, i));
     }
 }
 
@@ -662,9 +680,9 @@ size_t Game<N>::checkSinglePosition()
     auto & notations = _notations;
     auto & lutGridToIndex = _lutGridToIndex;
 
-    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
-    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
-    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    IndexFunc toIndexGrid = [this](size_t i, size_t j) -> size_t { return gridBasedIndex(i,j); };
+    IndexFunc toIndexRow = [this](size_t i, size_t j) -> size_t { return rowBasedIndex(i, j); };
+    IndexFunc toIndexCol = [this](size_t i, size_t j) -> size_t { return colBasedIndex(i, j); };
     
     auto noteUniqueFunc = std::bind(&Game<N>::noteUnique, this, std::placeholders::_1, std::placeholders::_2);
     auto for_each_cells = [noteUniqueFunc, &nums, &notations](Num n, IndexFunc toIndex, size_t * outChangeCount)
@@ -814,10 +832,9 @@ size_t Game<N>::checkPairs()
         return results;
     };
     
-    auto & lutGridToIndex = _lutGridToIndex;
-    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
-    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
-    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    IndexFunc toIndexGrid = [this](size_t i, size_t j) -> size_t { return gridBasedIndex(i,j); };
+    IndexFunc toIndexRow = [this](size_t i, size_t j) -> size_t { return rowBasedIndex(i, j); };
+    IndexFunc toIndexCol = [this](size_t i, size_t j) -> size_t { return colBasedIndex(i, j); };
     
     
     size_t change_count = 0;
@@ -931,11 +948,10 @@ size_t Game<N>::checkTriplets()
         return results;
     };
     
-    auto & lutGridToIndex = _lutGridToIndex;
-    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
-    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
-    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
-    
+    IndexFunc toIndexGrid = [this](size_t i, size_t j) -> size_t { return gridBasedIndex(i,j); };
+    IndexFunc toIndexRow = [this](size_t i, size_t j) -> size_t { return rowBasedIndex(i, j); };
+    IndexFunc toIndexCol = [this](size_t i, size_t j) -> size_t { return colBasedIndex(i, j); };
+
     
     size_t change_count = 0;
     auto pairResults = for_each_cells(toIndexGrid);
@@ -1062,10 +1078,10 @@ size_t Game<N>::checkQuads()
         return results;
     };
     
-    auto & lutGridToIndex = _lutGridToIndex;
-    IndexFunc toIndexGrid = [&lutGridToIndex](size_t i, size_t j) -> size_t { return lutGridToIndex[i][j];};
-    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
-    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    IndexFunc toIndexGrid = [this](size_t i, size_t j) -> size_t { return gridBasedIndex(i,j); };
+    IndexFunc toIndexRow = [this](size_t i, size_t j) -> size_t { return rowBasedIndex(i, j); };
+    IndexFunc toIndexCol = [this](size_t i, size_t j) -> size_t { return colBasedIndex(i, j); };
+
     
     
     size_t change_count = 0;
@@ -1112,8 +1128,9 @@ template <size_t N>
 size_t Game<N>::checkXWings()
 {
     size_t change_count = 0;
-    IndexFunc toIndexRow = [](size_t i, size_t j) -> size_t { return ToIndex<N>(i, j);};
-    IndexFunc toIndexCol = [](size_t i, size_t j) -> size_t { return ToIndex<N>(j, i);};
+    IndexFunc toIndexRow = [this](size_t i, size_t j) -> size_t { return rowBasedIndex(i, j); };
+    IndexFunc toIndexCol = [this](size_t i, size_t j) -> size_t { return colBasedIndex(i, j); };
+
     
     auto check_xwings = [this](Num n, IndexFunc indexFunc, bool isRowBased)-> bool
     {
@@ -1281,7 +1298,7 @@ bool Game<N>::denoteRowExcept(size_t row, Num num, const IndexContainer & exclus
         if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), col))
             continue;
         
-        auto index = ToIndex<N>(row, col);
+        auto index = rowBasedIndex(row, col);
         if (_nums[index])
             continue;
         
@@ -1305,7 +1322,7 @@ bool Game<N>::denoteColExcept(size_t col, Num num, const IndexContainer & exclus
         if ( exclusion.end() != std::find(exclusion.begin(), exclusion.end(), row))
             continue;
         
-        auto index = ToIndex<N>(row, col);
+        auto index = colBasedIndex(col, row);
         if (_nums[index])
             continue;
         
