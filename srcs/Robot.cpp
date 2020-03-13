@@ -139,6 +139,8 @@ void Robot::forward(Brain<N> & brain, const Memo<N> & m)
     brain.memos.push(m);
     if (!m.isSingleChoice)
         ++brain.num_guess;
+    
+    std::cout << "Assign [" << m.index << "] " << (int)m.value << std::endl;
     brain.rewinded = std::nullopt;
 }
 

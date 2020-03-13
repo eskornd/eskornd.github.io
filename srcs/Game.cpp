@@ -6,7 +6,7 @@
 
 namespace
 {
-    size_t gridWidth(size_t N)
+    constexpr size_t gridWidth(size_t N) noexcept
     {
         switch (N)
         {
@@ -27,7 +27,7 @@ namespace
         return 0;
     }
     
-    size_t gridHeight(size_t N)
+    constexpr size_t gridHeight(size_t N)
     {
         switch (N)
         {
@@ -89,6 +89,7 @@ namespace
     }
     
     template <size_t N>
+    constexpr
     std::pair<size_t, size_t> ToRowCol(size_t index)
     {
         auto row = index / N;
@@ -103,11 +104,14 @@ namespace
     }
     
     template <size_t N>
+    constexpr
     std::pair<size_t, size_t> ToGridRowCol(size_t row, size_t col)
     {
+        static_assert(gridWidth(9)==3, "gridwidth of 9 is 3");
+        static_assert(gridHeight(9)==3, "gridheight of 9 is 3");
         auto w=gridWidth(N);
         auto h=gridHeight(N);
-        
+
         auto grid_row = row/h;
         auto grid_col = col/w;
         size_t grid_index = grid_row * h + grid_col;
@@ -118,6 +122,7 @@ namespace
     }
     
     template <size_t N>
+    constexpr
     std::pair<size_t, size_t> GridToRowCol(size_t grid_row, size_t grid_col)
     {
         auto w=gridWidth(N);
@@ -129,6 +134,7 @@ namespace
     }
     
     template <size_t N>
+    constexpr
     std::pair<size_t, size_t> ToGridRowCol(size_t index)
     {
         auto pair = ToRowCol<N>(index);
@@ -205,6 +211,7 @@ Game<N>& Game<N>::operator=(const Game<N> & inRhs)
 }
 
 template <size_t N>
+constexpr
 void Game<N>::initIndexLUT()
 {
     for ( size_t i=0; i<NN; ++i)

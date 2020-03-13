@@ -86,9 +86,10 @@ int main()
         Game<9> game(toGameInput<9>(v));
         std::cout << game;
         std::cout << "Game " << gameName << " press enter to start:" << std::endl;
-//        waitInput();
+        waitInput();
         Robot robot;
         robot.setIndexOrder(Robot::IndexOrder::eMostConstraintsFirst);
+//        auto solution = robot.solve(game, waitInput);
         auto solution = robot.solve(game, waitMS<1>);
         
         std::cout << std::endl;
@@ -296,7 +297,7 @@ int main()
 		};
 		run9x9Game(v, "Today's hard sudoku");
 	}
-    if (0)
+    if (1)
     {
         // Patrick game
         std::vector<Num> v={
@@ -313,7 +314,7 @@ int main()
         run9x9Game(v, "Patrick game");
     }
     
-    if (1)
+    if (0)
     {
         // World hardest sudoku
         // https://www.conceptispuzzles.com/index.aspx?uri=info/article/424

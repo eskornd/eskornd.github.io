@@ -185,7 +185,7 @@ private:
     std::array<std::pair<size_t, size_t>, NN> _lutIndexToGrid;
     std::array<std::array<size_t, N>,N> _lutGridToIndex;
     bool _initializing;
-    void initIndexLUT();
+    constexpr void initIndexLUT();
     
     std::vector<Notation> _notations;
     void resetNotations();
