@@ -1,6 +1,23 @@
 var ctx = {};
 
-hostPrototype = {
+function View()
+{}
+
+View.prototype = {
+	onDocumentChanged : () => {
+		var name = ctx.host.getCurrentDocumentName();
+		$("#currentDocument").text(name);
+	},
+	onInitialized : () => {
+		$("#hostApp").text(ctx.hostApp);		
+	},
+	name : "Context View"
+}
+
+function Host()
+{}
+
+Host.prototype = {
 	init: ()=>{},
 	hello : ()=>{ alert("TODO: Say Hello!");},
 	highlight : (rect)=>{ 
@@ -8,7 +25,9 @@ hostPrototype = {
 	},
 	highlightPage : ()=> { 
 		alert("TODO: Unhandled highlightPage()");
-	}
+	},
+	getCurrentDocumentName : () => { return ""; },
+	name : "Context Host"
 };
 
 function log(text)
@@ -40,31 +59,52 @@ function initEventHandlers()
 	});
 }
 
+function isCEP()
+{
+	return ( typeof window.cep != "undefined" );
+}
+
+function isArtProPlus()
+{
+	// TODO: check if host app is AP+
+	return false;
+}
+
 function checkHostApp()
 {
-	if ( typeof window.cep != "undefined" )
+	if ( isCEP() )
 	{
 		ctx.hostApp = "Adobe";
-	} else if ( false ) {
-		// TODO: detect ArtProPlus
+	} else if ( isArtProPlus() ) {
 		ctx.hostApp = "ArtProPlus";
 	} else {
 		ctx.hostApp = window.navigator.userAgent;
 	}
-	ctx.host = hostPrototype;	
+	ctx.view = new View();
+	ctx.host = new Host();	
 	log("checkHostApp(): hostApp=" + ctx.hostApp);
 
 	// init host app implementations
 	if (ctx.hostApp == "Adobe")
 	{
-		ctx.host = hostAI;
+		initHost(ctx.host);
+		//ctx.host = hostAI;
 		ctx.host.init();
 	}
+	ctx.view.onInitialized();
 		
+}
+
+function initUI()
+{
+	// show location
+	$("#pageUrl").text(window.location.href);
+	$("#currentDocument").text("");
 }
 
 function init()
 {
+	initUI();
 	checkHostApp();
 	initEventHandlers();
 }

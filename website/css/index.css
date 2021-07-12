@@ -26,3 +26,14 @@ body {
 	border: 2px solid var(--eskodark);
 	background-color: var(--eskolight);
 }
+
+.footer
+{
+	font-size: 0.75em;
+	color: #7F7F7F;
+}
+
+.mono
+{
+	font-family: courier, monospace;
+}
