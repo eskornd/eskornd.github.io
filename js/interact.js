@@ -73,9 +73,15 @@ function checkHostApp()
 		
 }
 
+function initUI()
+{
+	// show location
+	$("#pageUrl").text(window.location.href);
+}
+
 function init()
 {
-	$("#pageUrl").text(window.location.href);
+	initUI();
 	checkHostApp();
 	initEventHandlers();
 }
