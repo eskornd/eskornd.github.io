@@ -17,8 +17,16 @@
 	</head>
 	<body>
 		<div class="footer" id="pageUrl"></div>
-		<h1>The Cloud Annotations Interaction Sandbox</h1>
-		<div id="highlight_section">
+		<h3>The Cloud Annotations Interaction Sandbox</h3>
+		<p>
+			<span>
+				Current Document:
+			</span>
+			<br/>
+			<span class="mono" id="currentDocument">
+			</span>
+		</p>
+		<p id="highlight_section">
 			<div class="clickable" id="hello">
 				Say Hello
 			</div>
@@ -37,7 +45,7 @@
 				width:<input id="custom_width" type="number" value="200" min="0" step="10"/>
 				height:<input id="custom_height" type="number" value="100" min="0" step="10"/>
 			</div>
-		</div>
+		</p>
 		<script type="text/javascript" src="js/AI.js"> </script>
 		<script type="text/javascript" src="js/interact.js"> </script>
 	</body>

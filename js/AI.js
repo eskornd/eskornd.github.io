@@ -6,6 +6,8 @@ function doEvalScript(script)
 	cs.evalScript(script);
 }
 
+_lastDocumentName : "",
+
 hostAI = {
 	init: () => {
 		cs = new CSInterface();
@@ -26,7 +28,13 @@ hostAI = {
 		});
 	
 		cs.addEventListener("documentAfterActivate", ()=>{
-			alert("event documentAfterActivate");
+			// event sent from native AI
+			log("Event documentAfterActivate Received");
+		});
+
+		cs.addEventListener("com.esko.cloudannotations.documentChanged", (event)=>{
+			_lastDocumentName = event.data;
+			ctx.view.onDocumentChanged();
 		});
 	},
 	hello : ()=>{
@@ -40,5 +48,9 @@ hostAI = {
 	highlightPage : ()=> {
 		var script = ("highlightPage();");
 		doEvalScript(script);
+	},
+	getCurrentDocumentName : () => {
+		//TODO: Get document  properly via scripting call
+		return _lastDocumentName;
 	}
 };

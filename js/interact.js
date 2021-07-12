@@ -1,5 +1,12 @@
 var ctx = {};
 
+viewPrototype = {
+	onDocumentChanged : () => {
+		var name = ctx.host.getCurrentDocumentName();
+		$("#currentDocument").text(name);
+	}
+}
+
 hostPrototype = {
 	init: ()=>{},
 	hello : ()=>{ alert("TODO: Say Hello!");},
@@ -8,7 +15,8 @@ hostPrototype = {
 	},
 	highlightPage : ()=> { 
 		alert("TODO: Unhandled highlightPage()");
-	}
+	},
+	getCurrentDocumentName : () => { return ""; }
 };
 
 function log(text)
@@ -61,6 +69,7 @@ function checkHostApp()
 	} else {
 		ctx.hostApp = window.navigator.userAgent;
 	}
+	ctx.view = viewPrototype;
 	ctx.host = hostPrototype;	
 	log("checkHostApp(): hostApp=" + ctx.hostApp);
 
@@ -77,6 +86,7 @@ function initUI()
 {
 	// show location
 	$("#pageUrl").text(window.location.href);
+	$("#currentDocument").text("");
 }
 
 function init()
