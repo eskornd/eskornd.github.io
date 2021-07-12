@@ -26,7 +26,7 @@ hostAI = {
 					break;
 			}
 		});
-	
+
 		cs.addEventListener("documentAfterActivate", ()=>{
 			// event sent from native AI
 			log("Event documentAfterActivate Received");
@@ -54,3 +54,13 @@ hostAI = {
 		return _lastDocumentName;
 	}
 };
+
+function initHost(host)
+{
+	host.init = hostAI.init;
+	host.hello = hostAI.hello;
+	host.highlight = hostAI.highlight;
+	host.highligntPage = hostAI.highlightPage;
+	host.getCurrentDocumentName = hostAI.getCurrentDocumentName;
+}
+

@@ -1,13 +1,23 @@
 var ctx = {};
 
-viewPrototype = {
+function View()
+{}
+
+View.prototype = {
 	onDocumentChanged : () => {
 		var name = ctx.host.getCurrentDocumentName();
 		$("#currentDocument").text(name);
-	}
+	},
+	onInitialized : () => {
+		$("#hostApp").text(ctx.hostApp);		
+	},
+	name : "Context View"
 }
 
-hostPrototype = {
+function Host()
+{}
+
+Host.prototype = {
 	init: ()=>{},
 	hello : ()=>{ alert("TODO: Say Hello!");},
 	highlight : (rect)=>{ 
@@ -16,7 +26,8 @@ hostPrototype = {
 	highlightPage : ()=> { 
 		alert("TODO: Unhandled highlightPage()");
 	},
-	getCurrentDocumentName : () => { return ""; }
+	getCurrentDocumentName : () => { return ""; },
+	name : "Context Host"
 };
 
 function log(text)
@@ -69,16 +80,18 @@ function checkHostApp()
 	} else {
 		ctx.hostApp = window.navigator.userAgent;
 	}
-	ctx.view = viewPrototype;
-	ctx.host = hostPrototype;	
+	ctx.view = new View();
+	ctx.host = new Host();	
 	log("checkHostApp(): hostApp=" + ctx.hostApp);
 
 	// init host app implementations
 	if (ctx.hostApp == "Adobe")
 	{
-		ctx.host = hostAI;
+		initHost(ctx.host);
+		//ctx.host = hostAI;
 		ctx.host.init();
 	}
+	ctx.view.onInitialized();
 		
 }
 
