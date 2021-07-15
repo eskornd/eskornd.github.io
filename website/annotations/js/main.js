@@ -1,4 +1,6 @@
 import {log} from './log.js';
+import {Editor, validateEditor} from './Editor.js';
+import {Model} from './Model.js';
 import {injectEditor_AI} from './AI.js';
 import {getHostApp} from './utils.js';
 import {ctx} from './ctx.js';
@@ -18,20 +20,6 @@ View.prototype = {
 	},
 	name : "Context View"
 }
-
-function Editor()
-{}
-
-Editor.prototype = {
-	init: ()=>{},
-	hello : ()=>{ alert("TODO: Say Hello!");},
-	clearHighlights : ()=> { alert("TODO: Clear highlights"); },
-	highlight : (rect)=>{ 
-		alert("TODO: Unhandled highlight rect:" + JSON.stringify(rect));
-	},
-	getCurrentDocumentName : () => { return ""; },
-	name : "prototype"
-};
 
 ctx.view = new View();
 ctx.editor = new Editor();	
@@ -83,7 +71,7 @@ function checkHostApp()
 	{
 		try {
 			console.assert(typeof injectEditor_AI == "function");
-			injectEditor_AI("#inject");
+			injectEditor_AI("#injection");
 		} catch (err) {
 			alert("Caught Exception: " + err);
 		}
@@ -114,23 +102,12 @@ checkHostApp();
 var annotator = 
 {
 	editor : {},
-	model : {
-		notifyDocumentChange : () => {
-			log("model.notifyDocumentChange()");
-			ctx.view.onDocumentChanged();
-		}
-	}, 
+	model : new Model(), 
 	setEditor : (inEditor)=>{
 		log("window.eskoAnnotator.setEditor(): " + JSON.stringify(inEditor));
 		
 		//validate
-		var editorPrototype = new Editor();	
-		
-		for ( var v  in editorPrototype)
-		{
-			var valid = inEditor.hasOwnProperty(v) && typeof inEditor[v] == typeof editorPrototype[v];
-			console.assert(valid, "setEditor(): inEditor." + v + " is " + typeof inEditor[v]);
-		}	
+		validateEditor(inEditor);
 		
 		annotator.editor = inEditor;
 		ctx.editor = inEditor;

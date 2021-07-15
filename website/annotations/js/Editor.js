@@ -14,7 +14,7 @@ Editor.prototype = {
 	name : "prototype"
 };
 
-function validateEditor(editor)
+function validateEditor(inEditor)
 {
 	//validate
 	var editorPrototype = new Editor();	
