@@ -2,6 +2,14 @@
 var frameWin = document.getElementById("annotationsFrame").contentWindow;
 frameWin.isBrowser = true;
 
+function ToDocumentRect(rect)
+{
+	var canvas = document.getElementById('canvas');
+	var r = rect;
+	r.y = canvas.height - r.height - r.y; 
+	return r;
+}
+
 function ToCanvasRect(rect)
 {
 	var canvas = document.getElementById('canvas');
@@ -13,10 +21,34 @@ function ToCanvasRect(rect)
 var canvas = document.getElementById('canvas');
 console.assert(canvas.getContext);
 var ctx2d = canvas.getContext('2d');
+
 drawSmileFace();
 
 function onFrameLoaded()
 {
+	canvas.addEventListener('click', function(e) {
+		var canvasLeft = canvas.offsetLeft + canvas.clientLeft;
+		var canvasTop = canvas.offsetTop + canvas.clientTop;
+		var x = e.pageX - canvasLeft;
+		var y = e.pageY - canvasTop;
+		console.log('canvas clicked: ' + JSON.stringify(e) + " x:" + x + ", y: " + y);
+		var centerX = canvas.width / 2;
+		var centerY = canvas.height / 2;
+
+		var radiusSquare = 70*70;
+		var xx = x - centerX;
+		var yy = y - centerY;
+		var dd = (xx * xx ) + (yy*yy);
+		if (dd<=radiusSquare)
+		{
+			console.log('smileface clicked: ');
+			console.assert(typeof frameWin.eskoAnnotator.model.createAnnotation === "function");
+			var rect = { x: (x - 70/2), y: (y - 70/2), width: 70, height: 70};
+			rect = ToDocumentRect(rect);
+			frameWin.eskoAnnotator.model.createAnnotation(rect);
+		}
+	}, false);
+
 	var editor = 
 	{
 		init: () => {},
