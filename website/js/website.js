@@ -13,7 +13,7 @@ function ToCanvasRect(rect)
 var canvas = document.getElementById('canvas');
 console.assert(canvas.getContext);
 var ctx2d = canvas.getContext('2d');
-
+drawSmileFace();
 
 function onFrameLoaded()
 {
@@ -23,6 +23,10 @@ function onFrameLoaded()
 		hello: () => {
 			ctx2d.font = "64px American Typewriter";
 			ctx2d.fillText("Hello!", 100, 100);
+		},
+		clearHighlights : () => {
+			ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+			drawSmileFace();
 		},
 		highlight : (event) => {
 			switch (event.type)

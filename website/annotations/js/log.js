@@ -5,10 +5,6 @@ class Logger
 	log() {
 		console.log();
 	}
-	assert(arg0, arg1)
-	{
-		console.assert(arg0, arg1);
-	}
 }
 
 var logger = new Logger;

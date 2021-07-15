@@ -1,3 +1,4 @@
-var ctx = {};
+var ctx = { };
+
 export {ctx};
 
