@@ -31,15 +31,18 @@
 				</span>
 			</div>
 			<h3>The Cloud Annotations Panel</h3>
-			<p id="highlight_section">
+			<div id="highlight_section">
 				<div class="clickable" id="hello">
 					Say Hello
 				</div>
 				<div class="clickable" id="highlight_mediabox">
 					Highlight page
 				</div>
-				<div class="clickable" id="highlight_area1">
+				<div class="clickable rectAnnotation" data='aaa' id="highlight_area1">
 					Highlight 100x100
+				</div>
+				<div class="clickable rectAnnotation" id="highlight_area2">
+					Highlight 200x200
 				</div>
 				<div class="clickable" id="highlight_custom">
 					Highlight custom
@@ -53,7 +56,7 @@
 					<br/>
 					<span>&nbsp;&nbsp;height:<input id="custom_height" type="number" value="100" min="0" step="10" /></span>
 				</div>
-			</p>
+			</div>
 		</div>
 		<script type="module" src="js/main.js"> </script>
 		<div id="injection"></div>

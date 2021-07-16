@@ -10,17 +10,31 @@ import {PageBox, HighlightEvent, HighlightType} from './HighlightEvent.js';
 function View()
 {}
 
+var gCount = 0;
 View.prototype = {
-	onDocumentChanged : () => {
-		var name = ctx.editor.getCurrentDocumentName();
+	onDocumentChanged : async () => {
+		var name = await ctx.editor.getCurrentDocumentName();
 		$("#currentDocument").text(name);
 	},
 	onInitialized : () => {
 		$("#hostApp").text(ctx.editor.name);		
 	},
 	addAnnotation : (annotation) => {
-		alert("view: add annotation: " + JSON.stringify(annotation));
-	}
+		// add html
+		var displayText = annotation.name + ' @ x:' + annotation.rect.x + ', y:'+annotation.rect.y; 
+		var id = 'smile_' + gCount;
+		++gCount;
+		var obj = new HighlightEvent();
+		obj.type = HighlightType.eRect;
+		obj.rect = annotation.rect;
+		var data = JSON.stringify(obj);
+		$("#highlight_section").append('<div class="clickable rectAnnotation" id="' + id +'">' + displayText + '</div>').ready(()=>{
+			var obj = new HighlightEvent();
+			obj.type = HighlightType.eRect;
+			obj.rect = annotation.rect;
+			$('#' + id).attr('data', JSON.stringify(obj));
+		});
+	},
 	name : "Context View"
 }
 
@@ -40,14 +54,13 @@ function initEventHandlers()
 		ctx.editor.clearHighlights();
 		ctx.editor.highlight(event);
 	});
-	$("#highlight_area1").on("click", ()=>{
-		log("highlight_area1 clicked");
-		var event = new HighlightEvent();
-		event.type = HighlightType.eRect;
-		event.rect = {x:0, y:0, width: 100, height:100};
-		ctx.editor.clearHighlights();
-		ctx.editor.highlight(event);
-	});
+
+	var obj = new HighlightEvent();
+	obj.type = HighlightType.eRect;
+	obj.rect = {x:0, y:0, width: 200, height:200};
+	$("#highlight_area2").attr('data', JSON.stringify(obj));
+	obj.rect = {x:0, y:0, width: 100, height:100};
+	$("#highlight_area1").attr('data', JSON.stringify(obj));
 	$("#highlight_custom").on("click", ()=>{
 		var x = $("#custom_x").val();
 		var y = $("#custom_y").val();
@@ -60,6 +73,14 @@ function initEventHandlers()
 		ctx.editor.clearHighlights();
 		ctx.editor.highlight(event);
 		log("highlight_custom clicked: " + JSON.stringify(event));
+	});
+	// use event delegate rather than direct bind, so that we can handle dynamic items
+	$('#highlight_section').on('click', '.rectAnnotation', (e)=>{ 
+		log(".rectAnnotation clicked");
+		var data = $("#" + e.target.id).attr('data');
+		var obj = JSON.parse(data);
+		ctx.editor.clearHighlights();
+		ctx.editor.highlight(obj);
 	});
 }
 

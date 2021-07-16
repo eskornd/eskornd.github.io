@@ -7,7 +7,6 @@ function Model()
 
 Model.prototype = 
 {
-	// annotation: { name : "name", rect : { x: x, y: y, width : width, height : height}}
 	createAnnotation : (annotation) => {
 		ctx.editor.onAnnotationsChanged();
 		ctx.view.addAnnotation(annotation);
