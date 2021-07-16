@@ -69,7 +69,11 @@ function onFrameLoaded()
 			console.assert(typeof frameWin.eskoAnnotator.model.createAnnotation === "function");
 			var rect = { x: (x - 70/2), y: (y - 70/2), width: 70, height: 70};
 			rect = ToDocumentRect(rect);
-			frameWin.eskoAnnotator.model.createAnnotation(rect);
+			var annotation = {
+				name : "Smileface",
+				rect : rect,
+			};
+			frameWin.eskoAnnotator.model.createAnnotation(annotation);
 		} else {
 			message("Click on smile face to create annotation", 2000);
 		}

@@ -18,6 +18,9 @@ View.prototype = {
 	onInitialized : () => {
 		$("#hostApp").text(ctx.editor.name);		
 	},
+	addAnnotation : (annotation) => {
+		alert("view: add annotation: " + JSON.stringify(annotation));
+	}
 	name : "Context View"
 }
 

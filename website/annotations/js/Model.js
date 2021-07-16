@@ -7,9 +7,10 @@ function Model()
 
 Model.prototype = 
 {
-	createAnnotation : (event) => {
-		alert("Model: TODO: createAnnotation(): " + JSON.stringify(event));
+	// annotation: { name : "name", rect : { x: x, y: y, width : width, height : height}}
+	createAnnotation : (annotation) => {
 		ctx.editor.onAnnotationsChanged();
+		ctx.view.addAnnotation(annotation);
 	},
 	notifyDocumentChange : () => {
 		log("model.notifyDocumentChange()");
