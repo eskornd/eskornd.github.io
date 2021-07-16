@@ -1,7 +1,7 @@
 import {log} from './log.js';
 import {Editor, validateEditor} from './Editor.js';
 import {Model} from './Model.js';
-import {injectEditor_AI} from './AI.js';
+import {injectEditor_AI, injectEditor_PS} from './AdobeCEPSupport.js';
 import {getHostApp} from './utils.js';
 import {ctx} from './ctx.js';
 import {Rect} from './Rect.js';
@@ -27,7 +27,6 @@ ctx.editor = new Editor();
 function initEventHandlers()
 {
 	$("#hello").on("click", ()=>{
-		ctx.editor.clearHighlights();
 		ctx.editor.hello();
 	});
 	$("#highlight_mediabox").on("click", ()=>{
@@ -67,7 +66,7 @@ function checkHostApp()
 	log("checkHostApp(): hostApp=" + ctx.hostApp);
 
 	// init host app implementations
-	if (ctx.hostApp == "Adobe")
+	if (ctx.hostApp == "AdobeIllustrator")
 	{
 		try {
 			console.assert(typeof injectEditor_AI == "function");
@@ -75,7 +74,13 @@ function checkHostApp()
 		} catch (err) {
 			alert("Caught Exception: " + err);
 		}
-	} else {
+	} else if (ctx.hostApp == "AdobePhotoshop") {
+		try {
+			console.assert(typeof injectEditor_PS == "function");
+			injectEditor_PS("#injection");
+		} catch (err) {
+			alert("Caught Exception: " + err);
+		}
 	}
 		
 }

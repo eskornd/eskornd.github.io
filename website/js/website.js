@@ -1,3 +1,27 @@
+// pop up an auto dismiss message
+function message(msg,duration)
+{
+	var el = document.createElement("div");
+	el.setAttribute("style","font-family: American Typewriter;position:absolute;top:5%;left:5%;background-color:gold;");
+	el.innerHTML = msg;
+	setTimeout(function(){
+			el.parentNode.removeChild(el);
+			},duration);
+	document.body.appendChild(el);
+}
+
+function sayHello()
+{
+	var msg = "Hello Cloud Annotations!";
+	var duration = 2000;
+	var el = document.createElement("div");
+	el.setAttribute("style","font-family: American Typewriter;font-size:4em;position:absolute;top:5%;left:8%;color:darkorange;background-color:transparent;");
+	el.innerHTML = msg;
+	setTimeout(function(){
+			el.parentNode.removeChild(el);
+			},duration);
+	document.body.appendChild(el);
+}
 
 var frameWin = document.getElementById("annotationsFrame").contentWindow;
 frameWin.isBrowser = true;
@@ -46,6 +70,8 @@ function onFrameLoaded()
 			var rect = { x: (x - 70/2), y: (y - 70/2), width: 70, height: 70};
 			rect = ToDocumentRect(rect);
 			frameWin.eskoAnnotator.model.createAnnotation(rect);
+		} else {
+			message("Click on smile face to create annotation", 2000);
 		}
 	}, false);
 
@@ -53,8 +79,7 @@ function onFrameLoaded()
 	{
 		init: () => {},
 		hello: () => {
-			ctx2d.font = "64px American Typewriter";
-			ctx2d.fillText("Hello!", 100, 100);
+			sayHello();
 		},
 		clearHighlights : () => {
 			ctx2d.clearRect(0, 0, canvas.width, canvas.height);
@@ -76,6 +101,9 @@ function onFrameLoaded()
 			}
 		},
 		getCurrentDocumentName : () => { return "current canvas document name"; },
+		onAnnotationsChanged : (inOptData) => {
+			message("Annotations has changed! Please check annotations panel.", 2000);
+		},
 		name : "GenericBrowser"
 	};
 

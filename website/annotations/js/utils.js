@@ -1,6 +1,27 @@
 function isCEP()
 {
+	if (window.cep)
+	{
+		var cs = new CSInterface();
+		var hostEnv = cs.getHostEnvironment();
+	}
 	return ( typeof window.cep != "undefined" );
+}
+
+function isIllustrator()
+{
+	if (!isCEP())
+		return false;
+	var cs = new CSInterface();
+	return "ILST" == cs.getHostEnvironment().appId;
+}
+
+function isPhotoshop()
+{
+	if (!isCEP())
+		return false;
+	var cs = new CSInterface();
+	return "PHXS" == cs.getHostEnvironment().appId;
 }
 
 function isArtProPlus()
@@ -18,7 +39,11 @@ function getHostApp()
 {
 	if ( isCEP() )
 	{
-		return "Adobe";
+		if (isIllustrator())
+			return "AdobeIllustrator";
+		if (isPhotoshop())
+			return "AdobePhotoshop";
+		return "CEP";
 	} else if ( isArtProPlus() ) {
 		return "ArtProPlus";
 	} else if ( isBrowser() ) {

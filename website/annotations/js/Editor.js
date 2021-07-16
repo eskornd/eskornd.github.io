@@ -11,6 +11,7 @@ Editor.prototype = {
 		alert("TODO: Unhandled highlight rect:" + JSON.stringify(rect));
 	},
 	getCurrentDocumentName : () => { return ""; },
+	onAnnotationsChanged : (inOptData) => { alert("TODO: handle new annotations notification"); },
 	name : "prototype"
 };
 
