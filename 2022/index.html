@@ -1,0 +1,71 @@
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/UI.css">
+    <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" type="text/css" href="static/breathing.css">
+    <link rel="stylesheet" type="text/css" href="static/flyin.css">
+	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+	<div style="font-size:1.5em;">
+		Innovate with NDL.js =>
+	</div>
+	<div>
+		<img class="breathing clickable" id="logo" width=128 height=128 style="margin: 10px;" src="static/NDLJS_512x512.png" />
+	</div>
+		
+	<div id="scenarioParent" style="display:none;">
+		<div class="flyin scenarioRow" >
+			<div>
+				<img class="scenario clickable" id="scenario01" src="images/logo_image.png" />
+			</div>
+				SCENARIO 01
+			<div >
+			</div>
+		</div>
+		<div class="flyin scenarioRow">
+			<div>
+				<img class="scenario clickable" id="scenario02" src="images/logo_image.png" />
+			</div>
+			<div>
+				SCENARIO 02
+			</div>
+		</div>
+		<div class="flyin scenarioRow">
+			<div>
+				<img class="scenario clickable" id="scenario03" src="images/logo_image.png" />
+			</div>
+			<div>
+				SCENARIO 03
+			</div>
+		</div>
+	</div>
+</div>	
+	<script>
+	$('#logo').on('click', ()=>{
+		if ( 'none' == $('#scenarioParent').css('display') )
+		{
+			$('#scenarioParent').css('display', 'block');
+		} else {
+			$('#scenarioParent').css('display', 'none');
+		}
+		//window.location.href = 'editor.html';
+		
+		//window.location.href = 'wcr/project_foo.html';
+	});	
+	$('#scenario01').on('click', ()=>{
+		window.location.href = 'editor.html';
+	});
+	$('#scenario02').on('click', ()=>{
+		window.location.href = 'wcr/project_foo.html';
+	});
+	$('#scenario03').on('click', ()=>{
+		window.location.href = 'wcr/doc_TextCyanMagenta.html';
+	});
+	</script>
+</body>
+</html>

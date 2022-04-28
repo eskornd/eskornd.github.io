@@ -1,0 +1,124 @@
+:root {
+	--eskogreen:#A6C044;
+	--eskogray:#444B53;
+}
+
+@font-face {
+    font-family: "Barlow-Regular";
+    src: url("Barlow-Regular.woff2") format("woff2");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+html * {
+    font-family: "Barlow-Regular";
+    color: var(--eskogray);
+}
+
+body {
+    background-color: #DFDFDF;
+    font-family: "Barlow-Regular";
+}
+
+#banner {
+    color: #BBBE19;
+}
+
+#footer {
+	font-size: 0.8em;
+	position: fixed:
+	left: 0;
+	padding: 2px;
+	bottom: 0;
+	width: 100%;
+	background-color: #bfbfbf;
+	text-align: center;
+	border-radius: 2px;
+}
+
+@media (min-width: 768px) {
+    .form-group.row>.col-form-label {
+        text-align: right;
+    }
+}
+
+#dropzone {
+	font-size : 1em;
+	border: 3px dashed grey;
+	width:  14em;
+	height: 1.4em;
+	padding: 0.2em 0.2em;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 2px;
+}
+
+.wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+.hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.toolbar {
+	margin: 1em;
+	text-align: center;
+}
+
+.toolspan {
+	vertical-align: middle;
+	margin: 0px 5px;
+}
+
+#document {
+	margin: 1em;
+	text-align: center;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	background: #cfcfcf !important
+}
+.ui-dialog {
+	background: #efefef !important
+}
+.panel {
+}
+.panelRow {
+	margin: 0.5em 0em;
+}
+
+#spinnerDialog {
+	border: 0;
+	top: 0%;
+	background-color: transparent;
+}
+
+#scenarioParent {
+	grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+	margin: 100px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+.scenarioRow {
+	margin: 20px 0px;
+}
+.scenario {
+    box-shadow: 0px 0px 10px var(--eskogray);
+	border-radius: 10px;
+	width: 192px;
+	height: 192px;
+}
+#canvas {
+    box-shadow: 0px 0px 20px var(--eskogray);
+}
+

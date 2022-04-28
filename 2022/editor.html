@@ -1,0 +1,143 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/UI.css">
+    <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" href="static/jquery-ui.css">
+	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src='static/jquery-ui.js' ></script>
+
+	<title>Esko PDF+ Editor</title>
+</head>
+
+<body>
+	<div class="toolbar">
+		<span class="toolspan">
+			<span id="dropzone">
+				<span>Drop file here or </span>
+				<span>
+					<button id="browse" name="noname">Browse...</button>
+				</span>
+				<span>
+					<input type="file" id="browseInput" accept=".pdf,.ai" style="display:none;">
+				</span>
+			</span>
+		</span>
+		<span class="toolspan">
+				<span>
+					<button class="optional" id="save" width=40>
+						<img src="images/logo_save.png" width=16 height=16 />
+					</button>
+				</span>
+				<span>   </span>
+				<span>
+					<button id="xmpToggle">
+						<img src="images/logo_xmp.png" width=32 height=16 />
+					</button>
+				</span>
+				<span>
+					<button class="optional" id="barCodeToggle">
+						<img src="images/logo_barcode.png" width=16 height=16 />
+					</button>
+				</span>
+				<span>
+					<button class="optional" id="textToggle" width=40>
+						<img src="images/logo_text.png" width=16 height=16 />
+					</button>
+				</span>
+				<span>
+					<button class="optional" id="imageToggle" width=40>
+						<img src="images/logo_image.png" width=16 height=16 />
+					</button>
+				</span>
+		</span>
+	</div>
+
+	<div class="panel" id="barCodePanel" style="visibility: hidden;" title="Barcode">
+		<div class="panelRow">
+			<label>#</label>
+			<input id="barCodeIndex" type="number" value="0" style="width:50px;"></input>
+		</div>
+		<div class="panelRow">
+			<label>Type:</label>
+			<label id="barCodeType"></label>
+		</div>
+		<div class="panelRow">
+			<label>Code:</label>
+			<input type="text" id='currentBarCode'/>
+		</div>
+		<div class="panelRow">
+			<button id="applyBarCode" name="noname">Apply</button>
+		</div>
+	</div>
+	<div class="panel" id="textPanel" style="visibility: hidden;" title="Text">
+		<div class="panelRow">
+			<label>#</label>
+			<input id="textIndex" type="number" value="0" style="width:50px;"></input>
+			<button id="editText" name="noname">Edit</button>
+		</div>
+		<div class="panelRow">
+			<button id="alignLeft">
+				<img src="images/logo_alignLeft.png" width=12 height=12 />
+</button>
+			<button id="alignCenter">
+				<img src="images/logo_alignCenter.png" width=12 height=12 />
+</button>
+			<button id="alignRight">
+				<img src="images/logo_alignRight.png" width=12 height=12 />
+</button>
+			<button id="justifyLeft">
+				<img src="images/logo_justifyLeft.png" width=12 height=12 />
+</button>
+			<button id="justifyCenter">
+				<img src="images/logo_justifyCenter.png" width=12 height=12 />
+</button>
+			<button id="justifyRight">
+				<img src="images/logo_JustifyRight.png" width=12 height=12 />
+</button>
+			<button id="justifyAll">
+				<img src="images/logo_justifyAll.png" width=12 height=12 />
+</button>
+		</div>
+		<div class="panelRow">
+			<textarea id='currentText' rows=5 cols=48 >
+			</textarea>
+		</div>
+	</div>
+	<div class="panel" id="xmpPanel" style="visibility: hidden;" title="XMP">
+		<div>
+		<textarea id='xmpText' rows=20 cols=40 >
+		</textarea>
+		</div>
+	</div>
+	<div class="panel" id="imagePanel" style="visibility: hidden;" title="Image">
+		<div class="panelRow">
+			<label>#</label>
+			<input id="imageIndex" type="number" value="0" style="width:50px;"></input>
+		</div>
+	</div>
+	<div id="document">
+		<div>
+			<canvas id="canvas" width=400 height=500></canvas>
+		</div>
+		<div>
+			<img id="preview" src=""/>
+		</div>
+	</div>
+	<div id="footer">
+		Powered By ArtPro+ 21.11
+	</div>
+	<dialog id="spinnerDialog" class="modalDialog">
+		<div style="text-align: center;">
+			<img id="spinnerGif" width=96 height=96 src="static/loading.gif" />
+		</div>
+	</dialog>
+	
+    <!-- JS includes -->
+    <script type="text/javascript" src="NDL/Unzip.js"></script>
+    <script type="text/javascript" src="NDL/SimplePDF.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>

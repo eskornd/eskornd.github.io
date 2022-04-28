@@ -1,0 +1,11 @@
+/*!
+ * Bootstrap v2.3.2
+ *
+ * Copyright 2013 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ * changed by esko: split off alert, close
+ */.messageWidget .alert{background-color:#fcf8e3;border:1px solid #fbeed5;margin-bottom:20px;padding:8px 35px 8px 14px}.messageWidget .alert,.messageWidget .alert h4{color:#c09853}.messageWidget .alert h4{margin:0}.messageWidget .alert-success{background-color:#dff0d8;border-color:#d6e9c6;color:#468847}.messageWidget .alert-success h4{color:#468847}.messageWidget .alert-danger,.messageWidget .alert-error{background-color:#f2dede;border-color:#eed3d7;color:#b94a48}.messageWidget .alert-danger h4,.messageWidget .alert-error h4{color:#b94a48}.messageWidget .alert-info{background-color:#d9edf7;border-color:#bce8f1;color:#3a87ad}.messageWidget .alert-info h4{color:#3a87ad}.messageWidget .alert-block{padding-bottom:14px;padding-top:14px}.messageWidget .alert-block>p,.messageWidget .alert-block>ul{margin-bottom:0}.messageWidget .alert-block p+p{margin-top:5px}.messageWidget .close{color:#000;filter:alpha(opacity=20);float:right;font-weight:700;opacity:.2}.messageWidget .close:focus,.messageWidget .close:hover{color:#000;cursor:pointer;filter:alpha(opacity=40);opacity:.4;text-decoration:none}.messageWidget button.close{-webkit-appearance:none;background:rgba(0,0,0,0);border:0;cursor:pointer;padding:0}.messageWidget .message-text{white-space:pre-wrap}
+/*# sourceMappingURL=https://rdvmbuild164.esko-graphics.com/sourcemaps/webcenter/r_WCR22.03/7/wcr-static/dist/sourcemaps/2f92f0a6cf95409f782e.css.map*/
