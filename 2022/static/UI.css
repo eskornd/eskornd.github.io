@@ -4,7 +4,23 @@
 }
 
 @font-face {
-    font-family: "Barlow-Regular";
+    font-family: "NovaMono";
+    src: url("NovaMono-Regular.woff2") format("woff2");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Nunito";
+    src: url("Nunito-Regular.woff2") format("woff2");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Barlow";
     src: url("Barlow-Regular.woff2") format("woff2");
     /* Modern Browsers */
     font-weight: normal;
@@ -12,13 +28,13 @@
 }
 
 html * {
-    font-family: "Barlow-Regular";
+    font-family: "Nunito";
     color: var(--eskogray);
 }
 
 body {
     background-color: #DFDFDF;
-    font-family: "Barlow-Regular";
+    font-family: "Nunito";
 }
 
 #banner {
@@ -83,16 +99,20 @@ body {
 	text-align: center;
 }
 
-.ui-dialog .ui-dialog-titlebar {
-	background: #cfcfcf !important
-}
-.ui-dialog {
-	background: #efefef !important
-}
 .panel {
 }
+
 .panelRow {
-	margin: 0.5em 0em;
+	margin: 0.25em 0em;
+	font-size: 0.75em;
+}
+
+.indexRow {
+	text-align: center;
+}
+
+.objectIndex {
+	width: 36px;
 }
 
 #spinnerDialog {
@@ -117,8 +137,48 @@ body {
 	border-radius: 10px;
 	width: 192px;
 	height: 192px;
+	object-fit:cover;
 }
 #canvas {
     box-shadow: 0px 0px 20px var(--eskogray);
 }
 
+#xmpText {
+	font-family: NovaMono, monospace;
+	font-size: .75em;
+}
+#documentTitle {
+	font-size: .75em;
+	display: inline-block;
+	padding: 5px;
+}
+
+#xmpText {
+	width: 100%;
+}
+
+#currentText {
+	width: 100%;
+}
+/* jquery UI */
+.ui-dialog .ui-dialog-titlebar {
+	background: #cfcfcf !important
+}
+.ui-dialog {
+	background: #efefef !important
+}
+
+.ui-dialog
+{
+	padding: 0px;
+}
+
+.ui-dialog .ui-dialog-titlebar 
+{
+	font-size: 0.7em;
+    height: 14px; /* or whatever you want */
+}
+
+.ui-dialog-content {
+	 padding: 5px !important;
+}

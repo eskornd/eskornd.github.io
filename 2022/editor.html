@@ -8,7 +8,8 @@
 	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src='static/jquery-ui.js' ></script>
 
-	<title>Esko PDF+ Editor</title>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+	<title>PDF+ Editor</title>
 </head>
 
 <body>
@@ -55,9 +56,10 @@
 	</div>
 
 	<div class="panel" id="barCodePanel" style="visibility: hidden;" title="Barcode">
-		<div class="panelRow">
+		<div class="panelRow indexRow">
 			<label>#</label>
-			<input id="barCodeIndex" type="number" value="0" style="width:50px;"></input>
+			<input class="objectIndex" id="barCodeIndex" type="number" value="0" ></input>
+			<label id="barCodeTotal">/ 0</label>
 		</div>
 		<div class="panelRow">
 			<label>Type:</label>
@@ -72,9 +74,10 @@
 		</div>
 	</div>
 	<div class="panel" id="textPanel" style="visibility: hidden;" title="Text">
-		<div class="panelRow">
+		<div class="panelRow indexRow">
 			<label>#</label>
-			<input id="textIndex" type="number" value="0" style="width:50px;"></input>
+			<input class="objectIndex" id="textIndex" type="number" value="0"></input>
+			<label id="textTotal">/0</label>
 			<button id="editText" name="noname">Edit</button>
 		</div>
 		<div class="panelRow">
@@ -101,32 +104,53 @@
 </button>
 		</div>
 		<div class="panelRow">
-			<textarea id='currentText' rows=5 cols=48 >
+			<textarea id='currentText' rows=8>
 			</textarea>
 		</div>
 	</div>
 	<div class="panel" id="xmpPanel" style="visibility: hidden;" title="XMP">
-		<div>
-		<textarea id='xmpText' rows=20 cols=40 >
-		</textarea>
+		<div class="panelRow">
+			<textarea id='xmpText' rows=26>
+			</textarea>
 		</div>
 	</div>
 	<div class="panel" id="imagePanel" style="visibility: hidden;" title="Image">
-		<div class="panelRow">
+		<div class="panelRow indexRow">
 			<label>#</label>
-			<input id="imageIndex" type="number" value="0" style="width:50px;"></input>
+			<input class="objectIndex" id="imageIndex" type="number" value="0" ></input>
+			<label id="imageTotal">/ 0</label>
+			
+		</div>
+		<div class="panelRow">
+			<label>Pixel Size: </label>
+			<label id="imagePxInfo"></label>
+		</div>
+		<div class="panelRow">
+			<label>Object Size: </label>
+			<label id="imagePtInfo"></label>
+		</div>
+		<div class="panelRow">
+			<label>Resolution: </label>
+			<label id="imagePPI"></label>
+		</div>
+		<div class="panelRow">
+			<label>Color Space: </label>
+			<label id="imageColorSpace"></label>
 		</div>
 	</div>
 	<div id="document">
+		<div id="documentTitle">
+		&nbsp;
+		</div>
 		<div>
-			<canvas id="canvas" width=400 height=500></canvas>
+			<canvas id="canvas"></canvas>
 		</div>
 		<div>
 			<img id="preview" src=""/>
 		</div>
 	</div>
 	<div id="footer">
-		Powered By ArtPro+ 21.11
+		Powered By Esko ArtPro+ 21.11
 	</div>
 	<dialog id="spinnerDialog" class="modalDialog">
 		<div style="text-align: center;">

@@ -4,24 +4,6 @@ import {NDL} from './NDL/NDL.js';
 // context of current document
 var ctx = { };
 
-function getTextIndex () {
-	let indexText = $('#textIndex').val();
-	let index = parseInt(indexText);
-	return index;
-}
-
-function getBarCodeIndex () {
-	let indexText = $('#barCodeIndex').val();
-	let index = parseInt(indexText);
-	return index;
-}
-
-function getImageIndex () {
-	let indexText = $('#imageIndex').val();
-	let index = parseInt(indexText);
-	return index;
-}
-
 function isPanelVisible(selector)
 {
 	return $(selector).dialog('isOpen');
@@ -86,7 +68,7 @@ function UI()
 		const files = e.target.files;
 		for (let i=0; i<files.length; ++i)
 		{
-			let filename = await mountFile(files.item(i), '');
+			let filename = await mountFile(files.item(i));
 			ProcessPDF(filename);
 		}
 		console.log(files);
@@ -122,7 +104,7 @@ function UI()
 		Repaint();
 	};
 
-	// hide edit 
+	// deprecated: hide edit 
 	$('#editText').hide();
 	$('#editText').click(async ()=>{
 		applyTextChanges();
@@ -153,21 +135,24 @@ function UI()
 	});
 
 	$('#imageIndex').change( () => {
+		UpdateImageContentUI();
 		Repaint();
 	});
 
 	// toggles
-	$('#textPanel').dialog({ width: 440 , height: 260 });
+	$('#textPanel').dialog({ width: 320 , height: 260 });
 	$('#textToggle').click(()=>{
 		setPanelVisible('#textPanel', !isPanelVisible('#textPanel'));
 	});
+	$('#barCodePanel').dialog({ width: 240, height: 160});
 	$('#barCodeToggle').click(()=>{
 		setPanelVisible('#barCodePanel', !isPanelVisible('#barCodePanel'));
 	});
-	$('#xmpPanel').dialog({width: 380, height: 440});
+	$('#xmpPanel').dialog({width: 320, height: 400});
 	$('#xmpToggle').click(()=>{
 		setPanelVisible('#xmpPanel', !isPanelVisible('#xmpPanel'));
 	});
+	$('#imagePanel').dialog({width: 240, height: 160});
 	$('#imageToggle').click(()=>{
 		setPanelVisible('#imagePanel', !isPanelVisible('#imagePanel'));
 	});
@@ -185,35 +170,69 @@ function viewer()
 	return gViewer;
 }
 
+function UpdateDocumentTitle(filePath)
+{
+	let isNormalized = false;
+	if ( undefined != ctx.xmp && undefined != ctx.xmp.artwork && ctx.xmp.artwork.isNormalized)
+	{
+		isNormalized = ctx.xmp.artwork.isNormalized;	
+	}
+	let fileName = filePath.substr(filePath.lastIndexOf('/')+1);
+	if (isNormalized)
+	{
+		fileName += ' (Normalized)';
+	}
+	$('#documentTitle').text(fileName);
+}
+
+function UpdateIndexUI(num, indexSelector, totalSelector)
+{
+	$(indexSelector).prop('disabled', 0==num);
+	$(totalSelector).text('/ ' + num);
+
+	let max = num;
+	let min = Math.min(max, 1);
+	$(indexSelector).prop('min', min);
+	$(indexSelector).prop('max', max);
+	$(indexSelector).val(min);
+}
+
 function UpdateBarCodeIndexUI(numBarCodes)
 {
-	$('#barCodeIndex').prop('disabled', 0==numBarCodes);
-	let max = numBarCodes - 1;
-	if (max<0) max = 0;
-	$('#barCodeIndex').prop('min', 0);
-	$('#barCodeIndex').prop('max', max);
-	$('#barCodeIndex').val(0);
+	UpdateIndexUI(numBarCodes, '#barCodeIndex', '#barCodeTotal');
+	return;
 }
 
 function UpdateTextIndexUI(numTexts)
 {
-	$('#textIndex').prop('disabled', 0==numTexts);
+	UpdateIndexUI(numTexts, '#textIndex', '#textTotal');
+}
 
-	let max = numTexts - 1;
-	if (max<0) max = 0;
-	$('#textIndex').prop('min', 0);
-	$('#textIndex').prop('max', max);
-	$('#textIndex').val(0);
+function getIndex(selector)
+{
+	let indexText = $(selector).val();
+	let index = parseInt(indexText);
+	--index;
+	index = Math.max(0, index);
+	return index;
+}
+
+function getTextIndex () 
+{
+	return getIndex('#textIndex');
+}
+
+function getBarCodeIndex () {
+	return getIndex('#barCodeIndex');
+}
+
+function getImageIndex () {
+	return getIndex('#imageIndex');
 }
 
 function UpdateImageIndexUI(numImages)
 {
-	$('#imageIndex').prop('disabled', 0==numImages);
-	let max = numImages - 1;
-	if (max<0) max = 0;
-	$('#imageIndex').prop('min', 0);
-	$('#imageIndex').prop('max', max);
-	$('#imageIndex').val(0);
+	UpdateIndexUI(numImages, '#imageIndex', '#imageTotal');
 }
 
 function UpdateTextContentUI()
@@ -226,6 +245,38 @@ function UpdateTextContentUI()
 	} else {
 		$('#currentText').val('');
 	}
+}
+
+function GetPPI(image)
+{
+	const dpi = 72.0;
+	let xppi = image.width * dpi / image.boundingBox.width;
+	let yppi = image.height * dpi / image.boundingBox.height;
+	let ppi = Math.floor(Math.min(xppi, yppi));
+	return ppi;
+}
+
+function UpdateImageContentUI()
+{
+	let index = getImageIndex();
+	let pxInfo = '';
+	let ptInfo = '';
+	let ppiInfo = '';
+	let colorSpaceInfo = '';
+	if ( index < ctx.images.length )
+	{
+		let image = ctx.images[index];
+		
+		pxInfo = '' + image.width + ' x ' + image.height + ' pixels';
+		ptInfo = '' + image.boundingBox.width.toFixed(2) + ' x ' + image.boundingBox.height.toFixed(2) + ' pt';
+		let ppi = GetPPI(image);
+		ppiInfo = ppi + ' ppi';
+		colorSpaceInfo = image.colorSpace;
+	}
+	$('#imagePxInfo').text(pxInfo);
+	$('#imagePtInfo').text(ptInfo);
+	$('#imagePPI').text(ppiInfo);
+	$('#imageColorSpace').text(colorSpaceInfo);
 }
 
 function UpdateXMPUI(xmp)
@@ -241,15 +292,27 @@ function ArrayToImageData(array, rasterSize)
 	return imageData;
 }
 
-function resizeCanvas(rasterSize)
+function ResizeCanvas(rasterSize)
 {
 	let canvas = document.getElementById('canvas');
 	canvas.width = rasterSize.width;
 	canvas.height = rasterSize.height;
+	canvas.style.width = canvas.width / 2;
+	canvas.style.height = canvas.height /2;
+}
+
+function FlushCanvas()
+{
+	ResizeCanvas({width:595, height:842});
+	let canvas = document.getElementById("canvas");
+	let ctx = canvas.getContext("2d");
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function Repaint()
 {
+	const kHighlightColor = '#444B53';
+	const kHighlightWidth = 4;
 	let drawOnCanvas = (array, rasterSize) =>{
 		let canvas = document.getElementById("canvas");
 		let twoD = canvas.getContext("2d");
@@ -306,8 +369,8 @@ function Repaint()
 			//$('#currentText').text(t.text);
 			ctx.beginPath();
 			let r = toViewRect(t.box);
-			ctx.strokeStyle = '#444B53';
-			ctx.lineWidth = 2;
+			ctx.strokeStyle = kHighlightColor;
+			ctx.lineWidth = kHighlightWidth;
 			ctx.rect(r.x, r.y, r.width, r.height);
 			ctx.stroke();
 		}
@@ -330,8 +393,8 @@ function Repaint()
 			$('#barCodeType').text(b.type.replace(/^(k)/,''));
 			ctx.beginPath();
 			let r = toViewRect(b.boundingBox);
-			ctx.strokeStyle = '#444B53';
-			ctx.lineWidth = 2;
+			ctx.strokeStyle = kHighlightColor;
+			ctx.lineWidth = kHighlightWidth;
 			ctx.rect(r.x, r.y, r.width, r.height);
 			ctx.stroke();
 		}
@@ -353,8 +416,8 @@ function Repaint()
 			let image = images[i];
 			ctx.beginPath();
 			let r = toViewRect(image.boundingBox);
-			ctx.strokeStyle = '#444B53';
-			ctx.lineWidth = 2;
+			ctx.strokeStyle = kHighlightColor;
+			ctx.lineWidth = kHighlightWidth;
 			ctx.rect(r.x, r.y, r.width, r.height);
 			ctx.stroke();
 		}
@@ -394,7 +457,7 @@ function loadCtx_preview()
 	// load preview
 	ctx.previewByteArray = viewer().getPreviewByteArray();
 	ctx.previewRasterSize = viewer().getPreviewSize();
-	resizeCanvas(ctx.previewRasterSize);
+	ResizeCanvas(ctx.previewRasterSize);
 	ctx.imageData = ArrayToImageData(ctx.previewByteArray, ctx.previewRasterSize);
 }
 
@@ -467,20 +530,22 @@ function hideBusy()
 
 function ProcessPDF(filePath)
 {
-	console.log('Begin ProcessPDF');
+	console.log('Begin ProcessPDF ' + filePath);
 	let loaded = viewer().loadPDF(filePath);
-	viewer().setDPI(96);
+	viewer().setDPI(2.0*72.0);
 	console.assert(loaded);
 	let json = viewer().getMetadata();
 	console.log(json);
 	
 	loadCtx();
 	// update UI
-	resizeCanvas(ctx.previewRasterSize);
+	ResizeCanvas(ctx.previewRasterSize);
+	UpdateDocumentTitle(filePath);
 	UpdateBarCodeIndexUI(ctx.barCodes.length);
 	UpdateTextIndexUI(ctx.texts.length);
 	UpdateImageIndexUI(ctx.images.length);
 	UpdateTextContentUI();
+	UpdateImageContentUI();
 	UpdateXMPUI(ctx.xmp);
 	
 	// repaint
@@ -506,11 +571,11 @@ var Initializer =
 };
 
 // mount the file object into the folder
-function mountBlob(fileObject, inFileName, folder, onFileMounted) {
+function mountBlob(fileObject, inFileName, onFileMounted) {
 	console.assert(fileObject instanceof Blob )
     var reader = new FileReader();
     reader.onload = function () {
-		let filePath = folder + '/' + inFileName;
+		let filePath = '/' + inFileName;
 
         var data = new Uint8Array(reader.result);
         try {
@@ -534,18 +599,17 @@ function mountBlob(fileObject, inFileName, folder, onFileMounted) {
     reader.readAsArrayBuffer(fileObject);
 }
 
-function mountFile(fileObject, folder) {
+function mountFile(fileObject) {
 	console.assert(fileObject instanceof File )
 	var filename = fileObject.name;
-	if (folder != null)
-		filename = folder + '/' + filename;
-
 	return new Promise((resolve, reject) => {
-		mountBlob(fileObject, filename, folder, resolve);
+		mountBlob(fileObject, filename, resolve);
 	});
 }
 
 async function dropHandler(ev) {
+	FlushCanvas();
+	showBusy();
 	console.log('File(s) dropped');
 
 	// Prevent default behavior (Prevent file from being opened)
@@ -559,8 +623,10 @@ async function dropHandler(ev) {
 			{
 				var files = ev.dataTransfer.files;
 				var file = files.item(i);
-				let filename = await mountFile(file, '');
+				let filename = await mountFile(file);
 				ProcessPDF(filename);
+				hideBusy();
+				break;
 			}
 		}
 	} else {
@@ -581,14 +647,12 @@ function dragOverHandler(ev) {
 let loadSamplePDF = async () =>
 {
 	console.log('loadSamplePDF()');	
-	//let pdfURL = 'resources/GETSET_POUCH_GEL.pdf';
-	//let pdfURL = 'resources/sample_file.pdf';
 	let pdfURL = 'resources/TextCyanMagenta.pdf';
-	//let pdfURL = 'resources/nPDF.pdf';
-	//let pdfURL = 'resources/Nexu_GreenHanger_pdf+.pdf';
 	var response = await fetch(pdfURL);
 	var blob = await response.blob();
-	mountBlob(blob, 'Mounted.pdf', '', (filename)=>{
+	
+	let fileName = pdfURL.substr(pdfURL.lastIndexOf('/')+1);
+	mountBlob(blob, fileName, (filename)=>{
 		console.log('mounted as ' + filename);
 		Initializer.sampleFile = filename;
 		Initializer.isSampleReady = true;
@@ -616,6 +680,7 @@ var gSimplePDFModule;
 
 
 $(()=> {
+	FlushCanvas();
 	showBusy();
 	UI();
 	start();
