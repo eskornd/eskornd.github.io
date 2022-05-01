@@ -133,5 +133,21 @@ export class NDL
 		console.log('font loaded: ' + fontFullPath);
 	}
 
+	// write Uint8Array to file
+	writeToFile(data, filePath)
+	{
+		let fs = this.fs();
+		try {
+			let stream = fs.open(filePath, 'w+');
+			fs.write(stream, data, 0, data.length, 0);
+			fs.close(stream);
+
+			console.log('File written: ' + filePath);
+			let stat = fs.stat(filePath);
+			console.log(stat);
+		} catch (err) {
+			console.warn('Exception in writeUint8ArrayAsFile: ' + filePath + ' ' + err.message);
+		}
+	}
 }
 
