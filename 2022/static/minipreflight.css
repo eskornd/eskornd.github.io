@@ -1,0 +1,163 @@
+:root {
+	--eskogreen:#A6C044;
+	--eskogray:#444B53;
+	--sectionDelay:500ms;
+}
+
+@font-face {
+    font-family: "Nunito";
+    src: url("Nunito-Regular.woff2") format("woff2");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("Roboto-Regular.woff2") format("woff2");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+html * {
+    color: var(--eskogray);
+}
+
+body {
+    background-color: #DFDFDF;
+    font-family: "Roboto";
+}
+
+.colorPatch {
+	border-radius: 2px;
+}
+
+#mp_dropzone {
+	font-size : 1.2em;
+	border: 1px dashed grey;
+	border-radius: 8px;
+	background-color: #EFEFEF;
+	width: 50%;
+	height: 72px;
+	line-height: 72px;
+	text-align: center;
+	vertical-align: middle;
+	margin: 5px 0px;
+}
+
+#mp_dropzone span {
+	vertical-align: middle;
+}
+
+#mp_dropzone #previewImage {
+	width: 64px;
+	height: 64px;
+	display: none;
+    box-shadow: 0px 0px 4px #7f7f7f;
+	object-fit : contain;
+	animation: sectionAppear 2s ease-in-out 0s;
+    animation-fill-mode:both; 
+}
+
+}
+
+.mp_section {
+	padding: 0 0 .5em 0;
+}
+
+#mp_progressContainer
+{
+	display : none;
+	width : 50%;
+}
+
+.mp_header {
+	background-color: #CFCFCF;
+	border-radius: 4px;
+	width: 50%;	
+}
+
+#mp_inks_wrapper {
+	display: grid;
+	grid-template-columns: 20px 200px 100px 80px auto;
+}
+
+#mp_docinfo_wrapper {
+	display: grid;
+	grid-template-columns: 160px 480px auto;
+}
+
+#mp_images_wrapper {
+	display: grid;
+	grid-template-columns: 100px 120px 100px 120px auto;
+}
+
+#mp_barcodes_wrapper {
+	display: grid;
+	grid-template-columns: 80px 200px auto;
+}
+
+#mp_fonts_wrapper {
+	display: grid;
+	grid-template-columns: 320px auto;
+}
+
+#mp_layers_wrapper {
+	display: grid;
+	grid-template-columns: 320px 120px 120px auto;
+}
+
+#mp_docinfo {
+	opacity: 0%;
+	animation: sectionAppear var(--sectionDelay) ease-in-out 0s;
+    animation-fill-mode:both; 
+}
+
+#mp_inks {
+	opacity: 0%;
+	animation: sectionAppear var(--sectionDelay) ease-in-out .25s;
+    animation-fill-mode:both; 
+}
+
+#mp_images {
+	opacity: 0%;
+	animation: sectionAppear var(--sectionDelay) ease-in-out .5s;
+    animation-fill-mode:both; 
+}
+
+#mp_barcodes {
+	animation: sectionAppear var(--sectionDelay) ease-in-out .75s;
+    animation-fill-mode:both; 
+}
+
+#mp_fonts {
+	animation: sectionAppear var(--sectionDelay) ease-in-out 1s;
+    animation-fill-mode:both; 
+}
+
+#mp_layers {
+	animation: sectionAppear var(--sectionDelay) ease-in-out 1.25s;
+    animation-fill-mode:both; 
+}
+
+@keyframes sectionAppear
+{
+	0% { opacity: 0%}
+	100% { opacity: 100%}
+}
+
+/* banner */
+#mp_banner {
+	height: 48px;
+	line-height: 48px;
+	background-color : var(--eskogray);
+	width: 100%;
+	padding: 5px 20px;
+}
+
+#mp_banner > span {
+	vertical-align: middle;
+	height: 100%;
+	color: white;
+}

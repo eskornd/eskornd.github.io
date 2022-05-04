@@ -80,7 +80,19 @@ function UI()
 
 	$('#save').click(()=>{
 		let array = viewer().saveAs();
-		downloadAs(array, 'saved.pdf');
+		let fileName = $('#documentFileName').text();
+		if ( undefined == fileName || '' == fileName )
+		{
+			fileName = 'Untitled.pdf';
+		}
+
+		// add suffix
+		let pos = fileName.lastIndexOf('.');
+		let stem = fileName.substr(0, pos);
+		let ext = fileName.substr(pos);
+		const suffix = '_edited'
+		let downloadFileName = stem + suffix + ext;
+		downloadAs(array, downloadFileName);
 	});
 
 	let changeTextJustification = async (justification) => {
@@ -178,6 +190,8 @@ function UpdateDocumentTitle(filePath)
 		isNormalized = ctx.xmp.artwork.isNormalized;	
 	}
 	let fileName = filePath.substr(filePath.lastIndexOf('/')+1);
+	$('#documentFileName').text(fileName);
+
 	if (isNormalized)
 	{
 		fileName += ' (Normalized)';
@@ -311,7 +325,8 @@ function FlushCanvas()
 
 function Repaint()
 {
-	const kHighlightColor = '#444B53';
+	//const kHighlightColor = '#444B53';
+	const kHighlightColor = '#A6C044';
 	const kHighlightWidth = 4;
 	let drawOnCanvas = (array, rasterSize) =>{
 		let canvas = document.getElementById("canvas");
@@ -333,6 +348,23 @@ function Repaint()
 		img.src = 'data:image/png;base64,' + base64;
 	};
 
+	let makeToViewPoint = (pageBox, viewSize)=> {
+		let sX = viewSize.width/pageBox.width;
+		let sY = viewSize.height/pageBox.height;
+		let toViewPointFunc = (point) => {
+			let x = point.x - pageBox.x;
+			let y = pageBox.y + pageBox.height - ( point.y );
+			x *= sX;
+			y *= sY;
+			let viewPoint = {
+				'x' : x
+				,'y' : y
+			};
+			return viewPoint;
+		};
+		return toViewPointFunc;
+	};
+
 	let makeToViewRect = (pageBox, viewSize)=> {
 		let sX = viewSize.width/pageBox.width;
 		let sY = viewSize.height/pageBox.height;
@@ -352,7 +384,8 @@ function Repaint()
 		return toViewRectFunc;
 	};
 
-	let toViewRect;
+	let toViewRect; // will be created later
+	let toViewPoint; // will be created later
 	let drawTexts = (texts) => {
 		if (texts === undefined)
 			return;
@@ -366,13 +399,51 @@ function Repaint()
 				continue;
 
 			let t = texts[i];
-			//$('#currentText').text(t.text);
-			ctx.beginPath();
-			let r = toViewRect(t.box);
-			ctx.strokeStyle = kHighlightColor;
-			ctx.lineWidth = kHighlightWidth;
-			ctx.rect(r.x, r.y, r.width, r.height);
-			ctx.stroke();
+
+			// draw boundingBox
+			const drawBox = false;
+			const drawShape = true;
+			if (drawBox)
+			{
+				ctx.beginPath();
+				let r = toViewRect(t.box);
+				ctx.strokeStyle = kHighlightColor;
+				ctx.lineWidth = kHighlightWidth;
+				ctx.rect(r.x, r.y, r.width, r.height);
+				ctx.stroke();
+			}
+
+			// draw shape
+			if (drawShape)
+			{
+				ctx.strokeStyle = kHighlightColor;
+				ctx.lineWidth = kHighlightWidth;
+				ctx.beginPath();
+				for ( let j = 0; j<t.shape.length; ++j)
+				{
+					let path = t.shape[j];
+					for ( let k = 0; k<path.length; ++k)
+					{
+						let cmd = path[k];
+						if ( cmd.cmd === 'm' )
+						{
+							let p3 = toViewPoint(cmd.p3);	
+							ctx.moveTo(p3.x, p3.y);
+						} else if ( cmd.cmd === 'c' )
+						{
+							let p1 = toViewPoint(cmd.p1);
+							let p2 = toViewPoint(cmd.p2);
+							let p3 = toViewPoint(cmd.p3);
+							ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+						} else if ( cmd.cmd === 'l' )
+						{
+							let p3 = toViewPoint(cmd.p3);
+							ctx.lineTo(p3.x, p3.y);
+						}
+					}
+					ctx.stroke();
+				}
+			}
 		}
 	};
 
@@ -438,6 +509,7 @@ function Repaint()
 	let pageBox = viewer().getPageBox();
 	let viewSize = viewer().getPreviewSize();
 	toViewRect = makeToViewRect(pageBox, viewSize);
+	toViewPoint = makeToViewPoint(pageBox, viewSize);
 	if ( isPanelVisible('#textPanel'))
 	{
 		drawTexts(ctx.texts);	

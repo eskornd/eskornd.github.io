@@ -2,22 +2,56 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="static/UI.css">
+    <link rel="stylesheet" type="text/css" href="static/minipreflight.css">
     <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" type="text/css" href="static/meter.css">
 	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 	
-	<div id="dropzone">
-		DROP FILE here
+	<div id="mp_banner">
+		<span><img src="images/logo_EskoCloud.png" width=48 height=48 /></span>
+		<span> My Share And Approve Site</span>
 	</div>
+	<div>
+		<div id="mp_dropzone" class="mp_header">
+			<span>
+			Drop File Here: &nbsp;
+			</span>
+			<span>
+				<img id="previewImage" src=""/>
+			</span>
+		</div>
+		<div id="mp_progressContainer">
+			<div class="mp_meter" >
+				<span style="width:100%;">
+					<span id="mp_progress">
+						Uploading...
+					</span>
+				</span>
+			</div>
+		</div>
+		<div id="mp_output">
+			<div class="mp_section" id="mp_docinfo">
+			</div>
+			<div class="mp_section" id="mp_inks">
+			</div>
+			<div class="mp_section" id="mp_images">
+			</div>
+			<div class="mp_section" id="mp_barcodes">
+			</div>
+			<div class="mp_section" id="mp_fonts">
+			</div>
+			<div class="mp_section" id="mp_layers">
+			</div>
+		</div>
+	<div>
+	
 	<input type="file" id="browseInput" accept=".pdf,.ai" style="display:none;">
 
 	<!-- insert into html -->
 	<script type="text/javascript" src="NDL/Unzip.js"></script>
 	<script type="text/javascript" src="NDL/SimplePDF.js"></script>
 	<script type="module" src="minipreflight.js"></script>
-
-	
 </body>
 </html>
