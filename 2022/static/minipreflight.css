@@ -60,22 +60,23 @@ body {
     animation-fill-mode:both; 
 }
 
-}
-
-.mp_section {
-	padding: 0 0 .5em 0;
-}
-
 #mp_progressContainer
 {
 	display : none;
 	width : 50%;
 }
 
+.mp_section {
+	padding: 0 0 .5em 0;
+}
+
 .mp_header {
 	background-color: #CFCFCF;
 	border-radius: 4px;
 	width: 50%;	
+	height: 1.5em;
+	line-height: 1.5em;
+	vertical-align: middle;
 }
 
 #mp_inks_wrapper {
@@ -95,7 +96,7 @@ body {
 
 #mp_barcodes_wrapper {
 	display: grid;
-	grid-template-columns: 80px 200px auto;
+	grid-template-columns: 150px 200px auto;
 }
 
 #mp_fonts_wrapper {

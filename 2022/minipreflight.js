@@ -182,6 +182,8 @@ function RenderImages(images)
 	let wrapper = $(tag).attr('id', 'mp_images_wrapper');
 	$('#mp_images').append(header).append(wrapper);
 	
+	let hasLowRes = false;
+	let hasRGB = false;
 	for ( let i=0; i<images.length; ++i)
 	{
 		let image = images[i];
@@ -189,13 +191,41 @@ function RenderImages(images)
 		let size = $(tag).text('' + image.width + ' x ' + image.height);
 		let xppi = Math.floor(image.width * 72.0 / image.boundingBox.width);
 		let yppi = Math.floor(image.height * 72.0 / image.boundingBox.height);
-		let ppi = $(tag).text('' + Math.min(xppi, yppi) + ' ppi');	
+		let minppi = Math.min(xppi, yppi);
+		let ppi = $(tag).text(minppi + ' ppi');	
+		const kOrange = '#ff8c00';
+		if (minppi<300)
+		{
+			ppi.css('color', kOrange).attr('title', 'Image resolution less than 300ppi');
+			hasLowRes = true;
+		}
 		let colorSpace = $(tag).text(image.colorSpace);
+		if (image.colorSpace == 'RGB' )
+		{
+			colorSpace.css('color', kOrange).attr('title', 'Image in RGB');
+			hasRGB = true;
+		}
+	
 		//let channels = $(tag).text('' + image.numChannels + ' ch');
 		let spacer = $(tag);
 		$('#mp_images_wrapper').append(name).append(size).append(ppi).append(colorSpace).append(spacer);
 	}
 	
+	if ( hasLowRes || hasRGB )
+	{
+		let tooltip = '';
+		if (hasLowRes)
+		{
+			tooltip += 'Image resolution less than 300ppi';
+		}
+		if (hasRGB)
+		{
+			tooltip += '\nImage in RGB';
+		}
+		let warn = $('<img/>').attr('src', 'images/logo_warning.png').css('width', '14px').css('height', '14px').attr('title', tooltip);
+
+		header.append(warn);
+	}
 }
 
 function RenderBarcodes(barcodes)
