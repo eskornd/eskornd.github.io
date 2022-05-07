@@ -22,28 +22,28 @@
 	</div>
 		
 	<div id="scenarioParent" style="display:none;">
+		<div class="flyin scenarioRow">
+			<div>
+				<img class="scenario clickable" id="scenario01" src="images/scenario_SnA.png" />
+			</div>
+			<div>
+				Share &amp; Approve
+			</div>
+		</div>
+		<div class="flyin scenarioRow">
+			<div>
+				<img class="scenario clickable" id="scenario02" src="images/scenario_WCR.png" />
+			</div>
+			<div>
+				WebCenter
+			</div>
+		</div>
 		<div class="flyin scenarioRow" >
 			<div>
-				<img class="scenario clickable" id="scenario01" src="images/logo_image.png" />
+				<img class="scenario clickable" id="scenario03" src="images/scenario_GetSet.png" />
 			</div>
-				SCENARIO 01
+				PDF+ Editor
 			<div >
-			</div>
-		</div>
-		<div class="flyin scenarioRow">
-			<div>
-				<img class="scenario clickable" id="scenario02" src="images/logo_image.png" />
-			</div>
-			<div>
-				SCENARIO 02
-			</div>
-		</div>
-		<div class="flyin scenarioRow">
-			<div>
-				<img class="scenario clickable" id="scenario03" src="images/logo_image.png" />
-			</div>
-			<div>
-				SCENARIO 03
 			</div>
 		</div>
 	</div>
@@ -58,13 +58,13 @@
 		}
 	});	
 	$('#scenario01').on('click', ()=>{
-		window.location.href = 'editor.html';
+		window.location.href = 'minipreflight.html';
 	});
 	$('#scenario02').on('click', ()=>{
 		window.location.href = 'wcr/project_foo.html';
 	});
 	$('#scenario03').on('click', ()=>{
-		window.location.href = 'minipreflight.html';
+		window.location.href = 'editor.html';
 	});
 	</script>
 </body>
