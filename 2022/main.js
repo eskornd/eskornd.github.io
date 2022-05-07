@@ -2,7 +2,7 @@ import {downloadAs} from './js/downloadAs.js';
 import {NDL} from './NDL/NDL.js';
 
 // context of current document
-var ctx = { };
+let ctx = { };
 
 function isPanelVisible(selector)
 {
@@ -47,7 +47,7 @@ function UI()
 			});
 	
 	//Hotkeys
-	$('.optional').css('display', 'none');
+	//$('.optional').css('display', 'none');
 	$(document).keypress((e)=>{
 		if ( e.ctrlKey && e.code == 'KeyD')
 		{
@@ -69,7 +69,10 @@ function UI()
 		for (let i=0; i<files.length; ++i)
 		{
 			let filename = await mountFile(files.item(i));
-			ProcessPDF(filename);
+			ProcessFile(filename);
+			// we only process one PDF
+			if (isFileNamePDF(filename))
+				break;
 		}
 		console.log(files);
 	});
@@ -111,10 +114,17 @@ function UI()
 
 	let applyTextChanges = async () => {
 		let curText = $('#currentText').val();
-		viewer().editText(getTextIndex(), curText);
+		viewer().setTextText(getTextIndex(), curText);
 		loadCtx();
 		Repaint();
 	};
+	let applyFontSizeChange = async()=> {
+		let fontSize = $('#fontSize').val();
+		fontSize = Math.max(0.99, fontSize);	
+		viewer().setTextFontSize(getTextIndex(), fontSize);
+		loadCtx();
+		Repaint();
+	}
 
 	// deprecated: hide edit 
 	$('#editText').hide();
@@ -127,6 +137,14 @@ function UI()
 		clearTimeout(editTimeoutID);
 		editTimeoutID = setTimeout(
 			applyTextChanges
+			, 200
+		);
+	});
+	let editFontSizeTimeoutID = 0;
+	$('#fontSize').change( ()=> {
+		clearTimeout(editFontSizeTimeoutID);
+		editFontSizeTimeoutID = setTimeout(
+			applyFontSizeChange
 			, 200
 		);
 	});
@@ -167,6 +185,15 @@ function UI()
 	$('#imagePanel').dialog({width: 240, height: 160});
 	$('#imageToggle').click(()=>{
 		setPanelVisible('#imagePanel', !isPanelVisible('#imagePanel'));
+	});
+	$('#fontsPanel').dialog({width: 320, height: 400});
+	$('#fontsToggle').click(()=>{
+		setPanelVisible('#fontsPanel', !isPanelVisible('#fontsPanel'));
+	});
+
+	// missing font
+	$('#missingFont').on('click', ()=>{
+		$('#browseInput').click();	
 	});
 }
 	
@@ -256,8 +283,16 @@ function UpdateTextContentUI()
 	{
 		let t = ctx.texts[index];
 		$('#currentText').val(t.text);
+		$('#fontName').text(t.fontName);
+		$('#missingFont').css('display', t.hasSystemFont ? 'none' : 'inline-block');
+		$('#fontSize').val(t.fontSize.toFixed(3));
+		$('#fixReflow').css('display', t.hasRecognitionError ? 'block' : 'none');
 	} else {
 		$('#currentText').val('');
+		$('#fontName').text('');
+		$('#fontSize').val(0);
+		$('#fixReflow').css('display', 'none');
+		$('#missingFont').css('display', 'none');
 	}
 }
 
@@ -296,6 +331,24 @@ function UpdateImageContentUI()
 function UpdateXMPUI(xmp)
 {
 	$('#xmpText').text(JSON.stringify(xmp, null, 4));
+}
+
+function UpdateFontsUI()
+{
+	const tag = '<div></div>';
+	$('#fontList').text(JSON.stringify(ctx.fonts));
+
+	$('#fontList').empty();
+	let wrapper = $(tag).attr('id', 'fontList_wrapper');
+	$('#fontList').append(wrapper);
+	for ( let i=0; i<ctx.fonts.length; ++i)
+	{
+		let font = ctx.fonts[i];
+		let fontName = $(tag).text(font.postscriptName);
+		let fontStatus = $(tag).text('loaded');
+		let spacer = $(tag);
+		$('#fontList_wrapper').append(fontName).append(fontStatus).append(spacer);
+	}
 }
 
 function ArrayToImageData(array, rasterSize)
@@ -577,6 +630,14 @@ function loadCtx_images()
 	}
 }
 
+function loadCtx_fonts()
+{
+	let jsonStr = viewer().getSystemFontsAsJson();
+	try {
+		ctx.fonts = JSON.parse( jsonStr );
+	} catch (err) {}
+}
+
 function loadCtx()
 {
 	loadCtx_preview();
@@ -584,6 +645,7 @@ function loadCtx()
 	loadCtx_texts();
 	loadCtx_barCodes();
 	loadCtx_images();
+	loadCtx_fonts();
 }
 
 function showBusy()
@@ -619,12 +681,48 @@ function ProcessPDF(filePath)
 	UpdateTextContentUI();
 	UpdateImageContentUI();
 	UpdateXMPUI(ctx.xmp);
+	UpdateFontsUI();
 	
 	// repaint
 	Repaint();
 	console.log('End ProcessPDF');
+
+	hideBusy();
 }
 
+function ProcessFont(filePath)
+{
+	viewer().loadFont(filePath);
+}
+
+function isFileNamePDF(filePath)
+{
+	return filePath.endsWith('.pdf') || filePath.endsWith('.ai');
+}
+
+function isFileNameFont(filePath)
+{
+	return ( filePath.endsWith('.woff') || filePath.endsWith('.woff2') || filePath.endsWith('.ttf') || filePath.endsWith('.otf') || filePath.endsWith('.eot') || filePath.endsWith('.ttc') );
+}
+
+function ProcessFile(filePath)
+{
+	if (isFileNamePDF(filePath))
+	{
+		FlushCanvas();
+		showBusy();
+		setTimeout(()=>{ProcessPDF(filePath);}, 100);
+	} else if (isFileNameFont(filePath))
+	{
+		ProcessFont(filePath);
+		loadCtx();
+		UpdateTextContentUI();
+		UpdateFontsUI();
+		Repaint();
+	} else {
+		alert('Unknown file format: ' + filePath);
+	}
+}
 var Initializer = 
 {
 	isModuleReady : false,
@@ -636,8 +734,7 @@ var Initializer =
 		if (Initializer.isModuleReady && Initializer.isSampleReady && Initializer.isResourceReady && !Initializer.isInitialized)
 		{
 			Initializer.isInitialized = true;
-			ProcessPDF(Initializer.sampleFile);
-			hideBusy();
+			ProcessFile(Initializer.sampleFile);
 		}
 	}
 };
@@ -645,11 +742,11 @@ var Initializer =
 // mount the file object into the folder
 function mountBlob(fileObject, inFileName, onFileMounted) {
 	console.assert(fileObject instanceof Blob )
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = function () {
 		let filePath = '/' + inFileName;
 
-        var data = new Uint8Array(reader.result);
+        let data = new Uint8Array(reader.result);
         try {
 			let dummy = filePath;
 			let fs = gNDL.fs();
@@ -673,38 +770,45 @@ function mountBlob(fileObject, inFileName, onFileMounted) {
 
 function mountFile(fileObject) {
 	console.assert(fileObject instanceof File )
-	var filename = fileObject.name;
+	let filename = fileObject.name;
 	return new Promise((resolve, reject) => {
 		mountBlob(fileObject, filename, resolve);
 	});
 }
 
 async function dropHandler(ev) {
-	FlushCanvas();
-	showBusy();
 	console.log('File(s) dropped');
 
 	// Prevent default behavior (Prevent file from being opened)
 	ev.preventDefault();
 
-	if (ev.dataTransfer.items) {
+	//if (ev.dataTransfer.items) {
+	if (0) {
 		// Use DataTransferItemList interface to access the file(s)
-		for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+		for (let i = 0; i < ev.dataTransfer.items.length; i++) {
 			// If dropped items aren't files, reject them
 			if (ev.dataTransfer.items[i].kind === 'file') 
 			{
-				var files = ev.dataTransfer.files;
-				var file = files.item(i);
+				let files = ev.dataTransfer.files;
+				let file = files.item(i);
 				let filename = await mountFile(file);
-				ProcessPDF(filename);
-				hideBusy();
-				break;
+				ProcessFile(filename);
+				// we only process one PDF
+				if (isFileNamePDF(filename))
+					break;
 			}
 		}
 	} else {
 		// Use DataTransfer interface to access the file(s)
-		for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-			console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+		let files = ev.dataTransfer.files;
+		for (let i = 0; i < files.length; ++i) 
+		{
+			let file = files[i];
+			let filename = await mountFile(file);
+			ProcessFile(filename);
+			// we only process one PDF
+			if (isFileNamePDF(filename))
+				break;
 		}
 	}
 }
@@ -720,8 +824,8 @@ let loadSamplePDF = async () =>
 {
 	console.log('loadSamplePDF()');	
 	let pdfURL = 'resources/TextCyanMagenta.pdf';
-	var response = await fetch(pdfURL);
-	var blob = await response.blob();
+	let response = await fetch(pdfURL);
+	let blob = await response.blob();
 	
 	let fileName = pdfURL.substr(pdfURL.lastIndexOf('/')+1);
 	mountBlob(blob, fileName, (filename)=>{
@@ -731,15 +835,32 @@ let loadSamplePDF = async () =>
 	});
 }
 
+async function dumpSystemFonts()
+{
+	let jsonStr = viewer().getSystemFontsAsJson();
+	try {
+		let fontInfos = JSON.parse(jsonStr);
+		console.log(JSON.stringify(fontInfos, null, 4));
+	} catch (err)
+	{
+		console.warn('dumpSystemFonts(): Unable to parse JSON: ' + jsonStr);
+	}
+	
+}
 async function start()
 {
 	let ndl = new NDL();
 	const initParams = {
 		resources : 'NDL/Resources.zip'
-		, fonts : ['resources/myfonts/Alice-Regular.woff', 'resources/myfonts/Glory-Regular.woff']
+		, fonts : [
+			'resources/myfonts/Alice-Regular.woff'
+			, 'resources/myfonts/Glory-Regular.woff'
+			, 'resources/myfonts/IntroBlackItalic.otf'
+		]
 	};
 	await ndl.initialize(initParams);
 	gNDL = ndl;
+	await dumpSystemFonts();
 	await loadSamplePDF();
 	Initializer.isModuleReady = true;
 	Initializer.isResourceReady = true;
@@ -756,7 +877,7 @@ $(()=> {
 	showBusy();
 	UI();
 	start();
-	let panelIDs = ['#textPanel', '#barCodePanel', '#xmpPanel', '#imagePanel'];
+	let panelIDs = ['#textPanel', '#barCodePanel', '#xmpPanel', '#imagePanel', '#fontsPanel'];
 	for ( let i=0; i<panelIDs.length; ++i)
 	{
 		let selector=panelIDs[i];

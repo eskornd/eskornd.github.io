@@ -21,7 +21,7 @@
 					<button id="browse" name="noname">Browse...</button>
 				</span>
 				<span>
-					<input type="file" id="browseInput" accept=".pdf,.ai" style="display:none;">
+					<input type="file" id="browseInput" style="display:none;">
 				</span>
 			</span>
 		</span>
@@ -52,6 +52,11 @@
 						<img src="images/logo_image.png" width=16 height=16 />
 					</button>
 				</span>
+				<span>
+					<button class="optional" id="fontsToggle" width=40>
+						<img src="images/logo_fonts.png" width=16 height=16 />
+					</button>
+				</span>
 		</span>
 	</div>
 
@@ -80,6 +85,15 @@
 			<label id="textTotal">/0</label>
 			<button id="editText" name="noname">Edit</button>
 		</div>
+		<div class="panelRow" id="fontNameRow">
+			<label>Font:</label>
+			<label id="fontName"></label>
+			<img id="missingFont" src="images/logo_warning.png"/>
+		</div>
+		<div class="panelRow">
+			<label>Font Size:</label>
+			<input id="fontSize" type="number" step="0.5" value="0"></input>
+		</div>
 		<div class="panelRow">
 			<button id="alignLeft">
 				<img src="images/logo_alignLeft.png" width=12 height=12 />
@@ -104,8 +118,11 @@
 </button>
 		</div>
 		<div class="panelRow">
-			<textarea id='currentText' rows=8>
+			<textarea id="currentText" rows=8>
 			</textarea>
+		</div>
+		<div class="panelRow">
+			<img id="fixReflow" src="images/logo_warning.png"/>
 		</div>
 	</div>
 	<div class="panel" id="xmpPanel" style="visibility: hidden;" title="XMP">
@@ -138,6 +155,13 @@
 			<label id="imageColorSpace"></label>
 		</div>
 	</div>
+	<div class="panel" id="fontsPanel" style="visibility: hidden;" title="Fonts">
+		<div class="panelRow">
+			<div id="fontList">
+				FONTLIST HERE
+			</div>
+		</div>
+	</div>
 	<div id="document">
 		<div id="documentTitle">
 		&nbsp;
@@ -154,12 +178,12 @@
 	<div id="footer">
 		Powered By Esko ArtPro+ 21.11
 	</div>
+	
 	<dialog id="spinnerDialog" class="modalDialog">
 		<div style="text-align: center;">
 			<img id="spinnerGif" width=96 height=96 src="static/loading.gif" />
 		</div>
 	</dialog>
-	
     <!-- JS includes -->
     <script type="text/javascript" src="NDL/Unzip.js"></script>
     <script type="text/javascript" src="NDL/SimplePDF.js"></script>

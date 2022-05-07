@@ -2,6 +2,23 @@
 	--eskogreen:#A6C044;
 	--eskogray:#444B53;
 	--sectionDelay:500ms;
+	--sidebarWidth : 48px;
+}
+
+@font-face {
+    font-family: "WCRIcons";
+    src: url("WCRIcons.woff") format("woff");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.mp_wcricon {
+	font-family: "WCRIcons", "Roboto";
 }
 
 @font-face {
@@ -24,9 +41,65 @@ html * {
     color: var(--eskogray);
 }
 
-body {
-    background-color: #DFDFDF;
+html body {
+	margin : 0;
+	padding :0;
+    background-color: #FFFFFF;
     font-family: "Roboto";
+}
+
+#mp_sidebar {
+	background-color: #ECECEC;
+	position: absolute;
+	height: 100%;
+	width: var(--sidebarWidth);
+	text-align: center;
+}
+
+.mp_sidebarIcon {
+	width: var(--sidebarWidth);
+	height: var(--sidebarWidth);
+	line-height: var(--sidebarWidth);
+	vertical-align: middle;
+}
+
+.mp_sidebarIconSelected {
+	background-color: #636e77;
+	color: #ffffff;
+}
+
+#mp_content {
+	margin-left: var(--sidebarWidth);
+}
+
+#mp_content_header {
+	position:relative; /* so that progress bar aboslute docks to me*/
+	background-color: #F5F5F5;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	vertical-align: middle;
+}
+
+#mp_progressContainer
+{
+	position: absolute;
+	display : none;
+	width : 100%;
+	top: 0px;
+}
+
+.mp_meter { 
+    height: 5px;
+    position: relative;
+}
+
+#mp_content_icon {
+	margin-left: 12px;
+}
+
+#mp_content_body {
+	margin: 10px;
 }
 
 .colorPatch {
@@ -37,7 +110,7 @@ body {
 	font-size : 1.2em;
 	border: 1px dashed grey;
 	border-radius: 8px;
-	background-color: #EFEFEF;
+	background-color: #FDFDFD;
 	width: 50%;
 	height: 72px;
 	line-height: 72px;
@@ -58,12 +131,6 @@ body {
 	object-fit : contain;
 	animation: sectionAppear 2s ease-in-out 0s;
     animation-fill-mode:both; 
-}
-
-#mp_progressContainer
-{
-	display : none;
-	width : 50%;
 }
 
 .mp_section {
@@ -153,12 +220,42 @@ body {
 	height: 48px;
 	line-height: 48px;
 	background-color : var(--eskogray);
-	width: 100%;
-	padding: 5px 20px;
+	width: 97%;
+	padding: 0px 20px;
 }
 
 #mp_banner > span {
 	vertical-align: middle;
 	height: 100%;
+}
+
+.mp_banner_text {
+	vertical-align: middle;
 	color: white;
+}
+
+#avatar {
+	width: 36px;
+	height: 36px;
+}
+
+#eskoID {
+	font-size: 0.75em;
+}
+
+#mp_bannerRight {
+	float:right;
+}
+
+#previewDialog {
+	border: 0px;
+}
+#largePreview {
+	width: 512px;
+	height: 512px;
+	display: none;
+    box-shadow: 0px 0px 4px #7f7f7f;
+	object-fit : contain;
+	animation: sectionAppear 2s ease-in-out 0s;
+    animation-fill-mode:both; 
 }

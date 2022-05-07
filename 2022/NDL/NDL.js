@@ -128,8 +128,8 @@ export class NDL
 		simplePDFModule.WriteFile('', fileName, pp, u8array.length);
 		simplePDFModule._free(pp);
 		let fontFullPath = '/' + fileName;
-		console.log('before addFontFolderOrFont ' + fontFullPath);
-		this.viewer().addFontFolderOrFont(fontFullPath);
+		console.log('before loadFont ' + fontFullPath);
+		this.viewer().loadFont(fontFullPath);
 		console.log('font loaded: ' + fontFullPath);
 	}
 

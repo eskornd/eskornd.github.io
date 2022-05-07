@@ -70,18 +70,18 @@ async function onFileDropped(ev)
 	gNDL.writeToFile(data, filePath);
 
 	// restart animation
-	$('#mp_progressContainer').css('display', 'none');
-	setTimeout(()=>{
-		$('#mp_progressContainer').css('display', 'block');
-	}, 100);
-
-	// restart animation
 	$('#mp_output').css('display', 'none');
 	setTimeout(()=>{
 		$('#mp_output').css('display', 'block');
-	}, 500);
+	}, 100);
 
 	InspectPDF(filePath);
+
+	// restart animation
+	$('#mp_progressContainer').css('display', 'none');
+	setTimeout(()=>{
+		$('#mp_progressContainer').css('display', 'block');
+	}, 500);
 }
 
 function componentToHex(c) {
@@ -288,7 +288,7 @@ function InspectPDF(filePath)
 	let ndl = gNDL;
 	let viewer = gNDL.viewer();
 	let loaded = viewer.loadPDF(filePath);
-	viewer.setDPI(16);
+	viewer.setDPI(2.0*72.0);
 	let jsonStr = viewer.getMetadata();
 	let xmp = undefined;
 	try {
@@ -296,7 +296,6 @@ function InspectPDF(filePath)
 	} catch (err) {
 	}
 
-	//alert(JSON.stringify(xmp, null, 4));
 	console.log(JSON.stringify(xmp, null, 4));
 	RenderDocInfo(xmp.artwork);
 	RenderInks(xmp.inks);
@@ -345,6 +344,22 @@ async function init()
 	console.log( 'about(): ' + viewer.about());
 	
 	initDropzone('mp_dropzone', onFileDropped);
+	$('#previewImage').on('click', ()=>{
+		$('#largePreview').attr('src', '');	
+		$('#largePreview').css('display', 'none');	
+		let render = async () => {
+			let base64 = viewer.getPreviewPNGBase64();
+			let src = 'data:image/png;base64,' + base64;
+			$('#largePreview').attr('src', src);	
+			$('#largePreview').css('display', 'inline-block');	
+		};
+
+		setTimeout(()=>{
+			render();	
+		}, 200);
+		let dlg = document.getElementById('previewDialog');
+		dlg.showModal();
+	});
 }
 
 $(()=>{ 
