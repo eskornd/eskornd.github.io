@@ -298,6 +298,10 @@ function UpdateTextContentUI()
 					} 
 					: async ()=>{
 						toastMessage('Downloading google font ' + text.fontName);
+						let theURL = url;
+						if ( location.protocol === 'https:') {
+							theURL = url.replace('http:', 'https:');
+						}
 						let u8Array = await fetchBinaryAsU8Array(url);
 						let fileName = url.substr(url.lastIndexOf('/')+1);
 						let fullPath = '/' + fileName;
@@ -332,6 +336,7 @@ function UpdateTextContentUI()
 		$('#fontSize').val(0);
 		$('#fixReflow').css('display', 'none');
 		$('#missingFont').css('display', 'none');
+		$('#activateFont').css('display', 'none');
 	}
 }
 
