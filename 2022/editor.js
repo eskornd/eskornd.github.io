@@ -111,7 +111,6 @@ function UI()
 	});
 
 	let changeTextJustification = async (justification) => {
-		//let curText = $('#currentText').val();
 		viewer().setTextJustification(getTextIndex(), justification);
 		loadCtx();
 		Repaint();
@@ -123,6 +122,15 @@ function UI()
 	$('#justifyCenter').click(async ()=>{changeTextJustification(4)});
 	$('#justifyRight').click(async ()=>{changeTextJustification(5)});
 	$('#justifyAll').click(async ()=>{changeTextJustification(6)});
+
+
+	$('#rgbColorSpace').on('click', ()=>{
+		toastMessage('Image in RGB color space.');
+	});
+
+	$('#lowResolution').on('click', ()=>{
+		toastMessage('Image Resolution is low.');
+	});
 
 	let applyTextChanges = async () => {
 		let curText = $('#currentText').val();
@@ -149,15 +157,21 @@ function UI()
 		clearTimeout(editTimeoutID);
 		editTimeoutID = setTimeout(
 			applyTextChanges
-			, 200
+			, 300
 		);
+	});
+	$('#currentText').on('focus', ()=>{
+		ctx.isEditingText = true;
+	});
+	$('#currentText').on('blur', ()=>{
+		ctx.isEditingText = false;
 	});
 	let editFontSizeTimeoutID = 0;
 	$('#fontSize').change( ()=> {
 		clearTimeout(editFontSizeTimeoutID);
 		editFontSizeTimeoutID = setTimeout(
 			applyFontSizeChange
-			, 200
+			, 300
 		);
 	});
 	$('#applyBarCode').click(async ()=>{
@@ -364,8 +378,10 @@ function UpdateImageContentUI()
 		pxInfo = '' + image.width + ' x ' + image.height + ' pixels';
 		ptInfo = '' + image.boundingBox.width.toFixed(2) + ' x ' + image.boundingBox.height.toFixed(2) + ' pt';
 		let ppi = GetPPI(image);
+		$('#lowResolution').css('display', ppi<300 ? 'inline-block' : 'none');	
 		ppiInfo = ppi + ' ppi';
 		colorSpaceInfo = image.colorSpace;
+		$('#rgbColorSpace').css('display', 'RGB'===image.colorSpace ? 'inline-block' : 'none');	
 	}
 	$('#imagePxInfo').text(pxInfo);
 	$('#imagePtInfo').text(ptInfo);
@@ -686,11 +702,15 @@ function loadCtx_fonts()
 function loadCtx()
 {
 	loadCtx_preview();
-	loadCtx_xmp();
 	loadCtx_texts();
-	loadCtx_barCodes();
-	loadCtx_images();
-	loadCtx_fonts();
+	// optimization: for intensive text editing, no need to reload otherthings
+	if ( undefined == ctx.isEditingText || !ctx.isEditingText )
+	{
+		loadCtx_xmp();
+		loadCtx_barCodes();
+		loadCtx_images();
+		loadCtx_fonts();
+	}
 }
 
 function showBusy()

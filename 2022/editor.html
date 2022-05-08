@@ -94,7 +94,7 @@
 		</div>
 		<div class="panelRow">
 			<label>Font Size:</label>
-			<input id="fontSize" type="number" step="0.5" value="0"></input>
+			<input id="fontSize" type="number" step="1.0" value="0"></input>
 		</div>
 		<div class="panelRow">
 			<button id="alignLeft">
@@ -151,10 +151,12 @@
 		<div class="panelRow">
 			<label>Resolution: </label>
 			<label id="imagePPI"></label>
+			<img id="lowResolution" src="images/logo_warning.png" />
 		</div>
 		<div class="panelRow">
 			<label>Color Space: </label>
 			<label id="imageColorSpace"></label>
+			<img id="rgbColorSpace" src="images/logo_warning.png" />
 		</div>
 	</div>
 	<div class="panel" id="fontsPanel" style="visibility: hidden;" title="Fonts">

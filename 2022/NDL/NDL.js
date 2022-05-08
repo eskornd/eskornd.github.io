@@ -168,6 +168,41 @@ export class NDL
 		console.log(this._gfonts.items.length + ' google fonts loaded');
 	}
 
+	
+	// font postscript style name to google variant name
+	styleNameToVariantName(styleName)
+	{
+		if (this._styleVariantMap == undefined)
+		{
+			this._styleVariantMap = new Map();
+			let m = this._styleVariantMap;
+			m.set('Thin', 				'100');
+			m.set('ExtraLight', 		'200');
+			m.set('Light', 				'300');
+			m.set('Regular', 			'regular');
+			m.set('Medium', 			'500');
+			m.set('SemiBold', 			'600');
+			m.set('Bold', 				'700');
+			m.set('ExtraBold', 			'800');
+			m.set('Black', 				'900');
+			m.set('ThinItalic', 		'100italic');
+			m.set('ExtraLightItalic',	'200italic');
+			m.set('LightItalic', 		'300italic');
+			m.set('Italic', 			'italic');
+			m.set('MediumItalic', 		'500italic');
+			m.set('SemiBoldItalic', 	'600italic');
+			m.set('BoldItalic', 		'700italic');
+			m.set('ExtraBoldItalic',	'800italic');
+			m.set('BlackItalic',		'900italic');
+		}
+		let map = this._styleVariantMap;
+		let variantName = map.get(styleName);
+		if (undefined == variantName)
+			variantName = styleName;
+
+		return variantName;
+	}
+
 	async getFontURL(postscriptName)
 	{
 		let pos = postscriptName.indexOf('-');
@@ -182,8 +217,9 @@ export class NDL
 			return;
 		}
 		
+		let targetVariant = this.styleNameToVariantName(styleName);
 		let variant = item.variants.find((it)=>{
-			return it == styleNameLowerCase;
+			return it == targetVariant;
 		});	
 
 		if ( undefined == variant )
