@@ -299,10 +299,14 @@ function UpdateTextContentUI()
 					: async ()=>{
 						toastMessage('Downloading google font ' + text.fontName);
 						let theURL = url;
-						if ( location.protocol === 'https:') {
-							theURL = url.replace('http:', 'https:');
+						console.log('location.protocol is ' + location.protocol);
+						if ( location.protocol == 'https:') 
+						{
+							console.log('replacing url http -> https');
+							theURL = url.replace('http', 'https');
+							console.log('theURL: ' + theURL);
 						}
-						let u8Array = await fetchBinaryAsU8Array(url);
+						let u8Array = await fetchBinaryAsU8Array(theURL);
 						let fileName = url.substr(url.lastIndexOf('/')+1);
 						let fullPath = '/' + fileName;
 						writeU8ArrayAsFile(u8Array, fullPath);
