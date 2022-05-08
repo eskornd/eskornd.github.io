@@ -1,6 +1,18 @@
 import {downloadAs} from './js/downloadAs.js';
 import {NDL} from './NDL/NDL.js';
 
+var gViewer = undefined;
+var gNDL = undefined;
+
+function viewer()
+{
+	if ( gViewer === undefined )
+	{
+		gViewer = gNDL.viewer();
+	}
+	return gViewer;
+}
+
 // context of current document
 let ctx = { };
 
@@ -191,23 +203,8 @@ function UI()
 		setPanelVisible('#fontsPanel', !isPanelVisible('#fontsPanel'));
 	});
 
-	// missing font
-	$('#missingFont').on('click', ()=>{
-		$('#browseInput').click();	
-	});
 }
 	
-
-var gViewer = undefined;
-var gNDL = undefined;
-function viewer()
-{
-	if ( gViewer === undefined )
-	{
-		gViewer = gNDL.viewer();
-	}
-	return gViewer;
-}
 
 function UpdateDocumentTitle(filePath)
 {
@@ -278,18 +275,60 @@ function UpdateImageIndexUI(numImages)
 
 function UpdateTextContentUI()
 {
+	let checkFontAvailability = async (text) => {
+		let pm = gNDL.getFontURL(text.fontName);
+		pm.then((url) => {
+			if ( undefined == url )
+			{
+				$('#missingFont').css('display', text.hasSystemFont ? 'none' : 'inline-block');
+				$('#activateFont').css('display', 'none');
+			} else {
+				$('#missingFont').css('display', 'none');
+				$('#activateFont').attr('fontURL', url);
+				$('#activateFont').attr('src', text.hasSystemFont ? 'images/logo_googlefonts_activated.png' : 'images/logo_googlefonts_deactivated.png');
+				$('#activateFont').css('display', 'inline-block');
+				// missing font handler
+				$('#missingFont').off('click').on('click', ()=>{
+					toastMessage( text.fontName + ' is a subset font.');
+				});
+				// google font handler
+				let clickHandler = text.hasSystemFont ? 
+					()=>{ 
+						toastMessage( text.fontName + ' is already activated.');
+					} 
+					: async ()=>{
+						toastMessage('Downloading google font ' + text.fontName);
+						let u8Array = await fetchBinaryAsU8Array(url);
+						let fileName = url.substr(url.lastIndexOf('/')+1);
+						let fullPath = '/' + fileName;
+						writeU8ArrayAsFile(u8Array, fullPath);
+						ProcessFile(fullPath);
+						toastMessage('Google Font ' + text.fontName + ' activated.');
+						
+					};
+				$('#activateFont').off('click').on('click', clickHandler );
+				
+			}	
+		});
+	};
 	let index = getTextIndex();
 	if ( index < ctx.texts.length)
 	{
 		let t = ctx.texts[index];
 		$('#currentText').val(t.text);
 		$('#fontName').text(t.fontName);
-		$('#missingFont').css('display', t.hasSystemFont ? 'none' : 'inline-block');
+		$('#fontName').attr('postscriptName', t.fontName);
+		$('#fontName').attr('fontFamily', t.fontFamilyName);
+		$('#fontName').attr('fontStyle', t.fontStyleName);
 		$('#fontSize').val(t.fontSize.toFixed(3));
 		$('#fixReflow').css('display', t.hasRecognitionError ? 'block' : 'none');
+		$('#currentText').prop('disabled', !t.hasSystemFont);
+		checkFontAvailability(t);
 	} else {
 		$('#currentText').val('');
 		$('#fontName').text('');
+		$('#fontName').attr('fontFamily', '');
+		$('#fontName').attr('fontStyle', '');
 		$('#fontSize').val(0);
 		$('#fixReflow').css('display', 'none');
 		$('#missingFont').css('display', 'none');
@@ -662,6 +701,14 @@ function hideBusy()
 	document.getElementById('spinnerDialog').close();
 }
 
+function toastMessage(msg)
+{
+	$('#toast').text(msg).addClass('show');
+	setTimeout(()=>{
+		$('#toast').removeClass('show');
+	}, 3000);
+}
+
 function ProcessPDF(filePath)
 {
 	console.log('Begin ProcessPDF ' + filePath);
@@ -739,6 +786,21 @@ var Initializer =
 	}
 };
 
+function writeU8ArrayAsFile(u8Array, filePath)
+{
+	let fs = gNDL.fs();
+	let stream = fs.open(filePath, 'w+');
+	fs.write(stream, u8Array, 0, u8Array.length, 0);
+	fs.close(stream);
+
+	console.log('written file: ' + filePath);
+	let stat = fs.stat(filePath);
+	console.log(stat);
+	if (stat.size == 0) {
+		console.warn('Empty file: ' + filePath + ' ' + stat.size + ' bytes?');
+	}
+}
+
 // mount the file object into the folder
 function mountBlob(fileObject, inFileName, onFileMounted) {
 	console.assert(fileObject instanceof Blob )
@@ -748,17 +810,15 @@ function mountBlob(fileObject, inFileName, onFileMounted) {
 
         let data = new Uint8Array(reader.result);
         try {
+			writeU8ArrayAsFile(data, filePath);
+			/*
 			let dummy = filePath;
 			let fs = gNDL.fs();
 			let stream = fs.open(dummy, 'w+');
 			fs.write(stream, data, 0, data.length, 0);
 			fs.close(stream);
+			*/
 
-			let stat = fs.stat(dummy);
-			console.log(stat);
-			if (stat.size == 0) {
-				alert('Empty file: ' + filePath + ' ' + stat.size + ' bytes?');
-			}
         } catch (err) {
             console.warn('Exception in mountBlob: ' + filePath + ' ' + err.message);
         }
@@ -776,40 +836,39 @@ function mountFile(fileObject) {
 	});
 }
 
+async function fetchBinaryAsU8Array(url) 
+{
+	return new Promise((resolve, reject) => 
+	{
+		var xhr = new XMLHttpRequest();
+		xhr.responseType = "arraybuffer";
+		xhr.open("GET", url, true);
+		xhr.onload = function (xhrEvent) 
+		{
+			let arrayBuffer = xhr.response; 
+			// if you want to access the bytes:
+			let byteArray = new Uint8Array(arrayBuffer);
+			resolve(byteArray);
+		};
+		xhr.send();
+	});
+}
+
 async function dropHandler(ev) {
 	console.log('File(s) dropped');
 
 	// Prevent default behavior (Prevent file from being opened)
 	ev.preventDefault();
 
-	//if (ev.dataTransfer.items) {
-	if (0) {
-		// Use DataTransferItemList interface to access the file(s)
-		for (let i = 0; i < ev.dataTransfer.items.length; i++) {
-			// If dropped items aren't files, reject them
-			if (ev.dataTransfer.items[i].kind === 'file') 
-			{
-				let files = ev.dataTransfer.files;
-				let file = files.item(i);
-				let filename = await mountFile(file);
-				ProcessFile(filename);
-				// we only process one PDF
-				if (isFileNamePDF(filename))
-					break;
-			}
-		}
-	} else {
-		// Use DataTransfer interface to access the file(s)
-		let files = ev.dataTransfer.files;
-		for (let i = 0; i < files.length; ++i) 
-		{
-			let file = files[i];
-			let filename = await mountFile(file);
-			ProcessFile(filename);
-			// we only process one PDF
-			if (isFileNamePDF(filename))
-				break;
-		}
+	let files = ev.dataTransfer.files;
+	for (let i = 0; i < files.length; ++i) 
+	{
+		let file = files[i];
+		let filename = await mountFile(file);
+		ProcessFile(filename);
+		// we only process one PDF
+		if (isFileNamePDF(filename))
+			break;
 	}
 }
 
@@ -855,10 +914,10 @@ async function start()
 		, fonts : [
 			'resources/myfonts/Alice-Regular.woff'
 			, 'resources/myfonts/Glory-Regular.woff'
-			, 'resources/myfonts/IntroBlackItalic.otf'
 		]
 	};
 	await ndl.initialize(initParams);
+	await ndl.loadGoogleFonts('resources/googlefonts.json');
 	gNDL = ndl;
 	await dumpSystemFonts();
 	await loadSamplePDF();
@@ -867,10 +926,6 @@ async function start()
 	await loadSamplePDF();
 	Initializer.tryInit();
 }
-
-var gUnzipModule;
-var gSimplePDFModule;
-
 
 $(()=> {
 	FlushCanvas();

@@ -172,9 +172,17 @@ body {
 	
 	vertical-align: middle;
 }
+
 #missingFont {
-	width: 9px;
-	height: 9px;
+	width: 12px;
+	height: 12px;
+	display: none;
+	cursor: pointer;
+ }
+
+#activateFont {
+	width: 12px;
+	height: 12px;
 	display: none;
 	cursor: pointer;
  }

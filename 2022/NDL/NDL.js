@@ -149,5 +149,51 @@ export class NDL
 			console.warn('Exception in writeUint8ArrayAsFile: ' + filePath + ' ' + err.message);
 		}
 	}
+
+	async loadGoogleFonts(googleFontsURL)
+	{
+		let u8Array = await fetchBinaryAsU8Array(googleFontsURL);
+		try {
+			let jsonStr = new TextDecoder().decode(u8Array)
+			this._gfonts = JSON.parse(jsonStr);
+		} catch (err) {
+			alert('loadGoogleFonts(): Error parsing list: ' + error );
+		}
+		
+		// generate family name without space
+		this._gfonts.items.forEach((item)=>{
+			item.familyNoSpace = item.family.replace(/\s/g, '');
+		});
+	
+		console.log(this._gfonts.items.length + ' google fonts loaded');
+	}
+
+	async getFontURL(postscriptName)
+	{
+		let pos = postscriptName.indexOf('-');
+		let familyName = -1 == pos ? postscriptName : postscriptName.substr(0, pos);
+		let styleName = -1 == pos ? '' : postscriptName.substr(pos+1);
+		let styleNameLowerCase = styleName.toLowerCase();
+		let item = this._gfonts.items.find((it)=>{
+			return it.familyNoSpace === familyName;
+		});
+		if ( undefined == item)
+		{
+			return;
+		}
+		
+		let variant = item.variants.find((it)=>{
+			return it == styleNameLowerCase;
+		});	
+
+		if ( undefined == variant )
+		{
+			return;
+		}
+		let url = item.files[variant];
+		return url;
+	}
+
 }
+
 

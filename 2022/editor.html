@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="static/UI.css">
     <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" type="text/css" href="static/toast.css">
     <link rel="stylesheet" href="static/jquery-ui.css">
 	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src='static/jquery-ui.js' ></script>
@@ -89,6 +90,7 @@
 			<label>Font:</label>
 			<label id="fontName"></label>
 			<img id="missingFont" src="images/logo_warning.png"/>
+			<img id="activateFont" src=""/>
 		</div>
 		<div class="panelRow">
 			<label>Font Size:</label>
@@ -178,7 +180,8 @@
 	<div id="footer">
 		Powered By Esko ArtPro+ 21.11
 	</div>
-	
+	<div id="toast">
+	</div>	
 	<dialog id="spinnerDialog" class="modalDialog">
 		<div style="text-align: center;">
 			<img id="spinnerGif" width=96 height=96 src="static/loading.gif" />
