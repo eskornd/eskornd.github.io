@@ -61,15 +61,43 @@ body {
     }
 }
 
+/*
 #dropzone {
 	font-size : 1em;
-	border: 3px dashed grey;
-	width:  14em;
-	height: 1.4em;
-	padding: 0.2em 0.2em;
+	border: 2px dashed grey;
+	width:  200px;
+	height: 32px;
+	line-height: 32px;
 	text-align: center;
 	vertical-align: middle;
 	border-radius: 2px;
+}
+*/
+
+#dropzone {
+	font-size : 1em;
+	border: 2px dashed grey;
+	width:  240;
+	height: 32px;
+	text-align: center;
+	border-radius: 4px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+#dropzoneInlineHelper {
+	height : 100%;
+	display: inline-block;	
+	vertical-align: middle;
+}
+
+#browse
+{
+	height: 80%;
+	opacity: 0.70;
+	vertical-align: middle;
+	display: inline-block;
+	object-fit : contain;
 }
 
 .wrapper {
@@ -87,17 +115,19 @@ body {
 }
 
 .toolbar {
-	margin: 1em;
+	margin-top: 1em;
 	text-align: center;
+	vertical-align: middle;
 }
 
 .toolspan {
 	vertical-align: middle;
+	height:100%
 	margin: 0px 5px;
 }
 
 #document {
-	margin: 1em;
+	margin-bottom: 1em;
 	text-align: center;
 }
 

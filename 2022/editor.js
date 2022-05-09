@@ -89,7 +89,7 @@ function UI()
 		console.log(files);
 	});
 
-	$('#browse').click(()=>{
+	$('#dropzone').click(()=>{
 		$('#browseInput').click();	
 	});
 
