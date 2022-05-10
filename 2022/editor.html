@@ -25,38 +25,38 @@
 		
 		<span class="toolspan">
 				<span>
-					<button class="optional" id="save" width=40>
+					<button class="optional toolbutton" id="save" width=40>
 						<div class="material-symbols-rounded">download</div>
 					</button>
 				</span>
 				<span>
-					<button id="xmpToggle">
+					<button class="toolbutton" id="xmpToggle">
 						<img src="images/logo_xmp.png" width=32 height=16 />
 					</button>
 				</span>
 				<span>
-					<button class="optional" id="barCodeToggle">
+					<button class="optional toolbutton" id="barCodeToggle">
 						<div class="material-symbols-rounded">qr_code</div>
 					</button>
 				</span>
 				<span>
-					<button class="optional" id="textToggle" width=40>
+					<button class="optional toolbutton" id="textToggle" width=40>
 						<div class="material-symbols-rounded">text_fields</div>
 					</button>
 				</span>
 				<span>
-					<button class="optional" id="imageToggle" width=40>
+					<button class="optional toolbutton" id="imageToggle" width=40>
 						<div class="material-symbols-rounded">image</div>
 					</button>
 				</span>
 				<span>
-					<button class="optional" id="fontsToggle" width=40>
+					<button class="optional toolbutton" id="fontsToggle" width=40>
 						
 						<div class="material-symbols-rounded">font_download</div>
 					</button>
 				</span>
 				<span>
-					<button class="optional" id="settingsToggle">
+					<button class="optional toolbutton" id="settingsToggle">
 						<div class="material-symbols-rounded">settings</div>
 					</button>
 				</span>
@@ -78,7 +78,7 @@
 			<input type="text" id='currentBarCode'/>
 		</div>
 		<div class="panelRow">
-			<button id="applyBarCode" name="noname">Apply</button>
+			<button class="toolbutton" id="applyBarCode" name="noname">Apply</button>
 		</div>
 	</div>
 	<div class="panel" id="textPanel" style="visibility: hidden;" title="Text">
@@ -100,25 +100,25 @@
 			<input id="fontSize" type="number" step="1.0" value="0"></input>
 		</div>
 		<div class="panelRow">
-			<button id="alignLeft">
+			<button class="toolbutton" id="alignLeft">
 				<img src="images/logo_alignLeft.png" width=12 height=12 />
 </button>
-			<button id="alignCenter">
+			<button class="toolbutton" id="alignCenter">
 				<img src="images/logo_alignCenter.png" width=12 height=12 />
 </button>
-			<button id="alignRight">
+			<button class="toolbutton" id="alignRight">
 				<img src="images/logo_alignRight.png" width=12 height=12 />
 </button>
-			<button id="justifyLeft">
+			<button class="toolbutton" id="justifyLeft">
 				<img src="images/logo_justifyLeft.png" width=12 height=12 />
 </button>
-			<button id="justifyCenter">
+			<button class="toolbutton" id="justifyCenter">
 				<img src="images/logo_justifyCenter.png" width=12 height=12 />
 </button>
-			<button id="justifyRight">
+			<button class="toolbutton" id="justifyRight">
 				<img src="images/logo_justifyRight.png" width=12 height=12 />
 </button>
-			<button id="justifyAll">
+			<button class="toolbutton" id="justifyAll">
 				<img src="images/logo_justifyAll.png" width=12 height=12 />
 </button>
 		</div>
@@ -171,12 +171,16 @@
 	</div>
 	<div class="panel" id="settingsPanel" style="visibility: hidden;" title="Settings">
 		<div class="panelRow">
-			<label>Device Pixel Ratio:</label>
+			<label>View Quality:</label>
 			<input id="devicePixelRatioBar" type="range" min="1" max="5" value="3" step="1" class="slider"/>
-			<!--
-			<input id="devicePixelRatio" type="number" step="0.25" value="1.0" min="0.5" max="2.0">
-			-->
-			</input>
+		</div>
+		<div class="panelRow">
+			<input type="checkbox" id="useGoogleFonts" />
+			<label for="useGoogleFonts">Use Google Fonts</label>
+		</div>
+		<div class="panelRow">
+			<input type="checkbox" id="useSystemFonts" />
+			<label for="useSystemFonts">Use System Fonts (@port 19999)</label>
 		</div>
 	</div>
 	<div id="document">

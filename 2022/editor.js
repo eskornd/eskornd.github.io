@@ -18,6 +18,9 @@ let ctx = {
 	settings : {
 		devicePixelRatio : 1.5
 		, dpi : 72.0
+		, useGoogleFonts : true
+		, useSystemFonts : false
+		, systemFontsBaseURL : 'http://localhost:19999'
 	}
 };
 
@@ -139,10 +142,14 @@ function UI()
 
 	let applyTextChanges = async () => {
 		let curText = $('#currentText').val();
-		viewer().setTextText(getTextIndex(), curText);
-		loadCtx();
-		Repaint();
-		toastMessage('Text content changed');
+		if ( curText !== ctx.lastSetText )
+		{
+			viewer().setTextText(getTextIndex(), curText);
+			ctx.lastSetText = curText;
+			loadCtx();
+			Repaint();
+			toastMessage('Text content changed');
+		}
 	};
 	let applyFontSizeChange = async()=> {
 		let fontSize = $('#fontSize').val();
@@ -233,6 +240,18 @@ function UI()
 		Repaint();
 		toastMessage('Device pixel ratio changed: ' + ratio );
 	});
+	$('#useGoogleFonts').prop('checked', ctx.settings.useGoogleFonts);
+	$('#useSystemFonts').prop('checked', ctx.settings.useSystemFonts);
+	$('#useGoogleFonts').change(()=>{
+		let checked = $('#useGoogleFonts').prop('checked');
+		ctx.settings.useGoogleFonts = checked;
+		UpdateTextContentUI();
+	});
+	$('#useSystemFonts').change(()=>{
+		let checked = $('#useSystemFonts').prop('checked');
+		ctx.settings.useSystemFonts = checked;
+		UpdateTextContentUI();
+	});
 
 	$('#barCodeIndex').change( () => {
 		Repaint();
@@ -269,7 +288,7 @@ function UI()
 	$('#fontsToggle').click(()=>{
 		setPanelVisible('#fontsPanel', !isPanelVisible('#fontsPanel'));
 	});
-	$('#settingsPanel').dialog({width: 240, height: 160});
+	$('#settingsPanel').dialog({width: 480, height: 160});
 	$('#settingsToggle').click(()=>{
 		setPanelVisible('#settingsPanel', !isPanelVisible('#settingsPanel'));
 	});
@@ -347,7 +366,7 @@ function UpdateImageIndexUI(numImages)
 function UpdateTextContentUI()
 {
 	let checkFontAvailability = async (text) => {
-		let pm = gNDL.getFontURL(text.fontName);
+		let pm = gNDL.getFontURL(text.fontName, ctx.settings.useGoogleFonts, ctx.settings.useSystemFonts);
 		pm.then((rawURL) => {
 			if ( undefined == rawURL )
 			{
@@ -355,8 +374,13 @@ function UpdateTextContentUI()
 				$('#missingFont').css('display', text.hasSystemFont ? 'none' : 'inline-block');
 				$('#activateFont').css('display', 'none');
 			} else {
+				let isSystemFont = rawURL.startsWith('file://');
+				
 				$('#missingFont').css('display', 'none');
-				$('#activateFont').attr('src', text.hasSystemFont ? 'images/logo_googlefonts_activated.png' : 'images/logo_googlefonts_deactivated.png');
+				let activatedIcon = isSystemFont ? 'images/logo_sysfont_activated.png' : 'images/logo_googlefont_activated.png';
+				let deactivatedIcon = isSystemFont ? 'images/logo_sysfont_deactivated.png' : 'images/logo_googlefont_deactivated.png';
+				let icon = text.hasSystemFont ? activatedIcon : deactivatedIcon;
+				$('#activateFont').attr('src', icon);
 				$('#activateFont').css('display', 'inline-block');
 				// missing font handler
 				$('#fontReady').off('click').on('click', ()=>{
@@ -372,13 +396,12 @@ function UpdateTextContentUI()
 					} 
 					: ()=>{
 						let url = rawURL;
-						let isLocal = rawURL.startsWith('file://');
-						let fontSourceType = isLocal ? "local" : "Google";
+						let fontSourceType = isSystemFont ? "System" : "Google";
 						// preprocess URL
-						if ( isLocal)
+						if ( isSystemFont )
 						{
-							// local
-							url = rawURL.replace('file://', 'http://127.0.0.1:19999');	
+							// system font
+							url = rawURL.replace('file://', ctx.settings.systemFontsBaseURL);	
 						} else {
 							// handle google font protocol
 							if ( location.protocol == 'https:') 
@@ -419,6 +442,7 @@ function UpdateTextContentUI()
 	{
 		let t = ctx.texts[index];
 		$('#currentText').val(t.text);
+		ctx.lastSetText = t.text;
 		$('#fontName').text(t.fontName);
 		$('#fontName').attr('postscriptName', t.fontName);
 		$('#fontName').attr('fontFamily', t.fontFamilyName);
@@ -1040,8 +1064,8 @@ async function start()
 	};
 	await ndl.initialize(initParams);
 	await ndl.loadGoogleFonts('resources/googlefonts.json');
-	//await ndl.loadLocalFonts('resources/localfonts.json');
-	await ndl.loadLocalFonts('resources/emptylocalfonts.json');
+	await ndl.loadSystemFonts('resources/localfonts.json');
+	//await ndl.loadSystemFonts('resources/emptylocalfonts.json');
 	gNDL = ndl;
 	await dumpSystemFonts();
 	await loadSamplePDF();

@@ -168,14 +168,14 @@ export class NDL
 		console.log(this._gfonts.items.length + ' google fonts loaded');
 	}
 
-	async loadLocalFonts(localFontsJsonURL)
+	async loadSystemFonts(systemFontsJsonURL)
 	{
-		let u8Array = await fetchBinaryAsU8Array(localFontsJsonURL);
+		let u8Array = await fetchBinaryAsU8Array(systemFontsJsonURL);
 		try {
 			let jsonStr = new TextDecoder().decode(u8Array)
 			this._lfonts = JSON.parse(jsonStr);
 		} catch (err) {
-			alert('loadLocalFonts(): Error parsing list: ' + error );
+			alert('loadSystemFonts(): Error parsing list: ' + error );
 		}
 		
 		console.log(this._lfonts.fonts.length + ' local fonts loaded');
@@ -244,7 +244,7 @@ export class NDL
 		return url;
 	}
 
-	async getLocalFontURL(postscriptName)
+	getSystemFontURL(postscriptName)
 	{
 		let item = this._lfonts.fonts.find((it)=>{
 			return it.postscriptName == postscriptName;
@@ -254,13 +254,21 @@ export class NDL
 	}	
 	
 	// Return object { type, url} URL if found, return undefined otherwise
-	async getFontURL(postscriptName)
+	async getFontURL(postscriptName, searchGoogle, searchSystem)
 	{
-		let url = this.getGoogleFontURL(postscriptName);
-		if ( undefined != url )
-			return url;
+		let url = undefined;
+		if (searchGoogle)
+		{
+			url = this.getGoogleFontURL(postscriptName);
+			if ( undefined != url )
+				return url;
+		}
 
-		url = this.getLocalFontURL(postscriptName);
+		if ( searchSystem)
+		{
+			url = this.getSystemFontURL(postscriptName);
+		}
+
 		return url;
 	}
 

@@ -103,6 +103,10 @@ body {
 	margin: 0px 5px;
 }
 
+.toolbutton {
+	cursor: pointer;
+}
+
 #document {
 	margin-bottom: 1em;
 	text-align: center;
@@ -240,6 +244,10 @@ body {
 	grid-template-columns: 250px 70px auto;
 }
 
+#devicePixelRatioBar {
+	height: 12px;
+	display: inline-block;
+}
 
 /* jquery UI */
 .ui-dialog .ui-dialog-titlebar {
