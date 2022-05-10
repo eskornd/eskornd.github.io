@@ -150,9 +150,9 @@ export class NDL
 		}
 	}
 
-	async loadGoogleFonts(googleFontsURL)
+	async loadGoogleFonts(googleFontsJsonURL)
 	{
-		let u8Array = await fetchBinaryAsU8Array(googleFontsURL);
+		let u8Array = await fetchBinaryAsU8Array(googleFontsJsonURL);
 		try {
 			let jsonStr = new TextDecoder().decode(u8Array)
 			this._gfonts = JSON.parse(jsonStr);
@@ -166,6 +166,19 @@ export class NDL
 		});
 	
 		console.log(this._gfonts.items.length + ' google fonts loaded');
+	}
+
+	async loadLocalFonts(localFontsJsonURL)
+	{
+		let u8Array = await fetchBinaryAsU8Array(localFontsJsonURL);
+		try {
+			let jsonStr = new TextDecoder().decode(u8Array)
+			this._lfonts = JSON.parse(jsonStr);
+		} catch (err) {
+			alert('loadLocalFonts(): Error parsing list: ' + error );
+		}
+		
+		console.log(this._lfonts.fonts.length + ' local fonts loaded');
 	}
 
 	
@@ -203,7 +216,8 @@ export class NDL
 		return variantName;
 	}
 
-	async getFontURL(postscriptName)
+	// Return font file URL if found, otherwise return undefined
+	getGoogleFontURL(postscriptName)
 	{
 		let pos = postscriptName.indexOf('-');
 		let familyName = -1 == pos ? postscriptName : postscriptName.substr(0, pos);
@@ -227,6 +241,26 @@ export class NDL
 			return;
 		}
 		let url = item.files[variant];
+		return url;
+	}
+
+	async getLocalFontURL(postscriptName)
+	{
+		let item = this._lfonts.fonts.find((it)=>{
+			return it.postscriptName == postscriptName;
+		});
+
+		return undefined == item ? undefined : 'file://' + item.filePath;
+	}	
+	
+	// Return object { type, url} URL if found, return undefined otherwise
+	async getFontURL(postscriptName)
+	{
+		let url = this.getGoogleFontURL(postscriptName);
+		if ( undefined != url )
+			return url;
+
+		url = this.getLocalFontURL(postscriptName);
 		return url;
 	}
 

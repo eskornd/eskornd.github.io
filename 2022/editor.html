@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="static/UI.css">
     <link rel="stylesheet" type="text/css" href="static/fadein.css">
     <link rel="stylesheet" type="text/css" href="static/toast.css">
+    <link rel="stylesheet" type="text/css" href="static/MaterialSymbols.css">
     <link rel="stylesheet" href="static/jquery-ui.css">
 	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src='static/jquery-ui.js' ></script>
@@ -16,30 +17,18 @@
 <body>
 	<div class="toolbar">
 		<div id="dropzone">
-			<img id="browse" src="images/logo_upload.png" />
-			<span id="dropzoneInlineHelper">
-			</span>
+			<span id="dropzoneInlineHelper"> </span>
+			<div id="dropzoneIcon" class="material-symbols-rounded">file_upload</div>
+			<span id="dropzoneInlineHelper"> </span>
 		</div>
 		<input type="file" id="browseInput" style="display:none;">
 		
-		<!--
-		<span class="toolspan">
-			<span id="dropzone">
-				<span>Drop file here or </span>
-				<span>
-					<button id="browse" name="noname">Browse...</button> 
-				</span>
-				<input type="file" id="browseInput" style="display:none;">
-			</span>
-		</span>
-		-->
 		<span class="toolspan">
 				<span>
 					<button class="optional" id="save" width=40>
-						<img src="images/logo_save.png" width=16 height=16 />
+						<div class="material-symbols-rounded">download</div>
 					</button>
 				</span>
-				<span>   </span>
 				<span>
 					<button id="xmpToggle">
 						<img src="images/logo_xmp.png" width=32 height=16 />
@@ -47,22 +36,28 @@
 				</span>
 				<span>
 					<button class="optional" id="barCodeToggle">
-						<img src="images/logo_barcode.png" width=16 height=16 />
+						<div class="material-symbols-rounded">qr_code</div>
 					</button>
 				</span>
 				<span>
 					<button class="optional" id="textToggle" width=40>
-						<img src="images/logo_text.png" width=16 height=16 />
+						<div class="material-symbols-rounded">text_fields</div>
 					</button>
 				</span>
 				<span>
 					<button class="optional" id="imageToggle" width=40>
-						<img src="images/logo_image.png" width=16 height=16 />
+						<div class="material-symbols-rounded">image</div>
 					</button>
 				</span>
 				<span>
 					<button class="optional" id="fontsToggle" width=40>
-						<img src="images/logo_fonts.png" width=16 height=16 />
+						
+						<div class="material-symbols-rounded">font_download</div>
+					</button>
+				</span>
+				<span>
+					<button class="optional" id="settingsToggle">
+						<div class="material-symbols-rounded">settings</div>
 					</button>
 				</span>
 		</span>
@@ -96,7 +91,8 @@
 		<div class="panelRow" id="fontNameRow">
 			<label>Font:</label>
 			<label id="fontName"></label>
-			<img id="missingFont" src="images/logo_warning.png"/>
+			<div class="material-symbols-rounded" id="fontReady">download_done</div>
+			<div class="material-symbols-rounded" id="missingFont">warning</div>
 			<img id="activateFont" src=""/>
 		</div>
 		<div class="panelRow">
@@ -171,6 +167,16 @@
 			<div id="fontList">
 				FONTLIST HERE
 			</div>
+		</div>
+	</div>
+	<div class="panel" id="settingsPanel" style="visibility: hidden;" title="Settings">
+		<div class="panelRow">
+			<label>Device Pixel Ratio:</label>
+			<input id="devicePixelRatioBar" type="range" min="1" max="5" value="3" step="1" class="slider"/>
+			<!--
+			<input id="devicePixelRatio" type="number" step="0.25" value="1.0" min="0.5" max="2.0">
+			-->
+			</input>
 		</div>
 	</div>
 	<div id="document">

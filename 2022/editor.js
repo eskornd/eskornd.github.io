@@ -14,7 +14,12 @@ function viewer()
 }
 
 // context of current document
-let ctx = { };
+let ctx = {
+	settings : {
+		devicePixelRatio : 1.5
+		, dpi : 72.0
+	}
+};
 
 function isPanelVisible(selector)
 {
@@ -125,11 +130,11 @@ function UI()
 
 
 	$('#rgbColorSpace').on('click', ()=>{
-		toastMessage('Image in RGB color space.');
+		toastMessage('Image in RGB color space');
 	});
 
 	$('#lowResolution').on('click', ()=>{
-		toastMessage('Image Resolution is low.');
+		toastMessage('Image Resolution is low');
 	});
 
 	let applyTextChanges = async () => {
@@ -137,6 +142,7 @@ function UI()
 		viewer().setTextText(getTextIndex(), curText);
 		loadCtx();
 		Repaint();
+		toastMessage('Text content changed');
 	};
 	let applyFontSizeChange = async()=> {
 		let fontSize = $('#fontSize').val();
@@ -144,6 +150,7 @@ function UI()
 		viewer().setTextFontSize(getTextIndex(), fontSize);
 		loadCtx();
 		Repaint();
+		toastMessage('Font size changed: ' + fontSize + ' pt');
 	}
 
 	// deprecated: hide edit 
@@ -179,6 +186,52 @@ function UI()
 		viewer().setBarCode(getBarCodeIndex(), str);
 		loadCtx();
 		Repaint();
+		toastMessage('Barcode changed: ' + str );
+	});
+
+	let ratioToUIValue = (ratio) =>{
+		if (ratio < 0.5001 )
+		{
+			return 1;
+		} else if (ratio < 0.7501)
+		{
+			return 2;
+		} else if (ratio < 1.0001)
+		{
+			return 3;
+		} else if (ratio < 1.5001)
+		{
+			return 4;
+		} else {
+			return 5;
+		}
+	};
+	let ratioFromUIValue = (val) =>{
+		if ( val < 1.01 )
+		{
+			return 0.5;
+		} else if ( val < 2.01)
+		{
+			return 0.75;
+		}  else if ( val < 3.01)
+		{
+			return 1.0;
+		} else if ( val < 4.01)
+		{
+			return 1.5;
+		} else {
+			return 2.0;
+		}
+	};
+	$('#devicePixelRatioBar').val(ratioToUIValue(ctx.settings.devicePixelRatio));
+	$('#devicePixelRatioBar').change( ()=>{
+		let ratio = ratioFromUIValue($('#devicePixelRatioBar').val());
+		ctx.settings.devicePixelRatio = ratio;
+		viewer().setDPI(ctx.settings.devicePixelRatio * ctx.settings.dpi);
+		loadCtx_preview();
+		ResizeCanvas(ctx.previewRasterSize);
+		Repaint();
+		toastMessage('Device pixel ratio changed: ' + ratio );
 	});
 
 	$('#barCodeIndex').change( () => {
@@ -215,6 +268,10 @@ function UI()
 	$('#fontsPanel').dialog({width: 320, height: 400});
 	$('#fontsToggle').click(()=>{
 		setPanelVisible('#fontsPanel', !isPanelVisible('#fontsPanel'));
+	});
+	$('#settingsPanel').dialog({width: 240, height: 160});
+	$('#settingsToggle').click(()=>{
+		setPanelVisible('#settingsPanel', !isPanelVisible('#settingsPanel'));
 	});
 
 }
@@ -291,43 +348,70 @@ function UpdateTextContentUI()
 {
 	let checkFontAvailability = async (text) => {
 		let pm = gNDL.getFontURL(text.fontName);
-		pm.then((url) => {
-			if ( undefined == url )
+		pm.then((rawURL) => {
+			if ( undefined == rawURL )
 			{
+				$('#fontReady').css('display', text.hasSystemFont ? 'inline-block' : 'none');
 				$('#missingFont').css('display', text.hasSystemFont ? 'none' : 'inline-block');
 				$('#activateFont').css('display', 'none');
 			} else {
 				$('#missingFont').css('display', 'none');
-				$('#activateFont').attr('fontURL', url);
 				$('#activateFont').attr('src', text.hasSystemFont ? 'images/logo_googlefonts_activated.png' : 'images/logo_googlefonts_deactivated.png');
 				$('#activateFont').css('display', 'inline-block');
 				// missing font handler
+				$('#fontReady').off('click').on('click', ()=>{
+					toastMessage( text.fontName + ' is a system font');
+				});
 				$('#missingFont').off('click').on('click', ()=>{
-					toastMessage( text.fontName + ' is a subset font.');
+					toastMessage( 'Missing font: ' + text.fontName + ' is a subset font');
 				});
 				// google font handler
 				let clickHandler = text.hasSystemFont ? 
 					()=>{ 
-						toastMessage( text.fontName + ' is already activated.');
+						toastMessage( text.fontName + ' is already activated');
 					} 
-					: async ()=>{
-						toastMessage('Downloading google font ' + text.fontName);
-						let theURL = url;
-						if ( location.protocol == 'https:') 
+					: ()=>{
+						let url = rawURL;
+						let isLocal = rawURL.startsWith('file://');
+						let fontSourceType = isLocal ? "local" : "Google";
+						// preprocess URL
+						if ( isLocal)
 						{
-							theURL = url.replace('http', 'https');
+							// local
+							url = rawURL.replace('file://', 'http://127.0.0.1:19999');	
+						} else {
+							// handle google font protocol
+							if ( location.protocol == 'https:') 
+							{
+								url = rawURL.replace('http', 'https');
+							}
 						}
-						let u8Array = await fetchBinaryAsU8Array(theURL);
-						let fileName = url.substr(url.lastIndexOf('/')+1);
-						let fullPath = '/' + fileName;
-						writeU8ArrayAsFile(u8Array, fullPath);
-						ProcessFile(fullPath);
-						toastMessage('Google Font ' + text.fontName + ' activated.');
+						toastMessage('Downloading ' + fontSourceType + ' font ' + text.fontName);
+						let fetch = fetchBinaryAsU8Array(url);
+						fetch
+						.then( (u8Array) =>{
+							let fileName = url.substr(url.lastIndexOf('/')+1);
+							let fullPath = '/' + fileName;
+							writeU8ArrayAsFile(u8Array, fullPath);
+							ProcessFile(fullPath);
+							toastMessage( fontSourceType + ' font ' + text.fontName + ' activated');
+						}
+						, (error) => {
+							toastMessage('Unable to download ' + fontSourceType + ' font ' + text.fontName );
+							console.log(error);	
+						})
+						.catch( (error) => {
+							toastMessage('Unable to download ' + fontSourceType + ' font ' + text.fontName);
+							console.log(error);	
+						});
 						
 					};
 				$('#activateFont').off('click').on('click', clickHandler );
 				
 			}	
+		})
+		.catch((error)=>{
+			toastMessage('Error downloading font: ' + text.fontName);
 		});
 	};
 	let index = getTextIndex();
@@ -420,13 +504,19 @@ function ArrayToImageData(array, rasterSize)
 	return imageData;
 }
 
+function UpdateCanvasPixelRatio()
+{
+	let canvas = document.getElementById('canvas');
+	canvas.style.width = canvas.width / ctx.settings.devicePixelRatio;
+	canvas.style.height = canvas.height / ctx.settings.devicePixelRatio;
+}
+
 function ResizeCanvas(rasterSize)
 {
 	let canvas = document.getElementById('canvas');
 	canvas.width = rasterSize.width;
 	canvas.height = rasterSize.height;
-	canvas.style.width = canvas.width / 2;
-	canvas.style.height = canvas.height /2;
+	UpdateCanvasPixelRatio();
 }
 
 function FlushCanvas()
@@ -441,7 +531,7 @@ function Repaint()
 {
 	//const kHighlightColor = '#444B53';
 	const kHighlightColor = '#A6C044';
-	const kHighlightWidth = 4;
+	let kHighlightWidth = 2.0 * ctx.settings.devicePixelRatio;
 	let drawOnCanvas = (array, rasterSize) =>{
 		let canvas = document.getElementById("canvas");
 		let twoD = canvas.getContext("2d");
@@ -739,7 +829,7 @@ function ProcessPDF(filePath)
 {
 	console.log('Begin ProcessPDF ' + filePath);
 	let loaded = viewer().loadPDF(filePath);
-	viewer().setDPI(2.0*72.0);
+	viewer().setDPI( ctx.settings.devicePixelRatio * ctx.settings.dpi);
 	console.assert(loaded);
 	let json = viewer().getMetadata();
 	console.log(json);
@@ -871,10 +961,16 @@ async function fetchBinaryAsU8Array(url)
 		xhr.open("GET", url, true);
 		xhr.onload = function (xhrEvent) 
 		{
+			if (this.status === 404) {
+				reject(xhrEvent);
+			}
 			let arrayBuffer = xhr.response; 
 			// if you want to access the bytes:
 			let byteArray = new Uint8Array(arrayBuffer);
 			resolve(byteArray);
+		};
+		xhr.onerror = (error) => {
+			reject(error);
 		};
 		xhr.send();
 	});
@@ -944,6 +1040,8 @@ async function start()
 	};
 	await ndl.initialize(initParams);
 	await ndl.loadGoogleFonts('resources/googlefonts.json');
+	//await ndl.loadLocalFonts('resources/localfonts.json');
+	await ndl.loadLocalFonts('resources/emptylocalfonts.json');
 	gNDL = ndl;
 	await dumpSystemFonts();
 	await loadSamplePDF();
@@ -958,7 +1056,7 @@ $(()=> {
 	showBusy();
 	UI();
 	start();
-	let panelIDs = ['#textPanel', '#barCodePanel', '#xmpPanel', '#imagePanel', '#fontsPanel'];
+	let panelIDs = ['#textPanel', '#barCodePanel', '#xmpPanel', '#imagePanel', '#fontsPanel', '#settingsPanel'];
 	for ( let i=0; i<panelIDs.length; ++i)
 	{
 		let selector=panelIDs[i];
