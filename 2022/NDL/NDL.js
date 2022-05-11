@@ -181,6 +181,19 @@ export class NDL
 		console.log(this._lfonts.fonts.length + ' local fonts loaded');
 	}
 
+	async loadOtherFonts(otherFontsJsonURL)
+	{
+		let u8Array = await fetchBinaryAsU8Array(otherFontsJsonURL);
+		try {
+			let jsonStr = new TextDecoder().decode(u8Array)
+			this._ofonts = JSON.parse(jsonStr);
+		} catch (err) {
+			alert('loadOtherFonts(): Error parsing list: ' + error );
+		}
+		
+		console.log(this._ofonts.fonts.length + ' other fonts loaded');
+	}
+
 	
 	// font postscript style name to google variant name
 	styleNameToVariantName(styleName)
@@ -252,6 +265,15 @@ export class NDL
 
 		return undefined == item ? undefined : 'file://' + item.filePath;
 	}	
+
+	getOtherFontURL(postscriptName)
+	{
+		let item = this._ofonts.fonts.find((it)=>{
+			return it.postscriptName == postscriptName;
+		});
+
+		return undefined == item ? undefined : item.url;
+	}
 	
 	// Return object { type, url} URL if found, return undefined otherwise
 	async getFontURL(postscriptName, searchGoogle, searchSystem)
@@ -263,6 +285,16 @@ export class NDL
 			if ( undefined != url )
 				return url;
 		}
+
+		/* Will not work due to CORS issue
+		// lets pretend others to be google for a minute
+		if ( searchGoogle )
+		{
+			url = this.getOtherFontURL(postscriptName);
+			if (undefined != url)
+				return url;
+		}
+		*/
 
 		if ( searchSystem)
 		{

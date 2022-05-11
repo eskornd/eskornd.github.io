@@ -44,6 +44,22 @@ function setPanelVisible(selector, visible)
 	}	
 }
 
+function checkSystemFontsService()
+{
+	return new Promise( (resolve, reject) =>{
+		var oReq = new XMLHttpRequest();
+		oReq.onload = function(e) {
+			resolve();
+		}
+		oReq.onerror = function (e){
+			reject();
+		}
+		oReq.open("HEAD", ctx.settings.systemFontsBaseURL);
+		oReq.responseType = "arraybuffer";
+		oReq.send();	
+	});
+}
+
 function UI()
 {
 	const ele = document.getElementById('dropzone');
@@ -287,6 +303,21 @@ function UI()
 		let checked = $('#useSystemFonts').prop('checked');
 		ctx.settings.useSystemFonts = checked;
 		UpdateTextContentUI();
+		if (checked)
+		{
+			checkSystemFontsService().then(
+				() => {
+					toastMessage('System font service connected');
+				}
+				, () => {
+					toastMessage('System font service is not running');
+				}
+			).catch(
+				()=>{
+					toastMessage('System font service is not running');
+				}
+			);
+		}
 	});
 
 	$('#barCodeIndex').change( () => {
@@ -422,7 +453,6 @@ function UpdateTextContentUI()
 			} else {
 				let isSystemFont = rawURL.startsWith('file://');
 				
-				//$('#missingFont').css('display', 'none');
 				let activatedIcon = isSystemFont ? 'images/logo_sysfont_activated.png' : 'images/logo_googlefont_activated.png';
 				let deactivatedIcon = isSystemFont ? 'images/logo_sysfont_deactivated.png' : 'images/logo_googlefont_deactivated.png';
 				let icon = text.hasSystemFont ? activatedIcon : deactivatedIcon;
@@ -1089,7 +1119,6 @@ async function dumpSystemFonts()
 	{
 		console.warn('dumpSystemFonts(): Unable to parse JSON: ' + jsonStr);
 	}
-	
 }
 async function start()
 {
@@ -1104,6 +1133,8 @@ async function start()
 	await ndl.initialize(initParams);
 	await ndl.loadGoogleFonts('resources/googlefonts.json');
 	await ndl.loadSystemFonts('resources/localfonts.json');
+	// will not work due to CORS issue
+	// await ndl.loadOtherFonts('resources/otherfonts.json');
 	//await ndl.loadSystemFonts('resources/emptylocalfonts.json');
 	gNDL = ndl;
 	await dumpSystemFonts();
