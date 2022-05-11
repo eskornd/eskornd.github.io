@@ -60,9 +60,9 @@ function checkSystemFontsService()
 	});
 }
 
-function UI()
+function installDropHandler(id, handler)
 {
-	const ele = document.getElementById('dropzone');
+	const ele = document.getElementById(id);
 	ele.addEventListener('dragover', function (e) {
 			e.preventDefault();
 			});
@@ -79,8 +79,14 @@ function UI()
 	ele.addEventListener('drop', function (e) {
 			e.preventDefault();
 			e.target.style.background = '';
-			dropHandler(e);
+			handler(e);
 			});
+}
+
+function UI()
+{
+	installDropHandler('dropzone', dropHandler);	
+	installDropHandler('fontDrop', dropHandlerFont);	
 	
 	//Hotkeys
 	//$('.optional').css('display', 'none');
@@ -485,7 +491,7 @@ function UpdateTextContentUI()
 							let fileName = url.substr(url.lastIndexOf('/')+1);
 							let fullPath = '/' + fileName;
 							writeU8ArrayAsFile(u8Array, fullPath);
-							ProcessFile(fullPath);
+							ProcessFont(fullPath);
 							toastMessage( fontSourceType + ' font ' + text.fontName + ' activated');
 						}
 						, (error) => {
@@ -949,6 +955,10 @@ function ProcessPDF(filePath)
 function ProcessFont(filePath)
 {
 	viewer().loadFont(filePath);
+	loadCtx();
+	UpdateTextContentUI();
+	UpdateFontsUI();
+	Repaint();
 }
 
 function isFileNamePDF(filePath)
@@ -968,15 +978,8 @@ function ProcessFile(filePath)
 		FlushCanvas();
 		showBusy();
 		setTimeout(()=>{ProcessPDF(filePath);}, 100);
-	} else if (isFileNameFont(filePath))
-	{
-		ProcessFont(filePath);
-		loadCtx();
-		UpdateTextContentUI();
-		UpdateFontsUI();
-		Repaint();
 	} else {
-		alert('Unknown file format: ' + filePath);
+		toastMessage('Unsupported file format: ' + filePath);
 	}
 }
 var Initializer = 
@@ -1067,6 +1070,37 @@ async function fetchBinaryAsU8Array(url)
 		};
 		xhr.send();
 	});
+}
+
+async function dropHandlerFont(ev) {
+	console.log('File(s) dropped');
+
+	// Prevent default behavior (Prevent file from being opened)
+	ev.preventDefault();
+
+	let files = ev.dataTransfer.files;
+	let count = 0;
+	let installedFontName = '';
+	for (let i = 0; i < files.length; ++i) 
+	{
+		let file = files[i];
+		let filePath = await mountFile(file);
+		if (isFileNameFont(filePath))
+		{
+			ProcessFont(filePath);
+			installedFontName = filePath;
+			++count;
+		} else {
+			toastMessage('Unsupported file format: ' + filePath);
+		}
+	}
+	if (count == 1 )
+	{
+		toastMessage('Font installed: ' + installedFontName);
+	} else if (count >1)
+	{
+		toastMessage(count + ' fonts installed');
+	}
 }
 
 async function dropHandler(ev) {

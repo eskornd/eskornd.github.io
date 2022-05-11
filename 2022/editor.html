@@ -17,9 +17,9 @@
 <body>
 	<div class="toolbar">
 		<div id="dropzone">
-			<span id="dropzoneInlineHelper"> </span>
-			<div id="dropzoneIcon" class="material-symbols-rounded">file_upload</div>
-			<span id="dropzoneInlineHelper"> </span>
+			<span class="dropzoneInlineHelper"> </span>
+			<div class="material-symbols-rounded dropzoneIcon">file_upload</div>
+			<span class="dropzoneInlineHelper"> </span>
 		</div>
 		<input type="file" id="browseInput" style="display:none;">
 		
@@ -163,6 +163,13 @@
 		</div>
 	</div>
 	<div class="panel" id="fontsPanel" style="visibility: hidden;" title="Fonts">
+		<div class="panelRow">
+			<div id="fontDrop">
+				<span class="dropzoneInlineHelper"> </span>
+				<div class="material-symbols-rounded dropzoneIcon">file_upload</div>
+				<span class="dropzoneInlineHelper"> </span>
+			</div>
+		</div>
 		<div class="panelRow">
 			<div id="fontList">
 				FONTLIST HERE
