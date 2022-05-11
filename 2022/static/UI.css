@@ -245,8 +245,14 @@ body {
 }
 
 #devicePixelRatioBar {
+	width: 200px;
 	height: 12px;
 	display: inline-block;
+}
+
+#viewQualitySpeed {
+	font-size: 12px;
+	cursor: pointer;
 }
 
 /* jquery UI */

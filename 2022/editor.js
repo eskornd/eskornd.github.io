@@ -211,8 +211,10 @@ function UI()
 			return 4;
 		} else if (ratio < 2.0001){
 			return 5;
-		} else {
+		} else if (ratio < 4.0001){
 			return 6;
+		} else {
+			return 7;
 		}
 	};
 	let ratioFromUIValue = (val) =>{
@@ -228,15 +230,45 @@ function UI()
 		} else if ( val < 4.01)
 		{
 			return 1.5;
-		} else if ( val < 5.01){
+		} else if ( val < 5.01)
+		{
 			return 2.0;
-		} else {
+		} else if ( val < 6.01) 
+		{
 			return 4.0;
+		} else {
+			return 8.0;
 		}
 	};
+	
+	let updateSpeedColor = ()=>{
+		let val = parseInt($('#devicePixelRatioBar').val());
+		let color = '#7AAE5A';
+		if ( val <= 3)
+		{
+			color = '#69B34C';
+		} else if (val <= 4)
+		{
+			color = '#ACB334';
+		} else if (val <= 5)
+		{
+			color = '#FF8E15';
+		} else if (val <= 6)
+		{
+			color = '#FF4E11';
+		} else {
+			color = '#FF0D0D';
+		}
+		$('#viewQualitySpeed').css('color', color);
+	};
+	$('#viewQualitySpeed').on('click', ()=>{
+		toastMessage('Increasing quality reduces performance');
+	});
 	$('#devicePixelRatioBar').val(ratioToUIValue(ctx.settings.devicePixelRatio));
+	updateSpeedColor();
 	$('#devicePixelRatioBar').change( ()=>{
 		let ratio = ratioFromUIValue($('#devicePixelRatioBar').val());
+		updateSpeedColor();
 		ctx.settings.devicePixelRatio = ratio;
 		viewer().setDPI(ctx.settings.devicePixelRatio * ctx.settings.dpi);
 		loadCtx_preview();
