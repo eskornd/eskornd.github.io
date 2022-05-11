@@ -119,8 +119,33 @@ function RenderDocInfo(artwork)
 	$('#mp_docinfo').append(header).append(wrapper);
 	let title = $(tag).text(artwork.title);
 	let numPages = $(tag).text(artwork.numPages);
-	let wxh = artwork.pageSize.width.toFixed(2) + ' x ' + artwork.pageSize.height.toFixed(2);
+	const toSizeString = (width, height) => {
+		return width.toFixed(2) + ' x ' + height.toFixed(2);
+	};
+	let wxh = toSizeString(artwork.pageSize.width, artwork.pageSize.height);
 	let pageSize = $(tag).text(wxh + ' pt');
+	// Page boxes
+	let pageBoxTypes = ['mediaBox', 'trimBox', 'cropBox', 'bleedBox', 'artBox'];
+	let pageBoxDisplayName = {
+		'mediaBox' : 'Media Box'
+		, 'trimBox' : 'Trim Box'
+		, 'cropBox' : 'Crop Box'
+		, 'bleedBox' : 'Bleed Box'
+		, 'artBox' : 'Art Box'
+	};
+	let pageBoxGrids = [];
+	pageBoxTypes.forEach((type)=>
+	{
+		let box = artwork.pageBoxes[type];
+		if ( undefined != box )
+		{
+			pageBoxGrids.push($(tag).text(pageBoxDisplayName[type] +':'));
+			pageBoxGrids.push($(tag).text(toSizeString(box.width, box.height) + ' pt'));
+			pageBoxGrids.push($(tag));
+		}
+	});
+	
+
 	let isNormalized = $(tag).text('' + artwork.isNormalized);
 	let isTrapped = $(tag).text(artwork.isTrapped);
 	let distortion = $(tag).text('H: ' + (artwork.distortion.horizontal*100.0).toFixed(2) + '%' + ', V: ' + (artwork.distortion.vertical* 100.0).toFixed(2));
@@ -129,10 +154,15 @@ function RenderDocInfo(artwork)
 	let producer = $(tag).text(artwork.producer);
 	
 	let spacer = $(tag);
-	$('#mp_docinfo_wrapper')
+	
+	let w = $('#mp_docinfo_wrapper');
+	w
 		.append('Title:').append(title).append($(tag))
 		.append('Number of Pages:').append(numPages).append($(tag))
-		.append('Page Size:').append(pageSize).append($(tag))
+		.append('Page Size:').append(pageSize).append($(tag));
+	
+	pageBoxGrids.forEach((grid)=>{ w.append(grid);});
+	w	
 		.append('Is Normalized:').append(isNormalized).append($(tag))
 		.append('Is Trapped:').append(isTrapped).append($(tag))
 		.append('Distortion:').append(distortion).append($(tag))

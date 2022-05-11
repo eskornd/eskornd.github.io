@@ -209,8 +209,10 @@ function UI()
 		} else if (ratio < 1.5001)
 		{
 			return 4;
-		} else {
+		} else if (ratio < 2.0001){
 			return 5;
+		} else {
+			return 6;
 		}
 	};
 	let ratioFromUIValue = (val) =>{
@@ -220,14 +222,16 @@ function UI()
 		} else if ( val < 2.01)
 		{
 			return 0.75;
-		}  else if ( val < 3.01)
+		} else if ( val < 3.01)
 		{
 			return 1.0;
 		} else if ( val < 4.01)
 		{
 			return 1.5;
-		} else {
+		} else if ( val < 5.01){
 			return 2.0;
+		} else {
+			return 4.0;
 		}
 	};
 	$('#devicePixelRatioBar').val(ratioToUIValue(ctx.settings.devicePixelRatio));
@@ -365,6 +369,9 @@ function UpdateImageIndexUI(numImages)
 
 function UpdateTextContentUI()
 {
+	$('#fontReady').css('display', 'none');
+	$('#missingFont').css('display', 'none');
+	$('#activateFont').css('display', 'none');
 	let checkFontAvailability = async (text) => {
 		let pm = gNDL.getFontURL(text.fontName, ctx.settings.useGoogleFonts, ctx.settings.useSystemFonts);
 		pm.then((rawURL) => {
@@ -373,15 +380,6 @@ function UpdateTextContentUI()
 				$('#fontReady').css('display', text.hasSystemFont ? 'inline-block' : 'none');
 				$('#missingFont').css('display', text.hasSystemFont ? 'none' : 'inline-block');
 				$('#activateFont').css('display', 'none');
-			} else {
-				let isSystemFont = rawURL.startsWith('file://');
-				
-				$('#missingFont').css('display', 'none');
-				let activatedIcon = isSystemFont ? 'images/logo_sysfont_activated.png' : 'images/logo_googlefont_activated.png';
-				let deactivatedIcon = isSystemFont ? 'images/logo_sysfont_deactivated.png' : 'images/logo_googlefont_deactivated.png';
-				let icon = text.hasSystemFont ? activatedIcon : deactivatedIcon;
-				$('#activateFont').attr('src', icon);
-				$('#activateFont').css('display', 'inline-block');
 				// missing font handler
 				$('#fontReady').off('click').on('click', ()=>{
 					toastMessage( text.fontName + ' is a system font');
@@ -389,6 +387,15 @@ function UpdateTextContentUI()
 				$('#missingFont').off('click').on('click', ()=>{
 					toastMessage( 'Missing font: ' + text.fontName + ' is a subset font');
 				});
+			} else {
+				let isSystemFont = rawURL.startsWith('file://');
+				
+				//$('#missingFont').css('display', 'none');
+				let activatedIcon = isSystemFont ? 'images/logo_sysfont_activated.png' : 'images/logo_googlefont_activated.png';
+				let deactivatedIcon = isSystemFont ? 'images/logo_sysfont_deactivated.png' : 'images/logo_googlefont_deactivated.png';
+				let icon = text.hasSystemFont ? activatedIcon : deactivatedIcon;
+				$('#activateFont').attr('src', icon);
+				$('#activateFont').css('display', 'inline-block');
 				// google font handler
 				let clickHandler = text.hasSystemFont ? 
 					()=>{ 
