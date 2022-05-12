@@ -169,6 +169,12 @@
             "style": "UltraLight"
         },
         {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-Medium.ttf",
+            "postscriptName": "Rubik-Medium",
+            "style": "Medium"
+        },
+        {
             "family": "STIXIntegralsUpSm",
             "filePath": "/System/Library/Fonts/Supplemental/STIXIntUpSmBol.otf",
             "postscriptName": "STIXIntegralsUpSm-Bold",
@@ -415,6 +421,12 @@
             "style": "Regular"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Light.ttf",
+            "postscriptName": "Poppins-Light",
+            "style": "Light"
+        },
+        {
             "family": "American Typewriter",
             "filePath": "/System/Library/Fonts/Supplemental/AmericanTypewriter.ttc",
             "postscriptName": "AmericanTypewriter-Light",
@@ -425,6 +437,12 @@
             "filePath": "/Users/nexu/Library/Fonts/FiraMono-Bold.ttf",
             "postscriptName": "FiraMono-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-ExtraBold.ttf",
+            "postscriptName": "OpenSansCondensed-ExtraBold",
+            "style": "ExtraBold"
         },
         {
             "family": "Lucida Grande",
@@ -457,6 +475,12 @@
             "style": "W4"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Black.ttf",
+            "postscriptName": "Montserrat-Black",
+            "style": "Black"
+        },
+        {
             "family": "Noto Serif Myanmar",
             "filePath": "/System/Library/Fonts/NotoSerifMyanmar.ttc",
             "postscriptName": "NotoSerifMyanmar-Bold",
@@ -467,6 +491,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Exo-ExtraBoldItalic.ttf",
             "postscriptName": "Exo-ExtraBoldItalic",
             "style": "ExtraBold Italic"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-BoldItalic.ttf",
+            "postscriptName": "PlayfairDisplay-BoldItalic",
+            "style": "Bold Italic"
         },
         {
             "family": "Copperplate",
@@ -499,10 +529,22 @@
             "style": "Regular"
         },
         {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-Regular.ttf",
+            "postscriptName": "Lato-Regular",
+            "style": "Regular"
+        },
+        {
             "family": "Input Mono Compressed",
             "filePath": "/Users/nexu/Library/Fonts/InputMonoCompressed-ExtraLightItalic.ttf",
             "postscriptName": "InputMonoCompressed-ExtraLightItalic",
             "style": "Extra Light Italic"
+        },
+        {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-ExtraBold.ttf",
+            "postscriptName": "OpenSans-ExtraBold",
+            "style": "ExtraBold"
         },
         {
             "family": "FZLanTingHei-B-BIG5",
@@ -539,6 +581,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Faktum-XConExtraLight.otf",
             "postscriptName": "Faktum-XConExtraLight",
             "style": "XCon ExtraLight"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-ExtraBold.ttf",
+            "postscriptName": "OpenSansSemiCondensed-ExtraBold",
+            "style": "ExtraBold"
         },
         {
             "family": "PingFang SC",
@@ -613,6 +661,18 @@
             "style": "SemiBold"
         },
         {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-Light.ttf",
+            "postscriptName": "Mukta-Light",
+            "style": "Light"
+        },
+        {
+            "family": "Oswald",
+            "filePath": "/Users/nexu/Library/Fonts/Oswald-Light.ttf",
+            "postscriptName": "Oswald-Light",
+            "style": "Light"
+        },
+        {
             "family": "Iosevka Slab",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-extendedmediumoblique.ttf",
             "postscriptName": "Iosevka-Slab-Medium-Extended-Oblique",
@@ -655,6 +715,18 @@
             "style": "Regular Italic"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-ExtraBoldItalic.ttf",
+            "postscriptName": "NunitoSans-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
+        },
+        {
+            "family": "Oswald",
+            "filePath": "/Users/nexu/Library/Fonts/Oswald-ExtraLight.ttf",
+            "postscriptName": "Oswald-ExtraLight",
+            "style": "ExtraLight"
+        },
+        {
             "family": ".Apple SD Gothic NeoI",
             "filePath": "/System/Library/Fonts/AppleSDGothicNeo.ttc",
             "postscriptName": ".AppleSDGothicNeoI-Medium",
@@ -691,6 +763,12 @@
             "style": "Medium"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-SemiBold.ttf",
+            "postscriptName": "Poppins-SemiBold",
+            "style": "SemiBold"
+        },
+        {
             "family": "Century",
             "filePath": "/Users/nexu/Library/Fonts/Century",
             "postscriptName": "Century",
@@ -713,6 +791,12 @@
             "filePath": "/Users/nexu/Library/Fonts/DINReg",
             "postscriptName": "DIN-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-BoldItalic.ttf",
+            "postscriptName": "Rubik-BoldItalic",
+            "style": "Bold Italic"
         },
         {
             "family": "Input Mono Compressed",
@@ -799,10 +883,22 @@
             "style": "Regular"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Italic.ttf",
+            "postscriptName": "Poppins-Italic",
+            "style": "Italic"
+        },
+        {
             "family": "Apple SD Gothic Neo",
             "filePath": "/System/Library/Fonts/AppleSDGothicNeo.ttc",
             "postscriptName": "AppleSDGothicNeo-Light",
             "style": "Light"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Black.ttf",
+            "postscriptName": "Poppins-Black",
+            "style": "Black"
         },
         {
             "family": "G-OTF Shin Go Pro",
@@ -827,6 +923,12 @@
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-extendedheavyitalic.ttf",
             "postscriptName": "Iosevka-Slab-Heavy-Extended-Italic",
             "style": "Heavy Extended Italic"
+        },
+        {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-Black.ttf",
+            "postscriptName": "Lato-Black",
+            "style": "Black"
         },
         {
             "family": "Hoefler Text",
@@ -937,6 +1039,12 @@
             "style": "ExtraLight Italic"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-ExtraLightItalic.ttf",
+            "postscriptName": "Montserrat-ExtraLightItalic",
+            "style": "ExtraLight Italic"
+        },
+        {
             "family": "Wingdings 2",
             "filePath": "/System/Library/Fonts/Supplemental/Wingdings 2.ttf",
             "postscriptName": "Wingdings2",
@@ -1009,6 +1117,12 @@
             "style": "Bold"
         },
         {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-Medium.ttf",
+            "postscriptName": "Mukta-Medium",
+            "style": "Medium"
+        },
+        {
             "family": "FZNew XiuLiB-Z11",
             "filePath": "/Users/nexu/Library/Fonts/FZXXLB.TTF",
             "postscriptName": "FZXXLB--B51-0",
@@ -1021,9 +1135,21 @@
             "style": "Regular"
         },
         {
+            "family": "Oswald",
+            "filePath": "/Users/nexu/Library/Fonts/Oswald-Medium.ttf",
+            "postscriptName": "Oswald-Medium",
+            "style": "Medium"
+        },
+        {
             "family": "Times",
             "filePath": "/System/Library/Fonts/Times.ttc",
             "postscriptName": "Times-Italic",
+            "style": "Italic"
+        },
+        {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-Italic.ttf",
+            "postscriptName": "OpenSans-Italic",
             "style": "Italic"
         },
         {
@@ -1055,6 +1181,12 @@
             "filePath": "/System/Library/Fonts/ArabicUIDisplay.ttc",
             "postscriptName": ".ArabicUIDisplay-Heavy",
             "style": "Heavy"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-MediumItalic.ttf",
+            "postscriptName": "Ubuntu-MediumItalic",
+            "style": "Medium Italic"
         },
         {
             "family": "Century Gothic",
@@ -1123,6 +1255,12 @@
             "style": "Regular"
         },
         {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-ExtraBoldItalic.ttf",
+            "postscriptName": "PlayfairDisplay-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
+        },
+        {
             "family": "Bradley Hand",
             "filePath": "/System/Library/Fonts/Supplemental/Bradley Hand Bold.ttf",
             "postscriptName": "BradleyHandITCTT-Bold",
@@ -1177,6 +1315,12 @@
             "style": "Light Italic"
         },
         {
+            "family": "Macondo",
+            "filePath": "/Users/nexu/Library/Fonts/Macondo-Regular.ttf",
+            "postscriptName": "Macondo-Regular",
+            "style": "Regular"
+        },
+        {
             "family": "Comic Sans MS",
             "filePath": "/Users/nexu/Library/Fonts/Comic Sans MS",
             "postscriptName": "ComicSansMS",
@@ -1199,6 +1343,12 @@
             "filePath": "/Users/nexu/Library/Fonts/NanumGothic.ttc",
             "postscriptName": "NanumGothicExtraBold",
             "style": "ExtraBold"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-BlackItalic.ttf",
+            "postscriptName": "Poppins-BlackItalic",
+            "style": "Black Italic"
         },
         {
             "family": "Brush Script MT",
@@ -1387,6 +1537,12 @@
             "style": "Italic"
         },
         {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-Bold.ttf",
+            "postscriptName": "OpenSans-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "Frutiger LT Std",
             "filePath": "/Users/nexu/Library/Fonts/FrutigerLTStd-Light.otf",
             "postscriptName": "FrutigerLTStd-Light",
@@ -1513,6 +1669,12 @@
             "style": "Thin Italic"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-Bold.ttf",
+            "postscriptName": "NunitoSans-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "News Gothic MT",
             "filePath": "/Users/nexu/Library/Fonts/News Gothic MT",
             "postscriptName": "NewsGothicMT-Italic",
@@ -1633,6 +1795,18 @@
             "style": "Italic"
         },
         {
+            "family": "Oswald",
+            "filePath": "/Users/nexu/Library/Fonts/Oswald-SemiBold.ttf",
+            "postscriptName": "Oswald-SemiBold",
+            "style": "SemiBold"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-Light.ttf",
+            "postscriptName": "OpenSansSemiCondensed-Light",
+            "style": "Light"
+        },
+        {
             "family": "Symbol",
             "filePath": "/System/Library/Fonts/Symbol.ttf",
             "postscriptName": "Symbol",
@@ -1709,6 +1883,12 @@
             "filePath": "/System/Library/Fonts/Helvetica.ttc",
             "postscriptName": "Helvetica-Light",
             "style": "Light"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-SemiBold.ttf",
+            "postscriptName": "NunitoSans-SemiBold",
+            "style": "SemiBold"
         },
         {
             "family": "Microsoft Himalaya",
@@ -1861,6 +2041,12 @@
             "style": "Regular"
         },
         {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-BoldItalic.ttf",
+            "postscriptName": "Lato-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
             "family": "Bangla Sangam MN",
             "filePath": "/System/Library/Fonts/Supplemental/Bangla Sangam MN.ttc",
             "postscriptName": "BanglaSangamMN",
@@ -1885,6 +2071,12 @@
             "style": "Medium"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-ThinItalic.ttf",
+            "postscriptName": "NotoSans-ThinItalic",
+            "style": "Thin Italic"
+        },
+        {
             "family": "Adobe Garamond Pro",
             "filePath": "/Users/nexu/Library/Application Support/Adobe/CoreSync/plugins/livetype/.r/.6771.otf",
             "postscriptName": "AGaramondPro-Regular",
@@ -1903,6 +2095,18 @@
             "style": "Regular"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-LightItalic.ttf",
+            "postscriptName": "NotoSans-LightItalic",
+            "style": "Light Italic"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-ExtraBold.ttf",
+            "postscriptName": "Montserrat-ExtraBold",
+            "style": "ExtraBold"
+        },
+        {
             "family": "Iosevka Term",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-thin.ttc",
             "postscriptName": "Iosevka-Term-Thin-Italic",
@@ -1919,6 +2123,12 @@
             "filePath": "/System/Library/Fonts/SFNSDisplayCondensed-Semibold.otf",
             "postscriptName": ".SFNSDisplayCondensed-Semibold",
             "style": "Semibold"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-BoldItalic.ttf",
+            "postscriptName": "Ubuntu-BoldItalic",
+            "style": "Bold Italic"
         },
         {
             "family": "Roboto Mono",
@@ -1999,6 +2209,12 @@
             "style": "Italic"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-SemiBold.ttf",
+            "postscriptName": "Montserrat-SemiBold",
+            "style": "SemiBold"
+        },
+        {
             "family": "Iosevka Slab",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-semiboldoblique.ttf",
             "postscriptName": "Iosevka-Slab-Semibold-Oblique",
@@ -2039,6 +2255,12 @@
             "filePath": "/System/Library/Fonts/ArabicUIText.ttc",
             "postscriptName": ".ArabicUIText-Light",
             "style": "Light"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-MediumItalic.ttf",
+            "postscriptName": "OpenSansCondensed-MediumItalic",
+            "style": "Medium Italic"
         },
         {
             "family": "STIXNonUnicode",
@@ -2095,6 +2317,12 @@
             "style": "Regular"
         },
         {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-Light.ttf",
+            "postscriptName": "Rubik-Light",
+            "style": "Light"
+        },
+        {
             "family": "Telugu Sangam MN",
             "filePath": "/System/Library/Fonts/Supplemental/Telugu Sangam MN.ttc",
             "postscriptName": "TeluguSangamMN-Bold",
@@ -2137,6 +2365,12 @@
             "style": "Bold Italic"
         },
         {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-ExtraBold.ttf",
+            "postscriptName": "Rubik-ExtraBold",
+            "style": "ExtraBold"
+        },
+        {
             "family": "Noto Sans Zawgyi",
             "filePath": "/System/Library/Fonts/NotoSansMyanmar.ttc",
             "postscriptName": "NotoSansZawgyi-Bold",
@@ -2177,6 +2411,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/NotoSansMongolian-Regular.ttf",
             "postscriptName": "NotoSansMongolian",
             "style": "Regular"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-Italic.ttf",
+            "postscriptName": "NunitoSans-Italic",
+            "style": "Italic"
         },
         {
             "family": "Courier Prime",
@@ -2377,6 +2617,12 @@
             "style": "Bold"
         },
         {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-Light.ttf",
+            "postscriptName": "Merriweather-Light",
+            "style": "Light"
+        },
+        {
             "family": "Avenir Next Condensed",
             "filePath": "/System/Library/Fonts/Avenir Next Condensed.ttc",
             "postscriptName": "AvenirNextCondensed-MediumItalic",
@@ -2435,6 +2681,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Gabriola.ttf",
             "postscriptName": "Gabriola",
             "style": "Regular"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-Bold.ttf",
+            "postscriptName": "Ubuntu-Bold",
+            "style": "Bold"
         },
         {
             "family": "Iosevka",
@@ -2503,6 +2755,24 @@
             "style": "Regular"
         },
         {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-Black.ttf",
+            "postscriptName": "PlayfairDisplay-Black",
+            "style": "Black"
+        },
+        {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-Light.ttf",
+            "postscriptName": "Lato-Light",
+            "style": "Light"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-MediumItalic.ttf",
+            "postscriptName": "PlayfairDisplay-MediumItalic",
+            "style": "Medium Italic"
+        },
+        {
             "family": "Rockwell",
             "filePath": "/System/Library/Fonts/Supplemental/Rockwell.ttc",
             "postscriptName": "Rockwell-Regular",
@@ -2519,6 +2789,12 @@
             "filePath": "/Users/nexu/Library/Fonts/SpaceMono-Bold.ttf",
             "postscriptName": "SpaceMono-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-MediumItalic.ttf",
+            "postscriptName": "Rubik-MediumItalic",
+            "style": "Medium Italic"
         },
         {
             "family": "Kokonor",
@@ -2599,6 +2875,12 @@
             "style": "Semibold Extended Oblique"
         },
         {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-LightItalic.ttf",
+            "postscriptName": "OpenSans-LightItalic",
+            "style": "Light Italic"
+        },
+        {
             "family": "Noto Sans Armenian",
             "filePath": "/System/Library/Fonts/NotoSansArmenian.ttc",
             "postscriptName": "NotoSansArmenian-Thin",
@@ -2615,6 +2897,12 @@
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-extendedbolditalic.ttf",
             "postscriptName": "Iosevka-Slab-Bold-Extended-Italic",
             "style": "Bold Extended Italic"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-LightItalic.ttf",
+            "postscriptName": "Rubik-LightItalic",
+            "style": "Light Italic"
         },
         {
             "family": "Dosis",
@@ -2713,6 +3001,18 @@
             "style": "W6"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-ExtraLight.ttf",
+            "postscriptName": "NotoSans-ExtraLight",
+            "style": "ExtraLight"
+        },
+        {
+            "family": "Roboto Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/RobotoCondensed-Bold.ttf",
+            "postscriptName": "RobotoCondensed-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "Oriya MN",
             "filePath": "/System/Library/Fonts/Supplemental/Oriya MN.ttc",
             "postscriptName": "OriyaMN",
@@ -2723,6 +3023,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputSerif-ExtraLight.ttf",
             "postscriptName": "InputSerif-ExtraLight",
             "style": "Extra Light"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-Regular.ttf",
+            "postscriptName": "Rubik-Regular",
+            "style": "Regular"
         },
         {
             "family": "Arial Hebrew",
@@ -2803,6 +3109,12 @@
             "style": "Condensed Bold"
         },
         {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-Bold.ttf",
+            "postscriptName": "Lato-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "Galvji",
             "filePath": "/System/Library/Fonts/Supplemental/Galvji.ttc",
             "postscriptName": "Galvji-Oblique",
@@ -2851,6 +3163,12 @@
             "style": "Regular"
         },
         {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-SemiBoldItalic.ttf",
+            "postscriptName": "Rubik-SemiBoldItalic",
+            "style": "SemiBold Italic"
+        },
+        {
             "family": "Seravek",
             "filePath": "/System/Library/Fonts/Supplemental/Seravek.ttc",
             "postscriptName": "Seravek-LightItalic",
@@ -2885,6 +3203,12 @@
             "filePath": "/Users/nexu/Library/Fonts/PingFang.ttc",
             "postscriptName": "PingFangTC-Medium",
             "style": "Medium"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-BlackItalic.ttf",
+            "postscriptName": "Montserrat-BlackItalic",
+            "style": "Black Italic"
         },
         {
             "family": "Hiragino Sans",
@@ -2935,6 +3259,12 @@
             "style": "Regular"
         },
         {
+            "family": "Oswald",
+            "filePath": "/Users/nexu/Library/Fonts/Oswald-Bold.ttf",
+            "postscriptName": "Oswald-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "Consolas",
             "filePath": "/Users/nexu/Library/Fonts/Consolas Italic.ttf",
             "postscriptName": "Consolas-Italic",
@@ -2963,6 +3293,12 @@
             "filePath": "/System/Library/Fonts/Avenir.ttc",
             "postscriptName": "Avenir-BookOblique",
             "style": "Book Oblique"
+        },
+        {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-SemiBold.ttf",
+            "postscriptName": "OpenSans-SemiBold",
+            "style": "SemiBold"
         },
         {
             "family": "Seravek",
@@ -3029,6 +3365,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/AmericanTypewriter.ttc",
             "postscriptName": "AmericanTypewriter-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-LightItalic.ttf",
+            "postscriptName": "Merriweather-LightItalic",
+            "style": "Light Italic"
         },
         {
             "family": "Iosevka Slab",
@@ -3107,6 +3449,18 @@
             "filePath": "/Users/nexu/Library/Fonts/Inconsolata-Bold.ttf",
             "postscriptName": "Inconsolata-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-Bold.ttf",
+            "postscriptName": "Rubik-Bold",
+            "style": "Bold"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-SemiBold.ttf",
+            "postscriptName": "Rubik-SemiBold",
+            "style": "SemiBold"
         },
         {
             "family": "STIXSizeOneSym",
@@ -3235,6 +3589,12 @@
             "style": "Thin"
         },
         {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-LightItalic.ttf",
+            "postscriptName": "Lato-LightItalic",
+            "style": "Light Italic"
+        },
+        {
             "family": "Al Bayan",
             "filePath": "/System/Library/Fonts/Supplemental/AlBayan.ttc",
             "postscriptName": "AlBayan",
@@ -3293,6 +3653,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/GillSans.ttc",
             "postscriptName": "GillSans-SemiBold",
             "style": "SemiBold"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-Italic.ttf",
+            "postscriptName": "Ubuntu-Italic",
+            "style": "Italic"
         },
         {
             "family": "Iosevka",
@@ -3373,6 +3739,12 @@
             "style": "Extrabold Extended Oblique"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-SemiBoldItalic.ttf",
+            "postscriptName": "NunitoSans-SemiBoldItalic",
+            "style": "SemiBold Italic"
+        },
+        {
             "family": "Iosevka Slab",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-extendeditalic.ttf",
             "postscriptName": "Iosevka-Slab-Extended-Italic",
@@ -3407,6 +3779,18 @@
             "filePath": "/Users/nexu/Library/Fonts/Glory-Regular.ttf",
             "postscriptName": "Glory-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-ExtraBold.ttf",
+            "postscriptName": "NotoSans-ExtraBold",
+            "style": "ExtraBold"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-BoldItalic.ttf",
+            "postscriptName": "Poppins-BoldItalic",
+            "style": "Bold Italic"
         },
         {
             "family": "Verdana",
@@ -3451,6 +3835,12 @@
             "style": "Light"
         },
         {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-Italic.ttf",
+            "postscriptName": "OpenSansSemiCondensed-Italic",
+            "style": "Italic"
+        },
+        {
             "family": "Herculanum",
             "filePath": "/System/Library/Fonts/Supplemental/Herculanum.ttf",
             "postscriptName": "Herculanum",
@@ -3473,6 +3863,12 @@
             "filePath": "/System/Library/Fonts/Avenir.ttc",
             "postscriptName": "Avenir-MediumOblique",
             "style": "Medium Oblique"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-MediumItalic.ttf",
+            "postscriptName": "NotoSans-MediumItalic",
+            "style": "Medium Italic"
         },
         {
             "family": "Helvetica",
@@ -3523,6 +3919,12 @@
             "style": "Light"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-SemiBoldItalic.ttf",
+            "postscriptName": "Montserrat-SemiBoldItalic",
+            "style": "SemiBold Italic"
+        },
+        {
             "family": "Iosevka Fixed",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-thin.ttc",
             "postscriptName": "Iosevka-Fixed-Thin-Extended",
@@ -3533,6 +3935,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/AmericanTypewriter.ttc",
             "postscriptName": "AmericanTypewriter-Condensed",
             "style": "Condensed"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Bold.ttf",
+            "postscriptName": "Montserrat-Bold",
+            "style": "Bold"
         },
         {
             "family": "Arial Hebrew Scholar",
@@ -3629,6 +4037,12 @@
             "filePath": "/System/Library/Fonts/Noteworthy.ttc",
             "postscriptName": "Noteworthy-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-BlackItalic.ttf",
+            "postscriptName": "Merriweather-BlackItalic",
+            "style": "Black Italic"
         },
         {
             "family": ".Arial Hebrew Desk Interface",
@@ -3871,6 +4285,12 @@
             "style": "ExtraBlack"
         },
         {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-Medium.ttf",
+            "postscriptName": "OpenSansCondensed-Medium",
+            "style": "Medium"
+        },
+        {
             "family": ".Damascus PUA",
             "filePath": "/System/Library/Fonts/Supplemental/Damascus.ttc",
             "postscriptName": ".DamascusPUALight",
@@ -3880,6 +4300,12 @@
             "family": "BiauKai",
             "filePath": "/Users/nexu/Library/Fonts/BiauKai.ttf",
             "postscriptName": "DFKaiShu-SB-Estd-BF",
+            "style": "Regular"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-Regular.ttf",
+            "postscriptName": "Ubuntu-Regular",
             "style": "Regular"
         },
         {
@@ -3893,6 +4319,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputMonoCondensed-ExtraLightItalic.ttf",
             "postscriptName": "InputMonoCondensed-ExtraLightItalic",
             "style": "Extra Light Italic"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-Black.ttf",
+            "postscriptName": "NunitoSans-Black",
+            "style": "Black"
         },
         {
             "family": "Chalkboard",
@@ -3935,6 +4367,12 @@
             "filePath": "/Users/nexu/Library/Fonts/DIN Condensed Bold.ttf",
             "postscriptName": "DINCondensed-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Italic.ttf",
+            "postscriptName": "NotoSans-Italic",
+            "style": "Italic"
         },
         {
             "family": "Bodoni 72",
@@ -3991,6 +4429,12 @@
             "style": "Thin Extended"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-LightItalic.ttf",
+            "postscriptName": "Poppins-LightItalic",
+            "style": "Light Italic"
+        },
+        {
             "family": "Iosevka Fixed",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-thin.ttc",
             "postscriptName": "Iosevka-Fixed-Thin-Extended-Italic",
@@ -4007,6 +4451,12 @@
             "filePath": "/Users/nexu/Library/Fonts/CutiveMono-Regular.ttf",
             "postscriptName": "CutiveMono-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-Medium.ttf",
+            "postscriptName": "OpenSans-Medium",
+            "style": "Medium"
         },
         {
             "family": "Sana",
@@ -4081,6 +4531,18 @@
             "style": "Bold"
         },
         {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-SemiBoldItalic.ttf",
+            "postscriptName": "OpenSans-SemiBoldItalic",
+            "style": "SemiBold Italic"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-BoldItalic.ttf",
+            "postscriptName": "Montserrat-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
             "family": "Input Sans",
             "filePath": "/Users/nexu/Library/Fonts/InputSans-Regular.ttf",
             "postscriptName": "InputSans-Regular",
@@ -4099,10 +4561,22 @@
             "style": "W8"
         },
         {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-MediumItalic.ttf",
+            "postscriptName": "OpenSansSemiCondensed-MediumItalic",
+            "style": "Medium Italic"
+        },
+        {
             "family": "Diwan Kufi",
             "filePath": "/System/Library/Fonts/Supplemental/Diwan Kufi.ttc",
             "postscriptName": "DiwanKufi",
             "style": "Regular"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-Bold.ttf",
+            "postscriptName": "OpenSansCondensed-Bold",
+            "style": "Bold"
         },
         {
             "family": "Helvetica",
@@ -4207,6 +4681,12 @@
             "style": "Light"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-ExtraLight.ttf",
+            "postscriptName": "NunitoSans-ExtraLight",
+            "style": "ExtraLight"
+        },
+        {
             "family": "ITC Officina Sans",
             "filePath": "/Users/nexu/Library/Fonts/OfficSanBoo",
             "postscriptName": "OfficinaSans-Book",
@@ -4249,10 +4729,22 @@
             "style": "Black"
         },
         {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-Regular.ttf",
+            "postscriptName": "OpenSansCondensed-Regular",
+            "style": "Regular"
+        },
+        {
             "family": ".Arabic UI Text",
             "filePath": "/System/Library/Fonts/ArabicUIText.ttc",
             "postscriptName": ".ArabicUIText-Heavy",
             "style": "Heavy"
+        },
+        {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-SemiBold.ttf",
+            "postscriptName": "Mukta-SemiBold",
+            "style": "SemiBold"
         },
         {
             "family": "Adobe Caslon Pro",
@@ -4295,6 +4787,18 @@
             "filePath": "/System/Library/Fonts/Supplemental/NotoSansLydian-Regular.ttf",
             "postscriptName": "NotoSansLydian-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-ThinItalic.ttf",
+            "postscriptName": "Poppins-ThinItalic",
+            "style": "Thin Italic"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-Light.ttf",
+            "postscriptName": "OpenSansCondensed-Light",
+            "style": "Light"
         },
         {
             "family": "Hiragino Sans",
@@ -4417,6 +4921,12 @@
             "style": "Regular"
         },
         {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-MediumItalic.ttf",
+            "postscriptName": "OpenSans-MediumItalic",
+            "style": "Medium Italic"
+        },
+        {
             "family": "Iosevka",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-heavy.ttc",
             "postscriptName": "Iosevka-Heavy-Italic",
@@ -4445,6 +4955,12 @@
             "filePath": "/Users/nexu/Library/Fonts/News Gothic MT",
             "postscriptName": "NewsGothicMT-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Regular.ttf",
+            "postscriptName": "Montserrat-Regular",
+            "style": "Regular"
         },
         {
             "family": "JetBrains Mono ExtraBold",
@@ -4507,10 +5023,22 @@
             "style": "Italic"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Bold.ttf",
+            "postscriptName": "NotoSans-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "Courier",
             "filePath": "/System/Library/Fonts/Courier.dfont",
             "postscriptName": "Courier-Oblique",
             "style": "Oblique"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-Italic.ttf",
+            "postscriptName": "PlayfairDisplay-Italic",
+            "style": "Italic"
         },
         {
             "family": "Iosevka",
@@ -4615,6 +5143,12 @@
             "style": "Oblique"
         },
         {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-ExtraBoldItalic.ttf",
+            "postscriptName": "OpenSansCondensed-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
+        },
+        {
             "family": "Apple Braille",
             "filePath": "/System/Library/Fonts/Apple Braille.ttf",
             "postscriptName": "AppleBraille",
@@ -4625,6 +5159,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Lucida Fax",
             "postscriptName": "LucidaFax",
             "style": "Regular"
+        },
+        {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-Italic.ttf",
+            "postscriptName": "Merriweather-Italic",
+            "style": "Italic"
         },
         {
             "family": "Batang",
@@ -4729,6 +5269,12 @@
             "style": "Regular"
         },
         {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-SemiBold.ttf",
+            "postscriptName": "PlayfairDisplay-SemiBold",
+            "style": "SemiBold"
+        },
+        {
             "family": "STIXVariants",
             "filePath": "/System/Library/Fonts/Supplemental/STIXVarBol.otf",
             "postscriptName": "STIXVariants-Bold",
@@ -4739,6 +5285,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputMono-BlackItalic.ttf",
             "postscriptName": "InputMono-BlackItalic",
             "style": "Black Italic"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-Bold.ttf",
+            "postscriptName": "OpenSansSemiCondensed-Bold",
+            "style": "Bold"
         },
         {
             "family": "Songti SC",
@@ -4867,6 +5419,12 @@
             "style": "Book"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-BoldItalic.ttf",
+            "postscriptName": "NotoSans-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
             "family": ".SF NS Text Condensed",
             "filePath": "/System/Library/Fonts/SFNSTextCondensed-Light.otf",
             "postscriptName": ".SFNSTextCondensed-Light",
@@ -4883,6 +5441,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputMonoNarrow-Black.ttf",
             "postscriptName": "InputMonoNarrow-Black",
             "style": "Black"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-Bold.ttf",
+            "postscriptName": "PlayfairDisplay-Bold",
+            "style": "Bold"
         },
         {
             "family": "Webdings",
@@ -4907,6 +5471,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Bookshelf Symbol 7.ttf",
             "postscriptName": "BookshelfSymbolSeven",
             "style": "Regular"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-LightItalic.ttf",
+            "postscriptName": "NunitoSans-LightItalic",
+            "style": "Light Italic"
         },
         {
             "family": "Mishafi",
@@ -4943,6 +5513,12 @@
             "filePath": "/System/Library/Fonts/GeezaPro.ttc",
             "postscriptName": ".GeezaProInterface-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-SemiBold.ttf",
+            "postscriptName": "OpenSansCondensed-SemiBold",
+            "style": "SemiBold"
         },
         {
             "family": "Iosevka Fixed",
@@ -5027,6 +5603,18 @@
             "filePath": "/Users/nexu/Library/Fonts/iosevka-regular.ttc",
             "postscriptName": "Iosevka-Italic",
             "style": "Italic"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-BoldItalic.ttf",
+            "postscriptName": "NunitoSans-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-BoldItalic.ttf",
+            "postscriptName": "OpenSansSemiCondensed-BoldItalic",
+            "style": "Bold Italic"
         },
         {
             "family": "Noto Sans Javanese",
@@ -5125,6 +5713,12 @@
             "style": "Italic"
         },
         {
+            "family": "Roboto Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/RobotoCondensed-LightItalic.ttf",
+            "postscriptName": "RobotoCondensed-LightItalic",
+            "style": "Light Italic"
+        },
+        {
             "family": "Arial Unicode MS",
             "filePath": "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
             "postscriptName": "ArialUnicodeMS",
@@ -5165,6 +5759,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Lato-Medium.ttf",
             "postscriptName": "Lato-Medium",
             "style": "Medium"
+        },
+        {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-Regular.ttf",
+            "postscriptName": "Merriweather-Regular",
+            "style": "Regular"
         },
         {
             "family": "Iosevka Slab",
@@ -5221,6 +5821,12 @@
             "style": "Black"
         },
         {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-Light.ttf",
+            "postscriptName": "OpenSans-Light",
+            "style": "Light"
+        },
+        {
             "family": "Perpetua",
             "filePath": "/Users/nexu/Library/Fonts/Perpetua.ttf",
             "postscriptName": "Perpetua",
@@ -5237,6 +5843,18 @@
             "filePath": "/System/Library/Fonts/Avenir Next.ttc",
             "postscriptName": "AvenirNext-Italic",
             "style": "Italic"
+        },
+        {
+            "family": "Oswald",
+            "filePath": "/Users/nexu/Library/Fonts/Oswald-Regular.ttf",
+            "postscriptName": "Oswald-Regular",
+            "style": "Regular"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-Regular.ttf",
+            "postscriptName": "OpenSansSemiCondensed-Regular",
+            "style": "Regular"
         },
         {
             "family": ".SF Compact Rounded",
@@ -5267,6 +5885,12 @@
             "filePath": "/System/Library/Fonts/GeezaPro.ttc",
             "postscriptName": "GeezaPro",
             "style": "Regular"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-Black.ttf",
+            "postscriptName": "Rubik-Black",
+            "style": "Black"
         },
         {
             "family": ".Arabic UI Text",
@@ -5327,6 +5951,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Alegreya-BoldItalic.ttf",
             "postscriptName": "Alegreya-BoldItalic",
             "style": "Bold Italic"
+        },
+        {
+            "family": "Rubik Microbe",
+            "filePath": "/Users/nexu/Library/Fonts/RubikMicrobe-Regular.ttf",
+            "postscriptName": "RubikMicrobe-Regular",
+            "style": "Regular"
         },
         {
             "family": "Avenir Next Condensed",
@@ -5423,6 +6053,18 @@
             "filePath": "/Users/nexu/Library/Fonts/Charter.ttc",
             "postscriptName": "Charter-Roman",
             "style": "Roman"
+        },
+        {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-ThinItalic.ttf",
+            "postscriptName": "Lato-HairlineItalic",
+            "style": "Hairline Italic"
+        },
+        {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-ExtraBoldItalic.ttf",
+            "postscriptName": "OpenSans-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
         },
         {
             "family": "Avenir Next Condensed",
@@ -5719,10 +6361,22 @@
             "style": "Extrabold Extended Oblique"
         },
         {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-LightItalic.ttf",
+            "postscriptName": "Ubuntu-LightItalic",
+            "style": "Light Italic"
+        },
+        {
             "family": "STIXSizeTwoSym",
             "filePath": "/System/Library/Fonts/Supplemental/STIXSizTwoSymReg.otf",
             "postscriptName": "STIXSizeTwoSym-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-LightItalic.ttf",
+            "postscriptName": "OpenSansSemiCondensed-LightItalic",
+            "style": "Light Italic"
         },
         {
             "family": ".Damascus PUA",
@@ -5789,6 +6443,12 @@
             "filePath": "/Users/nexu/Library/Fonts/FZSYJW.TTF",
             "postscriptName": "FZSYJW--GB1-0",
             "style": "Regular"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-ExtraBoldItalic.ttf",
+            "postscriptName": "NotoSans-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
         },
         {
             "family": "Corsiva Hebrew",
@@ -5995,6 +6655,12 @@
             "style": "Extrabold Oblique"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-ExtraLight.ttf",
+            "postscriptName": "Poppins-ExtraLight",
+            "style": "ExtraLight"
+        },
+        {
             "family": "Superclarendon",
             "filePath": "/System/Library/Fonts/Supplemental/SuperClarendon.ttc",
             "postscriptName": "Superclarendon-BlackItalic",
@@ -6079,6 +6745,18 @@
             "style": "W1"
         },
         {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-Italic.ttf",
+            "postscriptName": "OpenSansCondensed-Italic",
+            "style": "Italic"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-Light.ttf",
+            "postscriptName": "NunitoSans-Light",
+            "style": "Light"
+        },
+        {
             "family": "Iosevka Term",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-heavy.ttc",
             "postscriptName": "Iosevka-Term-Heavy-Extended-Italic",
@@ -6113,6 +6791,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/SuperClarendon.ttc",
             "postscriptName": "Superclarendon-BoldItalic",
             "style": "Bold Italic"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-SemiBoldItalic.ttf",
+            "postscriptName": "OpenSansCondensed-SemiBoldItalic",
+            "style": "SemiBold Italic"
         },
         {
             "family": "Noto Sans Syriac",
@@ -6271,6 +6955,12 @@
             "style": "Regular"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-ExtraBoldItalic.ttf",
+            "postscriptName": "Montserrat-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
+        },
+        {
             "family": "Noto Sans Kayah Li",
             "filePath": "/System/Library/Fonts/Supplemental/NotoSansKayahLi-Regular.ttf",
             "postscriptName": "NotoSansKayahLi-Regular",
@@ -6307,10 +6997,22 @@
             "style": "Regular"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Italic.ttf",
+            "postscriptName": "Montserrat-Italic",
+            "style": "Italic"
+        },
+        {
             "family": "Input Mono",
             "filePath": "/Users/nexu/Library/Fonts/InputMono-MediumItalic.ttf",
             "postscriptName": "InputMono-MediumItalic",
             "style": "Medium Italic"
+        },
+        {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-ExtraLight.ttf",
+            "postscriptName": "Mukta-ExtraLight",
+            "style": "ExtraLight"
         },
         {
             "family": "Avenir",
@@ -6323,6 +7025,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Rockwell",
             "postscriptName": "Rockwell-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-BlackItalic.ttf",
+            "postscriptName": "NunitoSans-BlackItalic",
+            "style": "Black Italic"
         },
         {
             "family": "Iosevka Term",
@@ -6449,6 +7157,12 @@
             "filePath": "/System/Library/Fonts/Courier.dfont",
             "postscriptName": "Courier-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-SemiBoldItalic.ttf",
+            "postscriptName": "NotoSans-SemiBoldItalic",
+            "style": "SemiBold Italic"
         },
         {
             "family": "Avenir Next Condensed",
@@ -6661,6 +7375,18 @@
             "style": "Regular"
         },
         {
+            "family": "Fredericka the Great",
+            "filePath": "/Users/nexu/Library/Fonts/FrederickatheGreat-Regular.ttf",
+            "postscriptName": "FrederickatheGreat-Regular",
+            "style": "Regular"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-Light.ttf",
+            "postscriptName": "Ubuntu-Light",
+            "style": "Light"
+        },
+        {
             "family": "Iosevka Slab",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-extendedlightitalic.ttf",
             "postscriptName": "Iosevka-Slab-Light-Extended-Italic",
@@ -6761,6 +7487,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputSans-BlackItalic.ttf",
             "postscriptName": "InputSans-BlackItalic",
             "style": "Black Italic"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-ExtraBoldItalic.ttf",
+            "postscriptName": "Poppins-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
         },
         {
             "family": "Iosevka Fixed",
@@ -6931,6 +7663,12 @@
             "style": "Semibold Extended Italic"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-ExtraBold.ttf",
+            "postscriptName": "Poppins-ExtraBold",
+            "style": "ExtraBold"
+        },
+        {
             "family": "Microsoft YaHei UI",
             "filePath": "/Users/nexu/Library/Fonts/Microsoft YaHei UI.ttc",
             "postscriptName": "MicrosoftYaHeiUI",
@@ -6959,6 +7697,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/PTSans.ttc",
             "postscriptName": "PTSans-Italic",
             "style": "Italic"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-SemiBoldItalic.ttf",
+            "postscriptName": "Poppins-SemiBoldItalic",
+            "style": "SemiBold Italic"
         },
         {
             "family": "Bangla Sangam MN",
@@ -7019,6 +7763,12 @@
             "filePath": "/System/Library/Fonts/ArabicUIDisplay.ttc",
             "postscriptName": ".ArabicUIDisplay-Ultralight",
             "style": "Ultralight"
+        },
+        {
+            "family": "Roboto Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/RobotoCondensed-Regular.ttf",
+            "postscriptName": "RobotoCondensed-Regular",
+            "style": "Regular"
         },
         {
             "family": "Menlo",
@@ -7129,6 +7879,12 @@
             "style": "Thin"
         },
         {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-BoldItalic.ttf",
+            "postscriptName": "OpenSansCondensed-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
             "family": "Iosevka Fixed",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-extrabold.ttc",
             "postscriptName": "Iosevka-Fixed-Extrabold-Oblique",
@@ -7237,6 +7993,12 @@
             "style": "Extended"
         },
         {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-Italic.ttf",
+            "postscriptName": "Lato-Italic",
+            "style": "Italic"
+        },
+        {
             "family": "FZHuaLi-M14S",
             "filePath": "/Users/nexu/Library/Fonts/FZHLJW.TTF",
             "postscriptName": "FZHLJW--GB1-0",
@@ -7265,6 +8027,18 @@
             "filePath": "/Users/nexu/Library/Fonts/Palatino.ttc",
             "postscriptName": "Palatino-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-Italic.ttf",
+            "postscriptName": "Rubik-Italic",
+            "style": "Italic"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-ThinItalic.ttf",
+            "postscriptName": "Montserrat-ThinItalic",
+            "style": "Thin Italic"
         },
         {
             "family": "Hiragino Sans",
@@ -7339,10 +8113,22 @@
             "style": "Regular"
         },
         {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-Thin.ttf",
+            "postscriptName": "Lato-Hairline",
+            "style": "Hairline"
+        },
+        {
             "family": "Noto Sans Kannada",
             "filePath": "/System/Library/Fonts/NotoSansKannada.ttc",
             "postscriptName": "NotoSansKannada-ExtraLight",
             "style": "ExtraLight"
+        },
+        {
+            "family": "Lato",
+            "filePath": "/Users/nexu/Library/Fonts/Lato-BlackItalic.ttf",
+            "postscriptName": "Lato-BlackItalic",
+            "style": "Black Italic"
         },
         {
             "family": "Monoid",
@@ -7621,6 +8407,12 @@
             "style": "Regular"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-Regular.ttf",
+            "postscriptName": "NunitoSans-Regular",
+            "style": "Regular"
+        },
+        {
             "family": "Noto Sans Tai Viet",
             "filePath": "/System/Library/Fonts/Supplemental/NotoSansTaiViet-Regular.ttf",
             "postscriptName": "NotoSansTaiViet-Regular",
@@ -7735,6 +8527,24 @@
             "style": "Italic"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-SemiBold.ttf",
+            "postscriptName": "NotoSans-SemiBold",
+            "style": "SemiBold"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Regular.ttf",
+            "postscriptName": "Poppins-Regular",
+            "style": "Regular"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-Medium.ttf",
+            "postscriptName": "PlayfairDisplay-Medium",
+            "style": "Medium"
+        },
+        {
             "family": ".Geeza Pro Interface",
             "filePath": "/System/Library/Fonts/GeezaPro.ttc",
             "postscriptName": ".GeezaProInterface-Light",
@@ -7771,6 +8581,18 @@
             "style": "Italic"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Medium.ttf",
+            "postscriptName": "NotoSans-Medium",
+            "style": "Medium"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-Regular.ttf",
+            "postscriptName": "PlayfairDisplay-Regular",
+            "style": "Regular"
+        },
+        {
             "family": "Lucida Grande",
             "filePath": "/System/Library/Fonts/LucidaGrande.ttc",
             "postscriptName": "LucidaGrande",
@@ -7801,6 +8623,18 @@
             "style": "Light"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Bold.ttf",
+            "postscriptName": "Poppins-Bold",
+            "style": "Bold"
+        },
+        {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-Bold.ttf",
+            "postscriptName": "Mukta-Bold",
+            "style": "Bold"
+        },
+        {
             "family": "Adobe Arabic",
             "filePath": "/Users/nexu/Library/Application Support/Adobe/CoreSync/plugins/livetype/.r/.21554.otf",
             "postscriptName": "AdobeArabic-Italic",
@@ -7811,6 +8645,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputMono-ExtraLight.ttf",
             "postscriptName": "InputMono-ExtraLight",
             "style": "Extra Light"
+        },
+        {
+            "family": "Roboto Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/RobotoCondensed-Light.ttf",
+            "postscriptName": "RobotoCondensed-Light",
+            "style": "Light"
         },
         {
             "family": "Helvetica Neue",
@@ -7847,6 +8687,12 @@
             "filePath": "/Users/nexu/Library/Fonts/MyriadPro-Regular.otf",
             "postscriptName": "MyriadPro-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Light.ttf",
+            "postscriptName": "NotoSans-Light",
+            "style": "Light"
         },
         {
             "family": "Libian SC",
@@ -7891,6 +8737,12 @@
             "style": "Ultralight"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-ExtraLightItalic.ttf",
+            "postscriptName": "Poppins-ExtraLightItalic",
+            "style": "ExtraLight Italic"
+        },
+        {
             "family": "Bell MT",
             "filePath": "/Users/nexu/Library/Fonts/Bell MT",
             "postscriptName": "BellMT",
@@ -7901,6 +8753,12 @@
             "filePath": "/Users/nexu/Library/Fonts/iosevka-bold.ttc",
             "postscriptName": "Iosevka-Fixed-Bold-Italic",
             "style": "Bold Italic"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Medium.ttf",
+            "postscriptName": "Poppins-Medium",
+            "style": "Medium"
         },
         {
             "family": "ITC Lubalin Graph Std",
@@ -7915,6 +8773,12 @@
             "style": "Bold Italic"
         },
         {
+            "family": "Roboto Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/RobotoCondensed-BoldItalic.ttf",
+            "postscriptName": "RobotoCondensed-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
             "family": "Gill Sans",
             "filePath": "/System/Library/Fonts/Supplemental/GillSans.ttc",
             "postscriptName": "GillSans-SemiBoldItalic",
@@ -7925,6 +8789,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Gill Sans MT.ttf",
             "postscriptName": "GillSansMT",
             "style": "Regular"
+        },
+        {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-Bold.ttf",
+            "postscriptName": "Merriweather-Bold",
+            "style": "Bold"
         },
         {
             "family": "Cambria",
@@ -7987,16 +8857,46 @@
             "style": "Heavy"
         },
         {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-MediumItalic.ttf",
+            "postscriptName": "Poppins-MediumItalic",
+            "style": "Medium Italic"
+        },
+        {
             "family": "Untitled1",
             "filePath": "/Users/nexu/Library/Fonts/SpaceMonoNEXU-Regular.ttc",
             "postscriptName": "Untitled1",
             "style": "Regular"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-ExtraLightItalic.ttf",
+            "postscriptName": "NunitoSans-ExtraLightItalic",
+            "style": "ExtraLight Italic"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Light.ttf",
+            "postscriptName": "Montserrat-Light",
+            "style": "Light"
+        },
+        {
+            "family": "Ubuntu",
+            "filePath": "/Users/nexu/Library/Fonts/Ubuntu-Medium.ttf",
+            "postscriptName": "Ubuntu-Medium",
+            "style": "Medium"
+        },
+        {
             "family": "Iosevka Slab",
             "filePath": "/Users/nexu/Library/Fonts/iosevka-slab-extendedheavyoblique.ttf",
             "postscriptName": "Iosevka-Slab-Heavy-Extended-Oblique",
             "style": "Heavy Extended Oblique"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-BlackItalic.ttf",
+            "postscriptName": "NotoSans-BlackItalic",
+            "style": "Black Italic"
         },
         {
             "family": "YuMincho +36p Kana",
@@ -8111,6 +9011,12 @@
             "filePath": "/Users/nexu/Library/Fonts/InputSans-BoldItalic.ttf",
             "postscriptName": "InputSans-BoldItalic",
             "style": "Bold Italic"
+        },
+        {
+            "family": "Open Sans Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_Condensed-LightItalic.ttf",
+            "postscriptName": "OpenSansCondensed-LightItalic",
+            "style": "Light Italic"
         },
         {
             "family": "Input Sans",
@@ -8275,6 +9181,12 @@
             "style": "Regular"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Medium.ttf",
+            "postscriptName": "Montserrat-Medium",
+            "style": "Medium"
+        },
+        {
             "family": ".Arabic UI Display",
             "filePath": "/System/Library/Fonts/ArabicUIDisplay.ttc",
             "postscriptName": ".ArabicUIDisplay-Light",
@@ -8387,6 +9299,18 @@
             "filePath": "/Users/nexu/Library/Fonts/GothamNarrow UltraItalic.otf",
             "postscriptName": "GothamNarrow-UltraItalic",
             "style": "Ultra Italic"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-BlackItalic.ttf",
+            "postscriptName": "PlayfairDisplay-BlackItalic",
+            "style": "Black Italic"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-ExtraLightItalic.ttf",
+            "postscriptName": "NotoSans-ExtraLightItalic",
+            "style": "ExtraLight Italic"
         },
         {
             "family": "Uni Sans",
@@ -8521,6 +9445,12 @@
             "style": "Light"
         },
         {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-BlackItalic.ttf",
+            "postscriptName": "Rubik-BlackItalic",
+            "style": "Black Italic"
+        },
+        {
             "family": ".Nadeem PUA",
             "filePath": "/System/Library/Fonts/Supplemental/Nadeem.ttc",
             "postscriptName": ".NadeemPUA",
@@ -8605,6 +9535,12 @@
             "style": "Regular"
         },
         {
+            "family": "Nunito Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NunitoSans-ExtraBold.ttf",
+            "postscriptName": "NunitoSans-ExtraBold",
+            "style": "ExtraBold"
+        },
+        {
             "family": "Kohinoor Devanagari",
             "filePath": "/System/Library/Fonts/Kohinoor.ttc",
             "postscriptName": "KohinoorDevanagari-Bold",
@@ -8623,10 +9559,22 @@
             "style": "Regular"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Thin.ttf",
+            "postscriptName": "NotoSans-Thin",
+            "style": "Thin"
+        },
+        {
             "family": "Roboto",
             "filePath": "/Users/nexu/Library/Fonts/Roboto-Regular.ttf",
             "postscriptName": "Roboto-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-SemiBoldItalic.ttf",
+            "postscriptName": "OpenSansSemiCondensed-SemiBoldItalic",
+            "style": "SemiBold Italic"
         },
         {
             "family": "Input Sans",
@@ -8695,6 +9643,12 @@
             "style": "R"
         },
         {
+            "family": "Roboto Condensed",
+            "filePath": "/Users/nexu/Library/Fonts/RobotoCondensed-Italic.ttf",
+            "postscriptName": "RobotoCondensed-Italic",
+            "style": "Italic"
+        },
+        {
             "family": "Palatino",
             "filePath": "/Users/nexu/Library/Fonts/Palatino.ttc",
             "postscriptName": "Palatino-Roman",
@@ -8713,6 +9667,18 @@
             "style": "Regular"
         },
         {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-BoldItalic.ttf",
+            "postscriptName": "Merriweather-BoldItalic",
+            "style": "Bold Italic"
+        },
+        {
+            "family": "Poppins",
+            "filePath": "/Users/nexu/Library/Fonts/Poppins-Thin.ttf",
+            "postscriptName": "Poppins-Thin",
+            "style": "Thin"
+        },
+        {
             "family": "Kefa",
             "filePath": "/System/Library/Fonts/Supplemental/Kefa.ttc",
             "postscriptName": "Kefa-Regular",
@@ -8723,6 +9689,12 @@
             "filePath": "/Users/nexu/Library/Fonts/iosevka-medium.ttc",
             "postscriptName": "Iosevka-Term-Medium-Extended-Italic",
             "style": "Medium Extended Italic"
+        },
+        {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-ExtraBold.ttf",
+            "postscriptName": "Mukta-ExtraBold",
+            "style": "ExtraBold"
         },
         {
             "family": "Iosevka Term",
@@ -8741,6 +9713,12 @@
             "filePath": "/Users/nexu/Library/Fonts/CourierPrime-Bold.ttf",
             "postscriptName": "CourierPrime-Bold",
             "style": "Bold"
+        },
+        {
+            "family": "Merriweather",
+            "filePath": "/Users/nexu/Library/Fonts/Merriweather-Black.ttf",
+            "postscriptName": "Merriweather-Black",
+            "style": "Black"
         },
         {
             "family": ".Geeza Pro Interface",
@@ -8803,6 +9781,12 @@
             "style": "Bold"
         },
         {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-ExtraBoldItalic.ttf",
+            "postscriptName": "OpenSansSemiCondensed-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
+        },
+        {
             "family": "Arial Hebrew Scholar",
             "filePath": "/System/Library/Fonts/ArialHB.ttc",
             "postscriptName": "ArialHebrewScholar-Light",
@@ -8849,6 +9833,12 @@
             "filePath": "/Users/nexu/Library/Fonts/Alegreya-Italic.ttf",
             "postscriptName": "Alegreya-Italic",
             "style": "Italic"
+        },
+        {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Black.ttf",
+            "postscriptName": "NotoSans-Black",
+            "style": "Black"
         },
         {
             "family": "Franklin Gothic Medium",
@@ -8905,6 +9895,12 @@
             "style": "Italic"
         },
         {
+            "family": "Noto Sans",
+            "filePath": "/Users/nexu/Library/Fonts/NotoSans-Regular.ttf",
+            "postscriptName": "NotoSans-Regular",
+            "style": "Regular"
+        },
+        {
             "family": "Charter",
             "filePath": "/Users/nexu/Library/Fonts/Charter.ttc",
             "postscriptName": "Charter-BlackItalic",
@@ -8935,6 +9931,12 @@
             "style": "Heavy Italic"
         },
         {
+            "family": "Rubik Moonrocks",
+            "filePath": "/Users/nexu/Library/Fonts/RubikMoonrocks-Regular.ttf",
+            "postscriptName": "RubikMoonrocks-Regular",
+            "style": "Regular"
+        },
+        {
             "family": "Yuanti TC",
             "filePath": "/Users/nexu/Library/Fonts/Yuanti.ttc",
             "postscriptName": "STYuanti-TC-Bold",
@@ -8957,6 +9959,12 @@
             "filePath": "/Users/nexu/Library/Application Support/Adobe/CoreSync/plugins/livetype/.r/.6807.otf",
             "postscriptName": "MyriadPro-BlackCond",
             "style": "Black Condensed"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-SemiBoldItalic.ttf",
+            "postscriptName": "PlayfairDisplay-SemiBoldItalic",
+            "style": "SemiBold Italic"
         },
         {
             "family": "Calibri",
@@ -9143,6 +10151,12 @@
             "filePath": "/Users/nexu/Library/Fonts/iosevka-light.ttc",
             "postscriptName": "Iosevka-Fixed-Light-Italic",
             "style": "Light Italic"
+        },
+        {
+            "family": "Mukta",
+            "filePath": "/Users/nexu/Library/Fonts/Mukta-Regular.ttf",
+            "postscriptName": "Mukta-Regular",
+            "style": "Regular"
         },
         {
             "family": "JetBrains Mono",
@@ -9373,6 +10387,18 @@
             "style": "Regular"
         },
         {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-SemiBold.ttf",
+            "postscriptName": "OpenSansSemiCondensed-SemiBold",
+            "style": "SemiBold"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-ExtraLight.ttf",
+            "postscriptName": "Montserrat-ExtraLight",
+            "style": "ExtraLight"
+        },
+        {
             "family": "Helvetica Neue",
             "filePath": "/System/Library/Fonts/HelveticaNeue.ttc",
             "postscriptName": "HelveticaNeue-UltraLight",
@@ -9383,6 +10409,18 @@
             "filePath": "/Users/nexu/Library/Fonts/YuMincho.ttc",
             "postscriptName": "YuMin-Demibold",
             "style": "Demibold"
+        },
+        {
+            "family": "Rubik",
+            "filePath": "/Users/nexu/Library/Fonts/Rubik-ExtraBoldItalic.ttf",
+            "postscriptName": "Rubik-ExtraBoldItalic",
+            "style": "ExtraBold Italic"
+        },
+        {
+            "family": "Open Sans SemiCondensed",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans_SemiCondensed-Medium.ttf",
+            "postscriptName": "OpenSansSemiCondensed-Medium",
+            "style": "Medium"
         },
         {
             "family": "Noto Sans Zawgyi",
@@ -9403,6 +10441,12 @@
             "style": "SemiBold"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-LightItalic.ttf",
+            "postscriptName": "Montserrat-LightItalic",
+            "style": "Light Italic"
+        },
+        {
             "family": "Roboto Mono",
             "filePath": "/Users/nexu/Library/Fonts/RobotoMono-MediumItalic.ttf",
             "postscriptName": "RobotoMono-MediumItalic",
@@ -9413,6 +10457,12 @@
             "filePath": "/System/Library/Fonts/HelveticaNeue.ttc",
             "postscriptName": "HelveticaNeue-ThinItalic",
             "style": "Thin Italic"
+        },
+        {
+            "family": "Playfair Display",
+            "filePath": "/Users/nexu/Library/Fonts/PlayfairDisplay-ExtraBold.ttf",
+            "postscriptName": "PlayfairDisplay-ExtraBold",
+            "style": "ExtraBold"
         },
         {
             "family": "Sukhumvit Set",
@@ -9451,6 +10501,12 @@
             "style": "Regular"
         },
         {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-Thin.ttf",
+            "postscriptName": "Montserrat-Thin",
+            "style": "Thin"
+        },
+        {
             "family": "Mukta Mahee",
             "filePath": "/System/Library/Fonts/MuktaMahee.ttc",
             "postscriptName": "MuktaMahee-SemiBold",
@@ -9461,6 +10517,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/NotoSansAvestan-Regular.ttf",
             "postscriptName": "NotoSansAvestan-Regular",
             "style": "Regular"
+        },
+        {
+            "family": "Montserrat",
+            "filePath": "/Users/nexu/Library/Fonts/Montserrat-MediumItalic.ttf",
+            "postscriptName": "Montserrat-MediumItalic",
+            "style": "Medium Italic"
         },
         {
             "family": "Snell Roundhand",
@@ -9497,6 +10559,12 @@
             "filePath": "/System/Library/Fonts/Supplemental/Baskerville.ttc",
             "postscriptName": "Baskerville-SemiBoldItalic",
             "style": "SemiBold Italic"
+        },
+        {
+            "family": "Open Sans",
+            "filePath": "/Users/nexu/Library/Fonts/OpenSans-BoldItalic.ttf",
+            "postscriptName": "OpenSans-BoldItalic",
+            "style": "Bold Italic"
         },
         {
             "family": "InaiMathi",
