@@ -153,10 +153,12 @@ body {
 .clickable {
 	cursor: pointer;
 }
+
 .scenarioRow {
 	margin: 20px 0px;
 	text-align: center;
 }
+
 .scenario {
     box-shadow: 0px 0px 10px var(--eskogray);
 	border-radius: 10px;
@@ -164,6 +166,7 @@ body {
 	height: 160px;
 	object-fit:cover;
 }
+
 #canvas {
     box-shadow: 0px 0px 20px var(--eskogray);
 }
@@ -200,7 +203,6 @@ body {
 	vertical-align:middle;
 	color: #54B138;
 	display: none;
-	cursor: pointer;
 }
 
 #missingFont {
@@ -208,17 +210,7 @@ body {
 	vertical-align:middle;
 	color: #EAA13A;
 	display: none;
-	cursor: pointer;
 }
-
-/* img
-#missingFont {
-	width: 12px;
-	height: 12px;
-	display: none;
-	cursor: pointer;
- }
-*/
 
 #activateFont {
 	width: 12px;
@@ -239,7 +231,6 @@ body {
 	height: 12px;
 	display: inline-block;
 	cursor: pointer;
-	/*display none;*/
 }
 
 #rgbColorSpace {
@@ -247,7 +238,6 @@ body {
 	height: 12px;
 	display: inline-block;
 	cursor: pointer;
-	/*display none;*/
 }
 
 #fontList_wrapper {
@@ -282,7 +272,7 @@ body {
 .ui-dialog .ui-dialog-titlebar 
 {
 	font-size: 0.7em;
-    height: 14px; /* or whatever you want */
+    height: 14px; 
 }
 
 .ui-dialog-content {
