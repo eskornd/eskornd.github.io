@@ -1159,10 +1159,7 @@ async function start()
 	let ndl = new NDL();
 	const initParams = {
 		resources : 'NDL/Resources.zip'
-		, fonts : [
-			'resources/myfonts/Alice-Regular.woff'
-			, 'resources/myfonts/Glory-Regular.woff'
-		]
+		, fonts : []
 	};
 	await ndl.initialize(initParams);
 	await ndl.loadGoogleFonts('resources/googlefonts.json');
