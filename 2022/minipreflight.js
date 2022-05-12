@@ -318,7 +318,7 @@ function InspectPDF(filePath)
 	let ndl = gNDL;
 	let viewer = gNDL.viewer();
 	let loaded = viewer.loadPDF(filePath);
-	viewer.setDPI(2.0*72.0);
+	viewer.setDPI(4.0*72.0);
 	let jsonStr = viewer.getMetadata();
 	let xmp = undefined;
 	try {
