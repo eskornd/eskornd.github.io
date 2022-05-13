@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="static/fadein.css">
     <link rel="stylesheet" type="text/css" href="static/breathing.css">
     <link rel="stylesheet" type="text/css" href="static/flyin.css">
+    <link rel="stylesheet" type="text/css" href="static/FrederickatheGreat.css">
 	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
 
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
@@ -14,7 +15,7 @@
 </head>
 
 <body>
-	<div style="font-size:1.5em;">
+	<div style="font-size:2.5em;font-family:FrederickatheGreat;">
 		Innovate with NDL.js =>
 	</div>
 	<div>
@@ -52,9 +53,13 @@
 	$('#ndljsLogo').on('click', ()=>{
 		if ( 'none' == $('#scenarioParent').css('display') )
 		{
+			$('.scenarioRow').removeClass('flyout');
+			$('.scenarioRow').addClass('flyin');
 			$('#scenarioParent').css('display', 'block');
 		} else {
-			$('#scenarioParent').css('display', 'none');
+			$('.scenarioRow').removeClass('flyin');
+			$('.scenarioRow').addClass('flyout');
+			setTimeout(()=>$('#scenarioParent').css('display', 'none'), 1000);
 		}
 	});	
 	$('#scenario01').on('click', ()=>{
