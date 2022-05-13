@@ -1,21 +1,11 @@
 
 // anonyous
-async function fetchBinaryAsU8Array(url) 
+async function fetchAsU8Array(url, params) 
 {
-	return new Promise((resolve, reject) => 
-	{
-		var xhr = new XMLHttpRequest();
-		xhr.responseType = "arraybuffer";
-		xhr.open("GET", url, true);
-		xhr.onload = function (xhrEvent) 
-		{
-			let arrayBuffer = xhr.response; 
-			// if you want to access the bytes:
-			let byteArray = new Uint8Array(arrayBuffer);
-			resolve(byteArray);
-		};
-		xhr.send();
-	});
+	let response = undefined != params ? await fetch(url, params) : await fetch(url);
+	let arrayBuffer = await response.arrayBuffer();
+	let u8Array = new Uint8Array(arrayBuffer);
+	return u8Array;
 }
 
 // NDL Class
@@ -70,7 +60,7 @@ export class NDL
 			array.set(this._unzipModule.HEAPU8.subarray(pos, pos + length));
 			return array;
 		};
-		let u8Array = await fetchBinaryAsU8Array(initParams.resources);
+		let u8Array = await fetchAsU8Array(initParams.resources);
 		await this.onZipFetched(u8Array);
 
 		this._simplePDFModule.Initialize('/Resources');
@@ -115,7 +105,7 @@ export class NDL
 		{
 			const url = urls[i];
 			const fileName = url.substring(url.lastIndexOf('/')+1);
-			let u8Array = await fetchBinaryAsU8Array(url);
+			let u8Array = await fetchAsU8Array(url);
 			await this.onFontFetched(u8Array, fileName);
 		}
 	}
@@ -152,7 +142,7 @@ export class NDL
 
 	async loadGoogleFonts(googleFontsJsonURL)
 	{
-		let u8Array = await fetchBinaryAsU8Array(googleFontsJsonURL);
+		let u8Array = await fetchAsU8Array(googleFontsJsonURL);
 		try {
 			let jsonStr = new TextDecoder().decode(u8Array)
 			this._gfonts = JSON.parse(jsonStr);
@@ -170,7 +160,7 @@ export class NDL
 
 	async loadSystemFonts(systemFontsJsonURL)
 	{
-		let u8Array = await fetchBinaryAsU8Array(systemFontsJsonURL);
+		let u8Array = await fetchAsU8Array(systemFontsJsonURL);
 		try {
 			let jsonStr = new TextDecoder().decode(u8Array)
 			this._lfonts = JSON.parse(jsonStr);
@@ -183,7 +173,7 @@ export class NDL
 
 	async loadOtherFonts(otherFontsJsonURL)
 	{
-		let u8Array = await fetchBinaryAsU8Array(otherFontsJsonURL);
+		let u8Array = await fetchAsU8Array(otherFontsJsonURL);
 		try {
 			let jsonStr = new TextDecoder().decode(u8Array)
 			this._ofonts = JSON.parse(jsonStr);

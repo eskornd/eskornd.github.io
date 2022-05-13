@@ -22,6 +22,7 @@ let ctx = {
 		, useSystemFonts : false
 		, systemFontsBaseURL : 'http://localhost:19999'
 	}
+	, defaultOpenURL : 'resources/TextCyanMagenta.pdf'
 };
 
 function isPanelVisible(selector)
@@ -116,7 +117,6 @@ function UI()
 			if (isFileNamePDF(filename))
 				break;
 		}
-		console.log(files);
 	});
 
 	$('#dropzone').click(()=>{
@@ -1014,38 +1014,32 @@ function writeU8ArrayAsFile(u8Array, filePath)
 }
 
 // mount the file object into the folder
-function mountBlob(fileObject, inFileName, onFileMounted) {
-	console.assert(fileObject instanceof Blob )
-    let reader = new FileReader();
-    reader.onload = function () {
-		let filePath = '/' + inFileName;
+async function mountBlob_v2(fileObject, inFileName) 
+{
+	return new Promise((resolve, reject) => {
+		console.assert(fileObject instanceof Blob )
+		let reader = new FileReader();
+		reader.onload = function () {
+			let filePath = '/' + inFileName;
 
-        let data = new Uint8Array(reader.result);
-        try {
-			writeU8ArrayAsFile(data, filePath);
-			/*
-			let dummy = filePath;
-			let fs = gNDL.fs();
-			let stream = fs.open(dummy, 'w+');
-			fs.write(stream, data, 0, data.length, 0);
-			fs.close(stream);
-			*/
+			let data = new Uint8Array(reader.result);
+			try {
+				writeU8ArrayAsFile(data, filePath);
+			} catch (err) {
+				console.warn('Exception in mountBlob_v2: ' + filePath + ' ' + err.message);
+				reject(err);
+			}
 
-        } catch (err) {
-            console.warn('Exception in mountBlob: ' + filePath + ' ' + err.message);
-        }
-
-        onFileMounted(filePath);
-    }
-    reader.readAsArrayBuffer(fileObject);
+			resolve(filePath);
+		}
+		reader.readAsArrayBuffer(fileObject);
+	});
 }
 
-function mountFile(fileObject) {
+async function mountFile(fileObject) {
 	console.assert(fileObject instanceof File )
-	let filename = fileObject.name;
-	return new Promise((resolve, reject) => {
-		mountBlob(fileObject, filename, resolve);
-	});
+	let fileName = fileObject.name;
+	return mountBlob_v2(fileObject, fileName);
 }
 
 async function fetchBinaryAsU8Array(url) 
@@ -1128,19 +1122,21 @@ function dragOverHandler(ev) {
 	ev.preventDefault();
 }
 
-let loadSamplePDF = async () =>
+let loadSamplePDF = async (inPDFURL) =>
 {
 	console.log('loadSamplePDF()');	
-	let pdfURL = 'resources/TextCyanMagenta.pdf';
+	let pdfURL = ctx.defaultOpenURL;
+	if ( undefined != inPDFURL && '' != inPDFURL )
+	{
+		pdfURL = inPDFURL;
+	}
 	let response = await fetch(pdfURL);
 	let blob = await response.blob();
 	
 	let fileName = pdfURL.substr(pdfURL.lastIndexOf('/')+1);
-	mountBlob(blob, fileName, (filename)=>{
-		console.log('mounted as ' + filename);
-		Initializer.sampleFile = filename;
-		Initializer.isSampleReady = true;
-	});
+	let filePath = await mountBlob_v2(blob,fileName);
+	Initializer.sampleFile = filePath;
+	Initializer.isSampleReady = true;
 }
 
 async function dumpSystemFonts()
@@ -1164,15 +1160,27 @@ async function start()
 	await ndl.initialize(initParams);
 	await ndl.loadGoogleFonts('resources/googlefonts.json');
 	await ndl.loadSystemFonts('resources/localfonts.json');
-	// will not work due to CORS issue
-	// await ndl.loadOtherFonts('resources/otherfonts.json');
-	//await ndl.loadSystemFonts('resources/emptylocalfonts.json');
+	
+	if (0)
+	{
+		// more fonts support
+		// will not work due to CORS issue
+		// await ndl.loadOtherFonts('resources/otherfonts.json');
+		// await ndl.loadSystemFonts('resources/emptylocalfonts.json');
+
+		// await dumpSystemFonts();
+	}
+
+	// NDL ready, publish it
 	gNDL = ndl;
-	await dumpSystemFonts();
-	await loadSamplePDF();
+
+	// Take input file from url params
+	let params = new URLSearchParams(window.location.search);
+	let openURL = params.get('open');
+	await loadSamplePDF(openURL);
 	Initializer.isModuleReady = true;
 	Initializer.isResourceReady = true;
-	await loadSamplePDF();
+	//await loadSamplePDF(openURL);
 	Initializer.tryInit();
 }
 
