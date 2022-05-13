@@ -5,6 +5,13 @@
   filter: blur(4px);
 }
 
+.flyin_text {
+  animation: flyin 2.0s ease-out forwards;
+  opacity: 0;
+  transform: scale(2.5);
+  filter: blur(4px);
+}
+
 @keyframes flyin {
    to { 
      filter: blur(0);
