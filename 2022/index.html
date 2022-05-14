@@ -9,69 +9,14 @@
     <link rel="stylesheet" type="text/css" href="static/breathing.css">
     <link rel="stylesheet" type="text/css" href="static/flyin.css">
     <link rel="stylesheet" type="text/css" href="static/FrederickatheGreat.css">
-	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
-
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 	<title>Innovate with NDL.js</title>
 </head>
 
 <body>
 	<div class="flyin_text" style="font-size:2.5em;font-family:FrederickatheGreat;z-index:99;">
-		Innovate with NDL.js =>
-	</div>
-	<div>
-		<img class="breathing clickable" id="ndljsLogo" width=128 height=128 style="margin: 10px;" src="static/NDLJS_512x512.png" />
-	</div>
-		
-	<div id="scenarioParent" style="display:none;">
-		<div class="flyin scenarioRow">
-			<div>
-				<img class="scenario clickable" id="scenario01" src="images/scenario_SnA.png" />
-			</div>
-			<div>
-				Mini Preflight
-			</div>
-		</div>
-		<div class="flyin scenarioRow">
-			<div>
-				<img class="scenario clickable" id="scenario02" src="images/scenario_WCR.png" />
-			</div>
-			<div>
-				Editing in Web Center
-			</div>
-		</div>
-		<div class="flyin scenarioRow" >
-			<div>
-				<img class="scenario clickable" id="scenario03" src="images/scenario_2022.png" />
-			</div>
-				PDF+ Editor
-			<div >
-			</div>
-		</div>
+		We moved to new location => <a style="font-family:FrederickatheGreat;" href="https://ndl2022.github.io/">https://NDL2022.github.io/</a>
 	</div>
 </div>	
-	<script>
-	$('#ndljsLogo').on('click', ()=>{
-		if ( 'none' == $('#scenarioParent').css('display') )
-		{
-			$('.scenarioRow').removeClass('flyout');
-			$('.scenarioRow').addClass('flyin');
-			$('#scenarioParent').css('display', 'block');
-		} else {
-			$('.scenarioRow').removeClass('flyin');
-			$('.scenarioRow').addClass('flyout');
-			setTimeout(()=>$('#scenarioParent').css('display', 'none'), 1000);
-		}
-	});	
-	$('#scenario01').on('click', ()=>{
-		window.location.href = 'minipreflight.html';
-	});
-	$('#scenario02').on('click', ()=>{
-		window.location.href = 'wcr/project_foo.html';
-	});
-	$('#scenario03').on('click', ()=>{
-		window.location.href = 'editor.html';
-	});
-	</script>
 </body>
 </html>
