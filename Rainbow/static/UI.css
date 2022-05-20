@@ -1,0 +1,99 @@
+/* font converted using font-converter.net. thank you! */
+@font-face {
+    font-family: "Exo-Medium";
+    src: url("Exo-Medium.woff2") format("woff2");
+    /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+
+html * {
+    font-family: "Exo-Medium";
+    color: #444B53;
+}
+
+body {
+    background-color: #DFDFDF;
+    font-family: "Exo-Medium";
+}
+
+.drop-zone {
+    border: 5px dashed gray;
+    border-radius: 25px;
+
+    margin: 20px 20px;
+    height: 152px;
+    color: gray;
+    text-align: center;
+}
+
+.drop-zone-sm {
+    border: 2px dashed gray;
+    border-radius: 5px;
+    margin: 0 10px;
+    color: gray;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.drop-zone-sm p {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#banner {
+    color: #BBBE19;
+}
+#desitometer {
+    border: 1px solid gray;
+    border-radius: 5px;
+    display: flex;
+    margin: 5px auto;
+    padding: 5px 5px;
+}
+
+#desitometer_value_div {
+    display: flex;
+}
+
+.add_margin_left {
+    margin-left: 15px;
+}
+
+#colorpatch_deltaE {
+    margin-top: 5px;
+}
+
+#preview {
+    cursor: url("eyedropper.png") 2 30, auto;
+}
+
+#colorpanel {
+    font-family: "Exo-Medium";
+    font-size: 12pt;
+}
+
+@media (min-width: 768px) {
+    .form-group.row>.col-form-label {
+        text-align: right;
+    }
+}
+
+
+.wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+.hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+}
