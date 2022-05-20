@@ -1,0 +1,223 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+	<link rel="prefetch" href="static/MaterialSymbolsRounded.woff2" as="font" type="font/woff2">
+    <link rel="stylesheet" type="text/css" href="static/UI.css">
+    <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" type="text/css" href="static/toast.css">
+    <link rel="stylesheet" type="text/css" href="static/MaterialSymbols.css">
+    <link rel="stylesheet" href="static/jquery-ui.css">
+	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src='static/jquery-ui.js' ></script>
+
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+	<title>PDF+ Viewer</title>
+</head>
+
+<body>
+	<div class="toolbar">
+		<div id="dropzone">
+			<span class="dropzoneInlineHelper"> </span>
+			<div class="material-symbols-rounded dropzoneIcon">file_upload</div>
+			<span class="dropzoneInlineHelper"> </span>
+		</div>
+		<input type="file" id="browseInput" style="display:none;">
+		
+		<span class="toolspan">
+				<span>
+					<button class="optional toolbutton" id="save" width=40>
+						<div class="material-symbols-rounded">download</div>
+					</button>
+				</span>
+				<span>
+					<button class="toolbutton" id="xmpToggle">
+						<img src="images/logo_xmp.png" width=32 height=16 />
+					</button>
+				</span>
+				<span>
+					<button class="optional toolbutton" id="barCodeToggle">
+						<div class="material-symbols-rounded">qr_code</div>
+					</button>
+				</span>
+				<span>
+					<button class="optional toolbutton" id="textToggle" width=40>
+						<div class="material-symbols-rounded">text_fields</div>
+					</button>
+				</span>
+				<span>
+					<button class="optional toolbutton" id="imageToggle" width=40>
+						<div class="material-symbols-rounded">image</div>
+					</button>
+				</span>
+				<span>
+					<button class="optional toolbutton" id="fontsToggle" width=40>
+						
+						<div class="material-symbols-rounded">font_download</div>
+					</button>
+				</span>
+				<span>
+					<button class="optional toolbutton" id="settingsToggle">
+						<div class="material-symbols-rounded">settings</div>
+					</button>
+				</span>
+		</span>
+	</div>
+
+	<div class="panel" id="barCodePanel" style="visibility: hidden;" title="Barcode">
+		<div class="panelRow indexRow">
+			<label>#</label>
+			<input class="objectIndex" id="barCodeIndex" type="number" value="0" ></input>
+			<label id="barCodeTotal">/ 0</label>
+		</div>
+		<div class="panelRow">
+			<label>Type:</label>
+			<label id="barCodeType"></label>
+		</div>
+		<div class="panelRow">
+			<label>Code:</label>
+			<input type="text" id='currentBarCode'/>
+		</div>
+		<div class="panelRow">
+			<button class="toolbutton" id="applyBarCode" name="noname">Apply</button>
+		</div>
+	</div>
+	<div class="panel" id="textPanel" style="visibility: hidden;" title="Text">
+		<div class="panelRow indexRow">
+			<label>#</label>
+			<input class="objectIndex" id="textIndex" type="number" value="0"></input>
+			<label id="textTotal">/0</label>
+		</div>
+		<div class="panelRow" id="fontNameRow">
+			<label>Font:</label>
+			<label id="fontName"></label>
+			<div class="material-symbols-rounded" id="fontReady">download_done</div>
+			<div class="material-symbols-rounded" id="missingFont">warning</div>
+			<img id="activateFont" src=""/>
+		</div>
+		<div class="panelRow">
+			<label>Font Size:</label>
+			<input id="fontSize" type="number" step="1.0" value="0"></input>
+		</div>
+		<div class="panelRow">
+			<button class="toolbutton" id="alignLeft">
+				<img src="images/logo_alignLeft.png" width=12 height=12 />
+</button>
+			<button class="toolbutton" id="alignCenter">
+				<img src="images/logo_alignCenter.png" width=12 height=12 />
+</button>
+			<button class="toolbutton" id="alignRight">
+				<img src="images/logo_alignRight.png" width=12 height=12 />
+</button>
+			<button class="toolbutton" id="justifyLeft">
+				<img src="images/logo_justifyLeft.png" width=12 height=12 />
+</button>
+			<button class="toolbutton" id="justifyCenter">
+				<img src="images/logo_justifyCenter.png" width=12 height=12 />
+</button>
+			<button class="toolbutton" id="justifyRight">
+				<img src="images/logo_justifyRight.png" width=12 height=12 />
+</button>
+			<button class="toolbutton" id="justifyAll">
+				<img src="images/logo_justifyAll.png" width=12 height=12 />
+</button>
+		</div>
+		<div class="panelRow">
+			<textarea id="currentText" rows=8>
+			</textarea>
+		</div>
+		<div class="panelRow">
+			<img id="fixReflow" src="images/logo_warning.png"/>
+		</div>
+	</div>
+	<div class="panel" id="xmpPanel" style="visibility: hidden;" title="XMP">
+		<div class="panelRow">
+			<textarea id='xmpText' rows=26>
+			</textarea>
+		</div>
+	</div>
+	<div class="panel" id="imagePanel" style="visibility: hidden;" title="Image">
+		<div class="panelRow indexRow">
+			<label>#</label>
+			<input class="objectIndex" id="imageIndex" type="number" value="0" ></input>
+			<label id="imageTotal">/ 0</label>
+			
+		</div>
+		<div class="panelRow">
+			<label>Pixel Size: </label>
+			<label id="imagePxInfo"></label>
+		</div>
+		<div class="panelRow">
+			<label>Object Size: </label>
+			<label id="imagePtInfo"></label>
+		</div>
+		<div class="panelRow">
+			<label>Resolution: </label>
+			<label id="imagePPI"></label>
+			<img id="lowResolution" src="images/logo_warning.png" />
+		</div>
+		<div class="panelRow">
+			<label>Color Space: </label>
+			<label id="imageColorSpace"></label>
+			<img id="rgbColorSpace" src="images/logo_warning.png" />
+		</div>
+	</div>
+	<div class="panel" id="fontsPanel" style="visibility: hidden;" title="Fonts">
+		<div class="panelRow">
+			<div id="fontDrop">
+				<span class="dropzoneInlineHelper"> </span>
+				<div class="material-symbols-rounded dropzoneIcon">file_upload</div>
+				<span class="dropzoneInlineHelper"> </span>
+			</div>
+		</div>
+		<div class="panelRow">
+			<div id="fontList">
+				FONTLIST HERE
+			</div>
+		</div>
+	</div>
+	<div class="panel" id="settingsPanel" style="visibility: hidden;" title="Settings">
+		<div class="panelRow">
+			<label>View Quality:</label>
+			<input id="devicePixelRatioBar" type="range" min="1" max="6" value="3" step="1" class="slider"/>
+			<div class="material-symbols-rounded" id="viewQualitySpeed">speed</div>
+		</div>
+		<div class="panelRow">
+			<input type="checkbox" id="useGoogleFonts" />
+			<label for="useGoogleFonts">Use Google Fonts</label>
+		</div>
+		<div class="panelRow">
+			<input type="checkbox" id="useSystemFonts" />
+			<label for="useSystemFonts">Use System Fonts (experimental @port 19999)</label>
+		</div>
+	</div>
+	<div id="document">
+		<div id="documentTitle">
+		&nbsp;
+		</div>
+		<div id="documentFileName" style="display:none">
+		</div>
+		<div>
+			<canvas id="canvas"></canvas>
+		</div>
+		<div>
+			<img id="preview" src=""/>
+		</div>
+	</div>
+	<div id="footer">
+		Powered By Esko ArtPro+ 21.11
+	</div>
+	<div id="toast">
+	</div>	
+	<dialog id="spinnerDialog" class="modalDialog">
+		<div style="text-align: center;">
+			<img id="spinnerGif" width=96 height=96 src="static/loading.gif" />
+		</div>
+	</dialog>
+    <!-- JS includes -->
+    <script type="text/javascript" src="NDL/Unzip.js"></script>
+    <script type="text/javascript" src="NDL/SimplePDF.js"></script>
+    <script type="module" src="editor.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+
+<html>
+<head>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/minipreflight.css">
+    <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" type="text/css" href="static/toast.css">
+    <link rel="stylesheet" type="text/css" href="static/meter.css">
+	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
+	<link rel="shortcut icon" type="image/png" href="images/logo_EskoCloud.png" />
+</head>
+<body>
+	<div id="mp_banner">
+		<span><img src="images/logo_EskoCloud.png" width=40 height=40 /></span>
+		<span class="mp_banner_text">My Share & Approve</span>
+		<span class="mp_banner_text" id="mp_bannerRight">
+			<span class="mp_banner_text"><img id="avatar" src="images/logo_EskoStrips.png"/></span>
+			<span class="mp_banner_text" id="eskoID">neil.xu@esko.com</span>
+			<span class="mp_banner_text mp_wcricon">&#60722;</span>
+	</div>
+	<div>
+		<div id="mp_sidebar">
+			<div class="mp_wcricon mp_sidebarIcon">&#60961;</div>
+			<div class="mp_wcricon mp_sidebarIcon mp_sidebarIconSelected">&#60962;</div>
+			<div class="mp_wcricon mp_sidebarIcon">&#59960;</div>
+			<div class="mp_wcricon mp_sidebarIcon">&#59681;</div>
+			<div class="mp_wcricon mp_sidebarIcon">&#59765;</div>
+			<div class="mp_wcricon mp_sidebarIcon">&#59665;</div>
+			<div class="mp_wcricon mp_sidebarIcon">&#59801;</div>
+		</div>	
+		<div id="mp_content">
+			<div id="mp_content_header">
+				<div id="mp_progressContainer">
+					<div class="mp_meter" >
+						<span style="width:100%;">
+							<span id="mp_progress">
+							</span>
+						</span>
+					</div>
+				</div>
+				<div>
+					<div class="mp_wcricon mp_sidebarIcon" id="mp_content_icon">&#60962;</div>
+				</div>
+			</div>
+			<div id="mp_content_body">
+				<div id="mp_dropzone" class="mp_header">
+					<span>
+					Drop File Here: &nbsp;
+					</span>
+					<span>
+						<img class="clickable" id="previewImage" src=""/>
+					</span>
+				</div>
+				<div id="mp_output">
+					<div class="mp_section" id="mp_docinfo">
+					</div>
+					<div class="mp_section" id="mp_inks">
+					</div>
+					<div class="mp_section" id="mp_images">
+					</div>
+					<div class="mp_section" id="mp_barcodes">
+					</div>
+					<div class="mp_section" id="mp_fonts">
+					</div>
+					<div class="mp_section" id="mp_layers">
+					</div>
+				</div>
+			</div>
+			<dialog id="previewDialog">
+				<img id="largePreview"/>
+			</dialog>
+		</div>
+	</div>
+	<div id="toast">
+	</div>	
+	
+	<input type="file" id="browseInput" accept=".pdf,.ai" style="display:none;">
+
+	<!-- insert into html -->
+	<script type="text/javascript" src="NDL/Unzip.js"></script>
+	<script type="text/javascript" src="NDL/SimplePDF.js"></script>
+	<script type="module" src="minipreflight.js"></script>
+</body>
+</html>
