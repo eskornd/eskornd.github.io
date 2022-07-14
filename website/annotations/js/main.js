@@ -1,149 +1,123 @@
 import {log} from './log.js';
-import {Editor, validateEditor} from './Editor.js';
+import {validateEditor} from './validate.js';
 import {Model} from './Model.js';
-import {injectEditor_AI, injectEditor_PS} from './AdobeCEPSupport.js';
-import {getHostApp} from './utils.js';
 import {ctx} from './ctx.js';
-import {Rect} from './Rect.js';
-import {PageBox, HighlightEvent, HighlightType} from './HighlightEvent.js';
+import PageView from './PageView.js';
 
-function View()
-{}
-
-var gCount = 0;
-View.prototype = {
-	onDocumentChanged : async () => {
-		var name = await ctx.editor.getCurrentDocumentName();
-		$("#currentDocument").text(name);
-	},
-	onInitialized : () => {
-		$("#hostApp").text(ctx.editor.name);		
-	},
-	addAnnotation : (annotation) => {
-		// add html
-		var displayText = annotation.name + ' @ x:' + annotation.rect.x + ', y:'+annotation.rect.y; 
-		var id = 'smile_' + gCount;
-		++gCount;
-		var obj = new HighlightEvent();
-		obj.type = HighlightType.eRect;
-		obj.rect = annotation.rect;
-		var data = JSON.stringify(obj);
-		$("#highlight_section").append('<div class="clickable rectAnnotation" id="' + id +'">' + displayText + '</div>').ready(()=>{
-			var obj = new HighlightEvent();
-			obj.type = HighlightType.eRect;
-			obj.rect = annotation.rect;
-			$('#' + id).attr('data', JSON.stringify(obj));
-		});
-	},
-	name : "Context View"
-}
-
-ctx.view = new View();
-ctx.editor = new Editor();	
-
-function initEventHandlers()
+async function onInitialized()
 {
-	$("#hello").on("click", ()=>{
-		ctx.editor.hello();
-	});
-	$("#highlight_mediabox").on("click", ()=>{
-		var event = new HighlightEvent();
-		event.type = HighlightType.ePageBox;
-		event.pageBox = PageBox.eMediaBox;
-		log("highlight_mediabox clicked");
-		ctx.editor.clearHighlights();
-		ctx.editor.highlight(event);
-	});
-
-	var obj = new HighlightEvent();
-	obj.type = HighlightType.eRect;
-	obj.rect = {x:0, y:0, width: 200, height:200};
-	$("#highlight_area2").attr('data', JSON.stringify(obj));
-	obj.rect = {x:0, y:0, width: 100, height:100};
-	$("#highlight_area1").attr('data', JSON.stringify(obj));
-	$("#highlight_custom").on("click", ()=>{
-		var x = $("#custom_x").val();
-		var y = $("#custom_y").val();
-		var w = $("#custom_width").val();
-		var h = $("#custom_height").val();
-		var rect = { x: x, y:y, width: w, height: h};
-		var event = new HighlightEvent();
-		event.type = HighlightType.eRect;
-		event.rect = rect;
-		ctx.editor.clearHighlights();
-		ctx.editor.highlight(event);
-		log("highlight_custom clicked: " + JSON.stringify(event));
-	});
-	// use event delegate rather than direct bind, so that we can handle dynamic items
-	$('#highlight_section').on('click', '.rectAnnotation', (e)=>{ 
-		log(".rectAnnotation clicked");
-		var data = $("#" + e.target.id).attr('data');
-		var obj = JSON.parse(data);
-		ctx.editor.clearHighlights();
-		ctx.editor.highlight(obj);
-	});
-}
-
-function checkHostApp()
-{
-	ctx.hostApp = getHostApp();
-	log("checkHostApp(): hostApp=" + ctx.hostApp);
-
-	// init host app implementations
-	if (ctx.hostApp == "AdobeIllustrator")
+	var appName = await ctx.editor.appName();
+	var verStr = await ctx.editor.versionString();
+	ctx.view.setHostAppText(appName + ' ' + verStr);
+	if ( typeof ctx.editor.openURL === 'undefined' )
 	{
-		try {
-			console.assert(typeof injectEditor_AI == "function");
-			injectEditor_AI("#injection");
-		} catch (err) {
-			alert("Caught Exception: " + err);
-		}
-	} else if (ctx.hostApp == "AdobePhotoshop") {
-		try {
-			console.assert(typeof injectEditor_PS == "function");
-			injectEditor_PS("#injection");
-		} catch (err) {
-			alert("Caught Exception: " + err);
-		}
+		ctx.view.setOpenUrlDisabled();
 	}
-		
 }
 
-function initUI()
+async function initEskoConnector()
 {
-	// show location
-	$("#pageUrl").text(window.location.href);
-	$("#currentDocument").text("");
+	let waitForEditor = new Promise((resolve, reject) =>{
+		document.addEventListener('com.esko.editorconnector.ready', (ev) => {
+			let editor = window[ev.detail.globalPropertyName];
+			resolve(editor);
+		});
+	});
+
+	console.log('Entry: initEskoConnector()');
+	let connector = 
+	{
+		editor : {},
+		model : new Model(), 
+		setEditor : (inEditor)=>{
+		
+			inEditor.onDocumentChanged = async () => { 
+				ctx.controller.onDocumentChanged();
+			};
+			inEditor.onCreateAnnotationRequest = async (annotation) => {
+				ctx.controller.onCreateAnnotationRequest(annotation);
+			};
+			log("setEditor(): " + JSON.stringify(inEditor));
+			
+			//validate
+			validateEditor(inEditor);
+			
+			connector.editor = inEditor;
+			ctx.editor = inEditor;
+			if ( 'init' in ctx.editor)
+			{
+				ctx.editor.init();
+			}
+			setTimeout(()=>{
+				onInitialized();
+				ctx.controller.onDocumentChanged();
+			}, 100);
+		},
+		version : 21011001
+	};
+
+	ctx.editor = {};
+	ctx.view = new PageView();
+	ctx.view.init();
+
+	window.eskoConnector = { setEditor: ()=>{} };
+	if ( undefined != window.__esko_channel__ )
+	{
+		let appInitializer = new ArtProPlusInitializer();
+		appInitializer.initEditor()
+			.then(()=>{})
+			.catch( (err) => {
+				alert('Unable to connecto ot ArtProPlus: ' + JSON.stringify(err));
+			});
+	}
+	if ( undefined != window.cep)
+	{
+		let cepInitializer = new AdobeCEPInitializer();
+		cepInitializer.initEditor()
+			.then(()=>{ console.log('initEditor() succeeded!'); }
+			, (err) => { 
+				alert('Error: Unable to connect to EditorConnector, please check if EditorConnector plugin is correctly installed. \n' + JSON.stringify(err));
+			})
+			.catch((err)=>{
+				alert('Exception: Unable to connect to EditorConnector, please check if EditorConnector plugin is correctly installed. \n' + JSON.stringify(err));
+			});
+	}
+	
+	let editor = await waitForEditor;	
+	if ( null != editor )
+	{
+		connector.setEditor(editor);
+	}
 }
 
-function init()
+// Create the context menu
+// Leave the responsibility to web-app for now
+// TODO: check how context menu can be created in QtWebEngine/QWebEngineView, if needed, we could consider move the responsibility to UECI
+function initContextMenu()
 {
-	initUI();
-	initEventHandlers();
+	if ( undefined != window.__adobe_cep__ )
+	{
+		let menuObj = 
+		{ menu : [
+			{ id : 'reload'
+				, label : 'Reload'
+				, enabled : true
+				, checkable : false
+			}
+		]};
+		let setMenu = (menu, callback) => {
+			window.__adobe_cep__.invokeAsync('setContextMenuByJSON', menu, callback);
+		};
+		setMenu(JSON.stringify(menuObj), (id)=>{
+			if ('reload' == id) { 
+				window.location.reload();}
+		});
+
+		//Flyout menu
+		let menuXML = '<Menu><MenuItem id="reload" label="Reload" Enabled="true"/></Menu>';
+		window.__adobe_cep__.invokeSync('setPanelFlyoutMenu', menuXML);
+	}
 }
 
-$(()=>{
-	log("Loaded");
-	init();
-});
-
-checkHostApp();
-var annotator = 
-{
-	editor : {},
-	model : new Model(), 
-	setEditor : (inEditor)=>{
-		log("window.eskoAnnotator.setEditor(): " + JSON.stringify(inEditor));
-		
-		//validate
-		validateEditor(inEditor);
-		
-		annotator.editor = inEditor;
-		ctx.editor = inEditor;
-		ctx.editor.init();
-		ctx.view.onInitialized();
-	},
-	version : 21011001
-};
-
-window.eskoAnnotator = annotator;
+initContextMenu();
+initEskoConnector();

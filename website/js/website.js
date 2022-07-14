@@ -1,3 +1,9 @@
+function drawBackground()
+{
+	drawSmileFace();
+	drawSVG();
+}
+
 // pop up an auto dismiss message
 function message(msg,duration)
 {
@@ -46,8 +52,6 @@ var canvas = document.getElementById('canvas');
 console.assert(canvas.getContext);
 var ctx2d = canvas.getContext('2d');
 
-drawSmileFace();
-
 function onFrameLoaded()
 {
 	canvas.addEventListener('click', function(e) {
@@ -56,8 +60,8 @@ function onFrameLoaded()
 		var x = e.pageX - canvasLeft;
 		var y = e.pageY - canvasTop;
 		console.log('canvas clicked: ' + JSON.stringify(e) + " x:" + x + ", y: " + y);
-		var centerX = canvas.width / 2;
-		var centerY = canvas.height / 2;
+		var centerX = smile_center.x;
+		var centerY = smile_center.y;
 
 		var radiusSquare = 70*70;
 		var xx = x - centerX;
@@ -66,14 +70,14 @@ function onFrameLoaded()
 		if (dd<=radiusSquare)
 		{
 			console.log('smileface clicked: ');
-			console.assert(typeof frameWin.eskoAnnotator.model.createAnnotation === "function");
+			console.assert(typeof frameWin.eskoConnector.model.createAnnotation === "function");
 			var rect = { x: (x - 70/2), y: (y - 70/2), width: 70, height: 70};
 			rect = ToDocumentRect(rect);
 			var annotation = {
 				name : "Smileface",
 				rect : rect,
 			};
-			frameWin.eskoAnnotator.model.createAnnotation(annotation);
+			frameWin.eskoConnector.model.createAnnotation(annotation);
 		} else {
 			message("Click on smile face to create annotation", 2000);
 		}
@@ -85,32 +89,43 @@ function onFrameLoaded()
 		hello: () => {
 			sayHello();
 		},
-		clearHighlights : () => {
+		setDocumentAnnotations : async (docID, annotations) => {
 			ctx2d.clearRect(0, 0, canvas.width, canvas.height);
-			drawSmileFace();
-		},
-		highlight : (event) => {
-			switch (event.type)
+			drawBackground();
+			for ( const anno of annotations)
 			{
-				case "rect":
-
-					var r = ToCanvasRect(event.rect);
-					ctx2d.strokeStyle = "red";
-					ctx2d.strokeRect(r.x, r.y, r.width, r.height);
-				break;
-				case "pagebox":
-					ctx2d.strokeStyle = "red";
-					ctx2d.strokeRect(0, 0, canvas.width, canvas.height);
-				break;
+				var r = ToCanvasRect(anno.boundingBox);
+				ctx2d.strokeStyle = "red";
+				ctx2d.strokeRect(r.x, r.y, r.width, r.height);
 			}
 		},
-		getCurrentDocumentName : () => { return "current canvas document name"; },
+		documentPagesInfo : async (docID) => {
+			var canvas = document.getElementById('canvas');
+			let info = [
+				{ type: "MediaBox", width: canvas.width, height: canvas.height},
+				{ type: "TrimBox", width: canvas.width, height: canvas.height}
+			];
+			return info;
+		},
+		currentDocument : () =>
+		{
+			var doc = {
+				title : () => { return 'index.html'; }
+			};
+			return doc;
+		},
+		getCurrentDocumentName : () => { return 'current canvas document name'; },
 		onAnnotationsChanged : (inOptData) => {
 			message("Annotations has changed! Please check annotations panel.", 2000);
 		},
-		name : "GenericBrowser"
+		openURL : (url)=> { window.open(url); },
+		documents : () => { },
+		appName : ()=>{ return "GenericBrowser";},
+		versionString :  ()=>{ return "unknown version";}
 	};
 
-	frameWin.eskoAnnotator.setEditor(editor);
+	frameWin.eskoConnector.setEditor(editor);
 }
+
+drawBackground();
 

@@ -1,33 +1,31 @@
 function isCEP()
 {
-	if (window.cep)
-	{
-		var cs = new CSInterface();
-		var hostEnv = cs.getHostEnvironment();
-	}
 	return ( typeof window.cep != "undefined" );
+}
+
+function getHostEnvironment()
+{
+    return JSON.parse(window.__adobe_cep__.getHostEnvironment());
 }
 
 function isIllustrator()
 {
 	if (!isCEP())
 		return false;
-	var cs = new CSInterface();
-	return "ILST" == cs.getHostEnvironment().appId;
+	return 'ILST' === getHostEnvironment().appId;
 }
 
 function isPhotoshop()
 {
 	if (!isCEP())
 		return false;
-	var cs = new CSInterface();
-	return "PHXS" == cs.getHostEnvironment().appId;
+	return 'PHXS' === getHostEnvironment().appId;
 }
 
-function isArtProPlus()
+function isQtWebEngine()
 {
 	// TODO: check if host app is AP+
-	return false;
+	return ('webChannel' in window);
 }
 
 function isBrowser()
@@ -44,8 +42,8 @@ function getHostApp()
 		if (isPhotoshop())
 			return "AdobePhotoshop";
 		return "CEP";
-	} else if ( isArtProPlus() ) {
-		return "ArtProPlus";
+	} else if ( isQtWebEngine() ) {
+		return "QtWebEngine";
 	} else if ( isBrowser() ) {
 		return "Browser";
 	} else {

@@ -11,10 +11,6 @@ Model.prototype =
 		ctx.editor.onAnnotationsChanged();
 		ctx.view.addAnnotation(annotation);
 	},
-	notifyDocumentChange : () => {
-		log("model.notifyDocumentChange()");
-		ctx.view.onDocumentChanged();
-	}
 };
 
 export {Model};
