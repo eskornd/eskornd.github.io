@@ -98,7 +98,10 @@ export default class PageView
 	{
 		this.setPageUrlText(window.location.href);
 		$('#hello').on('click', async ()=>{
-			ctx.editor.hello();
+			console.log('editor.appName(): ' + ctx.editor.appName());
+			console.log('editor.versionString(): ' + ctx.editor.versionString());
+			console.log('editor.version(): ' + ctx.editor.version());
+			//ctx.editor.hello();
 		});
 		$("#highlight_pagebox").on("click", async ()=>{
 			highlightRectOrRects(makeRect(0, 0, ctx.currentPageSize['width'], ctx.currentPageSize['height']));

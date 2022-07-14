@@ -61,7 +61,7 @@ async function initEskoConnector()
 	ctx.view.init();
 
 	window.eskoConnector = { setEditor: ()=>{} };
-	if ( undefined != window.__esko_channel__ )
+	if ( undefined != window.__esko_bootloader__ )
 	{
 		let appInitializer = new ArtProPlusInitializer();
 		appInitializer.initEditor()

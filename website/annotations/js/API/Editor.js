@@ -18,7 +18,7 @@ export class Editor
 	async currentDocument(){}
 
 	/**
-	 * Get all opened documents
+	 * @deprecated Get all opened documents
 	 * @return {Document[]} All opened documents. If no document opened, return empty Array 
 	 */
 	async documents(){}
@@ -28,11 +28,6 @@ export class Editor
 	 * web view can override this function
 	 */
 	async onDocumentChanged(){}
-
-	/**
-	 * An unimplmented function
-	 */
-	async unimplemented(any){}	
 
 	/**
 	 * Get current version string of editor
