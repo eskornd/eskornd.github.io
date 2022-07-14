@@ -16,10 +16,27 @@ function launch()
 	redirectTo(document.getElementById('url').value);
 }
 
+function onSelected()
+{
+	let urlText = document.getElementById('dropdown').value;
+	let elem = document.getElementById('url');	
+	elem.value = urlText;
+}
+
 	</script>
 	<div>
+		<span><label>presets:</label></span>
+		<span>
+			<select id='dropdown' onchange="onSelected()">
+				<option value="https://login.cloudi.city/">https://login.cloudi.city/</option>
+				<option value="http://localhost:8000/samplesite/annotations">http://localhost:8000/samplesite/annotations</option>	
+				<option value="https://eskornd.github.io/website/annotations/">https://eskornd.github.io/website/annotations/</option>
+			</select>
+		</span>
+	</div>
+	<div>
 		<span><label>URL:</label></span>
-		<span><input id="url" type="text" size="48" value="http://localhost:8000/samplesite/annotations/"/></span>
+		<span><input id="url" type="text" size="48" value="https://login.cloudi.city/"/></span>
 		<span><button style="width:80px;" onClick="launch();">launch</button></span>
 	</div>
 	
