@@ -1,0 +1,27 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<script type="text/javascript">
+
+function redirectTo(url)
+{
+	console.log('redirecting to ' + url);
+	window.location.href = url;
+}
+
+function launch() 
+{
+	redirectTo(document.getElementById('url').value);
+}
+
+	</script>
+	<div>
+		<span><label>URL:</label></span>
+		<span><input id="url" type="text" size="48" value="http://localhost:8000/samplesite/annotations/"/></span>
+		<span><button style="width:80px;" onClick="launch();">launch</button></span>
+	</div>
+	
+</body>	
+</html>
