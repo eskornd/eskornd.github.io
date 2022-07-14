@@ -1,9 +1,9 @@
-import {Editor} from '/API/Editor.js'
-import {Document} from '/API/Document.js'
-import {Annotation} from '/API/Annotation.js'
-import {PageBox} from '/API/PageBox.js'
-import {RGBColor} from '/API/RGBColor.js'
-import {Rect} from '/API/Rect.js'
+import {Editor} from './API/Editor.js'
+import {Document} from './API/Document.js'
+import {Annotation} from './API/Annotation.js'
+import {PageBox} from './API/PageBox.js'
+import {RGBColor} from './API/RGBColor.js'
+import {Rect} from './API/Rect.js'
 
 const editorPrototype = new Editor();	
 const documentPrototype = new Document();	
