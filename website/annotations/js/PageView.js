@@ -98,6 +98,7 @@ export default class PageView
 	{
 		this.setPageUrlText(window.location.href);
 		$('#hello').on('click', async ()=>{
+			alert('hello clicked');
 			console.log('editor.appName(): ' + await ctx.editor.appName());
 			console.log('editor.versionString(): ' + await ctx.editor.versionString());
 			console.log('editor.version(): ' + await ctx.editor.version());
