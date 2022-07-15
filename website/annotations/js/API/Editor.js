@@ -18,12 +18,6 @@ export class Editor
 	async currentDocument(){}
 
 	/**
-	 * @deprecated Get all opened documents
-	 * @return {Document[]} All opened documents. If no document opened, return empty Array 
-	 */
-	async documents(){}
-
-	/**
 	 * Notified when document is opened/closed/switched in host application
 	 * web view can override this function
 	 */

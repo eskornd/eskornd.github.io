@@ -28,10 +28,5 @@ export class Annotation
 		 */
 		this.highlightWeight = 1.0;
 
-		/**
-		 * Path of the highlight path
-		 * @todo path format to be defined
-		 */
-		this.highlightPath = {};
 	}
 }

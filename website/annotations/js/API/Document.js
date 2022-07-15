@@ -8,7 +8,8 @@ export class Document
 	constructor()
 	{
 		/** 
-		 * Document ID
+		 * Document ID, this is *NOT* the cloud asset ID.
+		 * It's for internal use only, as a handle to track the document inside the Editor
 		 * @type {number}
 		 */
 		this.id = 0;
@@ -30,8 +31,7 @@ export class Document
 	/**
      * Set Annotations that should be shown for current document
 	 * @param annotations {Annotation[]}
-	 * @return {undefined}
-	 */
+	 * @return {undefined} */
 	async setAnnotations(annotations){}
 
 	/**
@@ -47,11 +47,22 @@ export class Document
 	 * @throws if document is not valid
 	 */
 	async title(){return '';}
-	
+
 	/**
-	 * Zoom the page to given rect
-	 * @param rect {Rect} in current document page coordinates
+	 * Get node ID of the document
+	 * @return {string}
+	 * @throws if document is not valid
 	 */
-	async zoomTo(rect){}
+	async getNodeID(){}
+
+	/**
+	 * Set node ID to the document
+	 * (This will not trigger a file save operation)
+	 * @param nodeID {string} the node ID
+	 * @return {undefined}
+	 * @throws if document is not valid
+	 */
+	async setNodeID(nodeID){}
+	
 }
 
