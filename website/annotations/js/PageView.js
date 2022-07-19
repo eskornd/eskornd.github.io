@@ -98,10 +98,6 @@ export default class PageView
 	{
 		this.setPageUrlText(window.location.href);
 		$('#hello').on('click', async ()=>{
-			alert('hello clicked');
-			console.log('editor.appName(): ' + await ctx.editor.appName());
-			console.log('editor.versionString(): ' + await ctx.editor.versionString());
-			console.log('editor.version(): ' + await ctx.editor.version());
 			ctx.editor.hello();
 		});
 		$("#highlight_pagebox").on("click", async ()=>{
@@ -139,6 +135,30 @@ export default class PageView
 				alert(JSON.stringify(annots, null, 4));
 			}
 		});
+		$('#validate').on('click', async () => {
+			let str = '';
+			str += 'editor.appName(): ';
+			try {
+				str += await ctx.editor.appName();
+			} catch (err) {}	
+			str += '\n';
+			str += 'editor.version(): ';
+			try {
+				str += JSON.stringify(await ctx.editor.version());
+			} catch (err) {}	
+			str += '\n';
+			str += 'editor.versionString(): ';
+			try {
+				str += await ctx.editor.versionString();
+			} catch (err) {}	
+			str += '\n';
+			str += 'editor.currentDocument(): ';
+			try {
+				str += JSON.stringify(await ctx.editor.currentDocument());
+			} catch (err) {}
+
+			alert(str);
+		});
 		$("#openURL").on("click", ()=>{
 			ctx.editor.openURL('https://www.esko.com/');
 		});
@@ -161,6 +181,23 @@ export default class PageView
 			}
 			
 		});
+		$('#storage').on('click', async ()=>
+		{
+			const kKey = 'STORAGE_KEY';
+			let value = Math.floor((Math.random() * 100) + 1).toString();
+			let storage = await ctx.editor.storage()	
+			let prevValue = await storage.getValue(kKey);
+			let dummy = await storage.setValue(kKey, value);
+			let currValue = await storage.getValue(kKey);
+			let str = 'Prev Value of key ' + kKey + ': ' + prevValue;
+			str += '\n';
+			str += 'storage.setValue: ' + value;
+			str += '\n';
+			str += 'Curr Value of key ' + kKey + ': ' + currValue;
+			str += '\n';
+			alert(str);
+		});
+
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', (e)=>{ 
 			log(".rectAnnotation clicked");

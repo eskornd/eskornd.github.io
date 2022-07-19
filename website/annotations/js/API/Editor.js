@@ -18,6 +18,13 @@ export class Editor
 	async currentDocument(){}
 
 	/**
+	 * Show a Modal dialog
+	 * which content will be filled by a given URL
+	 * @param modalParams {ModalParams}
+	 */ 
+	async showModal(modalParams) {}
+
+	/**
 	 * Notified when document is opened/closed/switched in host application
 	 * web view can override this function
 	 */
