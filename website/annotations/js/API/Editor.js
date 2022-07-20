@@ -44,6 +44,11 @@ export class Editor
 	 */
 	async versionString(){}
 	
+	/**
+	 * Get the storage of editor
+	 * @return {Storage} 
+	 */
+	async storage(){}
 }
 
 

@@ -160,7 +160,7 @@ export default class PageView
 			alert(str);
 		});
 		$("#openURL").on("click", ()=>{
-			ctx.editor.openURL('https://www.esko.com/');
+			ctx.editor.showModal( {url:'https://www.esko.com/'});
 		});
 		$("#documents").on("click", async ()=>{
 			let docs = [];

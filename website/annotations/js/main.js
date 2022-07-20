@@ -9,7 +9,7 @@ async function onInitialized()
 	var appName = await ctx.editor.appName();
 	var verStr = await ctx.editor.versionString();
 	ctx.view.setHostAppText(appName + ' ' + verStr);
-	if ( typeof ctx.editor.openURL === 'undefined' )
+	if ( typeof ctx.editor.showModal === 'undefined' )
 	{
 		ctx.view.setOpenUrlDisabled();
 	}
