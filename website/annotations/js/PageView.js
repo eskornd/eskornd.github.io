@@ -200,10 +200,13 @@ export default class PageView
 
 		$('#uploadFile').on('click', async ()=>
 		{
-			let ret = await ctx.editor.uploadFile();
-			alert('typeof ret: ' + typeof ret);
-			alert('ret.length: ' + ret.length);
-			let bp = 1;
+			try{
+				let ret = await ctx.currentDoc.getFileByteArray();
+				alert('typeof ret: ' + typeof ret);
+				alert('ret.length: ' + ret.length);
+			} catch (err) {
+				console.error(err);
+			}
 		});
 
 		// use event delegate rather than direct bind, so that we can handle dynamic items

@@ -22,7 +22,7 @@ async function InitEditor()
 			.catch((err)=>{
 				alert('Exception: Unable to connect to EditorConnector, please check if EditorConnector plugin is correctly installed. \n' + JSON.stringify(err));
 			});
-	} else if ( userAgent.includes('ArtPro+') || userAgent.includes('QtWebEngine') )
+	} else if ( userAgent.includes('ArtPro+') )
 	{ 
 		console.log('Initializer.js: InitEditor() for ArtPro+');
 		let appInitializer = new ArtProPlusInitializer();
