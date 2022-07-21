@@ -1,6 +1,6 @@
 import {downloadAs} from './js/downloadAs.js';
 import {NDL} from './NDL/NDL.js';
-
+const kProfiling = true;
 var gViewer = undefined;
 var gNDL = undefined;
 
@@ -212,7 +212,10 @@ function UI()
 		let curText = $('#currentText').val();
 		if ( curText !== ctx.lastSetText )
 		{
-			//console.profile();
+			if (kProfiling)
+			{
+				console.profile();
+			}
 			markTextChanged();
 			viewer().setTextText(getTextIndex(), curText);
 			ctx.lastSetText = curText;
@@ -221,7 +224,10 @@ function UI()
 			toastMessage('Text content changed');
 			
 			ctx.queueEndTextEdit(5*ctx.settings.editingDelay);
-			//console.profileEnd();
+			if (kProfiling)
+			{
+				console.profileEnd();
+			}
 		}
 	};
 	let applyFontSizeChange = async()=> {
