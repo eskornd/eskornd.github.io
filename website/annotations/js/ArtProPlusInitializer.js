@@ -7,8 +7,24 @@ class ArtProPlusInitializer
 
 	async initEditor()
 	{
-		// Initialize the editor object
-		return window.__esko_bootloader__.initEditor();
+		// add a 2000 ms timeout to wait for the editor connector javascript injectionw
+		let timeout = 2000; //timeout
+		let step = 100; //ms
+		let intervalHandle = setInterval(()=>
+		{
+			timeout -= step;
+			if ( undefined != window.__esko_bootloader__ )
+			{
+				clearInterval(intervalHandle);
+				return window.__esko_bootloader__.initEditor();
+			}
+			if ( timeout <= 0 )
+			{
+				clearInterval(intervalHandle);
+				return Promise.reject(new Error('initEditor timeout'));
+			}
+		}, step);
+
 	}
 }
 

@@ -1,4 +1,4 @@
-//# sourceURL=InitEditor.js
+//# sourceURL=Initializer.js
 
 async function InitEditor()
 {
@@ -9,18 +9,10 @@ async function InitEditor()
 		});
 	});
 
-	console.log('InitEditor.js: InitEditor()');
-	if ( undefined != window.__esko_bootloader__ )
-	{
-		let appInitializer = new ArtProPlusInitializer();
-		appInitializer.initEditor()
-			.then(()=>{})
-			.catch( (err) => {
-				alert('Unable to connecto ot ArtProPlus: ' + JSON.stringify(err));
-			});
-	}
+	const userAgent = window.navigator.userAgent;
 	if ( undefined != window.cep)
 	{
+		console.log('Initializer.js: InitEditor() for cep');
 		let cepInitializer = new AdobeCEPInitializer();
 		cepInitializer.initEditor()
 			.then(()=>{ console.log('initEditor() succeeded!'); }
@@ -29,6 +21,15 @@ async function InitEditor()
 			})
 			.catch((err)=>{
 				alert('Exception: Unable to connect to EditorConnector, please check if EditorConnector plugin is correctly installed. \n' + JSON.stringify(err));
+			});
+	} else if ( userAgent.includes('ArtPro+') || userAgent.includes('QtWebEngine') )
+	{ 
+		console.log('Initializer.js: InitEditor() for ArtPro+');
+		let appInitializer = new ArtProPlusInitializer();
+		appInitializer.initEditor()
+			.then(()=>{})
+			.catch( (err) => {
+				alert('Unable to connecto ot ArtProPlus: ' + JSON.stringify(err));
 			});
 	}
 	

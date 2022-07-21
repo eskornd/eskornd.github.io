@@ -8,11 +8,13 @@ export class ModalParams
 	constructor()
 	{
 		/**
-		 * The URL to be opened, mandatory
+		 * The URL to be opened
+		 * Mandatory
 		 * @type {string}
 		 */
 		this.url = '';
 
 	}
 }
+
 

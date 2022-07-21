@@ -198,6 +198,14 @@ export default class PageView
 			alert(str);
 		});
 
+		$('#uploadFile').on('click', async ()=>
+		{
+			let ret = await ctx.editor.uploadFile();
+			alert('typeof ret: ' + typeof ret);
+			alert('ret.length: ' + ret.length);
+			let bp = 1;
+		});
+
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', (e)=>{ 
 			log(".rectAnnotation clicked");
