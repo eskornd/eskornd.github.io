@@ -135,6 +135,37 @@ export default class PageView
 				alert(JSON.stringify(annots, null, 4));
 			}
 		});
+		$('#showPageBoxes').on('click', async () => {
+			if (ctx.currentDoc == undefined )
+			{
+				alert('No document opened');
+				return;
+			} 
+			try {
+				let pagesInfo = await ctx.currentDoc.pagesInfo();	
+				let str = '';
+				for ( let i=0; i<pagesInfo.length; ++i)
+				{
+					const pageInfo = pagesInfo[i];
+					str += 'PageSize: ' + pageInfo.width + ' x ' + pageInfo.height; 
+					if ( undefined != pageInfo.pageBoxes )
+					{
+						for ( let j=0; j<pageInfo.pageBoxes.length; ++j)
+						{
+							const pageBox = pageInfo.pageBoxes[j];
+							str += '\n'
+							str += pageBox.type + ' [' + pageBox.rect.x + ', ' + pageBox.rect.y + ', ' + pageBox.rect.width + ', ' + pageBox.rect.height + ']';
+						}
+					}
+					str += '\n';
+				}
+				alert(str);
+			} catch (err) {
+				console.error(err);
+				alert('Unable to show Page boxes Info: ' + err);
+			}
+		
+		});
 		$('#validate').on('click', async () => {
 			let str = '';
 			str += 'editor.appName(): ';
