@@ -100,8 +100,22 @@ export default class PageView
 		$('#hello').on('click', async ()=>{
 			ctx.editor.hello();
 		});
-		$("#highlight_pagebox").on("click", async ()=>{
-			highlightRectOrRects(makeRect(0, 0, ctx.currentPageSize['width'], ctx.currentPageSize['height']));
+		$("#highlight_mediabox").on("click", async ()=>{
+			let mediaBox = undefined;
+			try {
+				let pagesInfo = await ctx.currentDoc.pagesInfo();	
+				let pageInfo = pagesInfo[0];
+				for ( let j=0; j<pageInfo.pageBoxes.length; ++j)
+				{
+					const pageBox = pageInfo.pageBoxes[j];
+					if ( pageBox.type == 'MediaBox' )
+					{
+						mediaBox = pageBox.rect;	
+					}
+				}
+			} catch (err) {
+			}
+			highlightRectOrRects(makeRect(mediaBox.x, mediaBox.y, mediaBox.width, mediaBox.height));
 		});
 
 		$("#highlight_100").attr('data', JSON.stringify({x:0, y:0, width: 100, height:100}));
