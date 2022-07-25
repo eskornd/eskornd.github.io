@@ -100,22 +100,32 @@ export default class PageView
 		$('#hello').on('click', async ()=>{
 			ctx.editor.hello();
 		});
-		$("#highlight_mediabox").on("click", async ()=>{
-			let mediaBox = undefined;
+		let getCurrentDocumentPageBox = async (boxName) => 
+		{
+			let theBox = undefined;
 			try {
-				let pagesInfo = await ctx.currentDoc.pagesInfo();	
-				let pageInfo = pagesInfo[0];
+				let pages = await ctx.currentDoc.pagesInfo();
+				let pageInfo = pages[0];
 				for ( let j=0; j<pageInfo.pageBoxes.length; ++j)
 				{
 					const pageBox = pageInfo.pageBoxes[j];
-					if ( pageBox.type == 'MediaBox' )
+					if ( pageBox.type == boxName )
 					{
-						mediaBox = pageBox.rect;	
+						theBox = pageBox.rect;	
+						break;
 					}
 				}
 			} catch (err) {
 			}
-			highlightRectOrRects(makeRect(mediaBox.x, mediaBox.y, mediaBox.width, mediaBox.height));
+			return theBox;
+		};
+		$("#highlight_trimbox").on("click", async ()=>{
+			let box = await getCurrentDocumentPageBox('TrimBox');
+			highlightRectOrRects(makeRect(box.x, box.y, box.width, box.height));
+		});
+		$("#highlight_mediabox").on("click", async ()=>{
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			highlightRectOrRects(makeRect(box.x, box.y, box.width, box.height));
 		});
 
 		$("#highlight_100").attr('data', JSON.stringify({x:0, y:0, width: 100, height:100}));
