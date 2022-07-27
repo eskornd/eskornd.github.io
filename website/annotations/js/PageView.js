@@ -215,7 +215,7 @@ export default class PageView
 			alert(str);
 		});
 		$("#openURL").on("click", ()=>{
-			ctx.editor.showModal( {url:'https://www.esko.com/'});
+			ctx.editor.showModal( {url:'https://eskornd.github.io/UECI/boot.html'});
 		});
 		$("#documents").on("click", async ()=>{
 			let docs = [];
