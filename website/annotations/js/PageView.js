@@ -256,9 +256,12 @@ export default class PageView
 		$('#uploadFile').on('click', async ()=>
 		{
 			try{
-				let ret = await ctx.currentDoc.getFileByteArray();
-				alert('typeof ret: ' + typeof ret);
-				alert('ret.length: ' + ret.length);
+				let ret = await ctx.currentDoc.getFileByteArray((current, total)=>{ console.log('' + current + '/' + total + ' transfered.');});
+				
+				let wa = CryptoJS.lib.WordArray.create(ret);
+				let md5 = CryptoJS.MD5(wa).toString();
+				alert('Received Uint8Array ' + ret.length + ' bytes\nMD5: ' + md5);
+				
 			} catch (err) {
 				console.error(err);
 			}
