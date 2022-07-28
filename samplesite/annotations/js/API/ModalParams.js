@@ -14,6 +14,18 @@ export class ModalParams
 		 */
 		this.url = '';
 
+		/**
+		 * The popup dialog size
+		 * optional
+		 * @type {Size}
+		 */
+		this.dialogSize;
+
+		/**
+		 * Title of the modal dialog, utf8
+		 * @type {String}
+		 */
+		this.title;
 	}
 }
 

@@ -13,6 +13,7 @@ let ctx = {
 				ctx.currentDocID = docID;
 				ctx.currentDoc = doc;
 				let pageBoxes = await doc.pagesInfo();
+				let dirtyText = '' + await doc.isDirty();
 				let pageSizeText = '';
 				for (let i =0;i<pageBoxes.length; ++ i)
 				{
@@ -23,10 +24,12 @@ let ctx = {
 					break;
 				}
 				ctx.view.setPageSizeText(pageSizeText);
+				ctx.view.setIsDirtyText(dirtyText);
 			} else {
 				ctx.view.setCurrentDocumentTitle('NO DOCUMENT OPENED');
 				ctx.view.setCurrentDocumentFilePath('');
 				ctx.view.setPageSizeText('');
+				ctx.view.setIsDirtyText('');
 				ctx.currentDoc = undefined;
 			}
 		} // on document changed

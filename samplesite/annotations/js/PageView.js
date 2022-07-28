@@ -75,6 +75,12 @@ export default class PageView
 	{
 		$('#pageSize').text(pageSizeText);
 	}
+
+	setIsDirtyText(dirtyText)
+	{
+		$('#isDirty').text(dirtyText);
+	}
+
 	addAnnotation (annotation)
 	{
 		// add html

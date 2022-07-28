@@ -6,17 +6,11 @@
 export class Document
 { 
 	constructor()
-	{
-		/** 
-		 * Document ID, this is *NOT* the cloud asset ID.
-		 * It's for internal use only, as a handle to track the document inside the Editor
-		 * @type {number}
-		 */
-		this.id = 0;
-	}
+	{ }
 
 	/**
 	 * Get local file path of the document, in utf8
+	 * @since 22.07
 	 * @return {string} local file path
 	 * @throws If document is not valid
 	 */
@@ -25,19 +19,23 @@ export class Document
 	/**
 	 * Get pages info for the current document
 	 * @return {PageInfo[]}
+	 * @since 22.11
 	 */
 	async pagesInfo(){}
 	
 	/**
      * Set Annotations that should be shown for current document
 	 * @param annotations {Annotation[]}
-	 * @return {undefined} */
+	 * @return {undefined} 
+	 * @since 22.07
+	 */
 	async setAnnotations(annotations){}
 
 	/**
 	  * Get Annotations that is shown for current document
 	 * Only the annotation set by your web-component will be returned. 
 	 * @return {Annotation[]}
+	 * @since 22.11
 	 */
 	async getAnnotations(){}
 
@@ -45,6 +43,7 @@ export class Document
 	 * Get Title of the document, in utf8
 	 * @return {string}
 	 * @throws if document is not valid
+	 * @since 22.11
 	 */
 	async title(){return '';}
 
@@ -52,6 +51,7 @@ export class Document
 	 * Get node ID of the document
 	 * @return {string}
 	 * @throws if document is not valid
+	 * @since 22.11
 	 */
 	async getNodeID(){}
 
@@ -61,8 +61,26 @@ export class Document
 	 * @param nodeID {string} the node ID
 	 * @return {undefined}
 	 * @throws if document is not valid
+	 * @since 22.11
 	 */
 	async setNodeID(nodeID){}
 	
+	/**
+	 * Return whether the current document is dirty or not
+	 * 
+	 * @return {bool}
+	 * @since 22.11
+	 */
+	async isDirty(){}
+
+	/**
+	 * Get File as Binary 
+	 * @param param {object} optional
+	 * @param param.saveFile {bool} save the file if not yet saved, default true
+	 * @param param.silent {bool} save file silently
+	 * @since 22.11
+	 */
+	async readFileBinary(param){}	
+
 }
 
