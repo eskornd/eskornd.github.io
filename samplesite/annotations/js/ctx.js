@@ -13,7 +13,12 @@ let ctx = {
 				ctx.currentDocID = docID;
 				ctx.currentDoc = doc;
 				let pageBoxes = await doc.pagesInfo();
-				let dirtyText = '' + await doc.isDirty();
+				let dirtyText = '';
+				try {
+					 dirtyText += await doc.isDirty();
+				} catch (err){
+					console.error(err);
+				}
 				let pageSizeText = '';
 				for (let i =0;i<pageBoxes.length; ++ i)
 				{

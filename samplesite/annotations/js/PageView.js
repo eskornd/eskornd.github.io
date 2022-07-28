@@ -264,9 +264,25 @@ export default class PageView
 			try{
 				let ret = await ctx.currentDoc.getFileByteArray((current, total)=>{ console.log('' + current + '/' + total + ' transfered.');});
 				
-				let wa = CryptoJS.lib.WordArray.create(ret);
-				let md5 = CryptoJS.MD5(wa).toString();
-				alert('Received Uint8Array ' + ret.length + ' bytes\nMD5: ' + md5);
+				console.log('Received Uint8Array ' + ret.length + ' now calculating hash...');
+				// Process MD5 in tiles to avoid memory overflow
+				let md5 = CryptoJS.algo.MD5.create();
+				let processed = 0;
+				const total = ret.length;
+				const kTileSize = 512*1024;
+				while (processed < total )
+				{
+					let remaining = total - processed;
+					let len = remaining < kTileSize ? remaining : kTileSize;
+					let tile = new Uint8Array(ret.buffer, processed, len); 
+					let wa = CryptoJS.lib.WordArray.create(tile);
+					md5.update(wa);
+					processed += len;
+					console.log('    crypto-js md5: ' + processed + '/' + total + ' processed');
+				}
+				
+				let hash = md5.finalize();
+				alert('Received Uint8Array ' + ret.length + ' bytes\nMD5: ' + hash);
 				
 			} catch (err) {
 				console.error(err);
