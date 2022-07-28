@@ -262,7 +262,7 @@ export default class PageView
 		$('#uploadFile').on('click', async ()=>
 		{
 			try{
-				let ret = await ctx.currentDoc.getFileByteArray((current, total)=>{ console.log('' + current + '/' + total + ' transfered.');});
+				let ret = await ctx.currentDoc.readFileBinary((current, total)=>{ console.log('' + current + '/' + total + ' transfered.');});
 				
 				console.log('Received Uint8Array ' + ret.length + ' now calculating hash...');
 				// Process MD5 in tiles to avoid memory overflow
