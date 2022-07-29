@@ -285,6 +285,7 @@ export default class PageView
 				alert('Received Uint8Array ' + ret.length + ' bytes\nMD5: ' + hash);
 				
 			} catch (err) {
+				alert('Unable to read file binary: ' + JSON.stringify(err));
 				console.error(err);
 			}
 		});
