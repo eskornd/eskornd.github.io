@@ -290,6 +290,31 @@ export default class PageView
 			}
 		});
 
+		$('#resizeDialog').on('click', async ()=> 
+		{
+			try {
+				let win = await ctx.editor.currentWindow();
+				let isModal = await win.isModal();
+				await win.resize({width: 256, height:256 });
+			} catch (err) {
+				console.error(err);
+				alert('Failed to resize dialog' + JSON.stringify(err));
+			}
+			
+		});
+
+		$('#closeDialog').on('click', async ()=>
+		{
+			try {
+				let win = await ctx.editor.currentWindow();
+				await win.close();
+			} catch (err) {
+				console.error(err);
+				alert('Failed to resize dialog' + JSON.stringify(err));
+			}
+			
+		});
+
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', (e)=>{ 
 			log(".rectAnnotation clicked");
