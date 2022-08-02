@@ -75,13 +75,13 @@ export class Document
 
 	/**
 	 * Get File as Binary 
-	 * @param param {object} optional
-	 * @param param.saveFile {bool} save the file if not yet saved, default true
-	 * @param param.silent {bool} save file silently
+	 * @param params {object} optional
+	 * @param params.saveFile {bool} save the file if not yet saved, default true
+	 * @param params.silent {bool} save file silently
 	 * @throw Document is not saved, e.g. user cancelled
 	 * @since 22.11
 	 */
-	async readFileBinary(param){}	
+	async readFileBinary(params){}	
 
 }
 
