@@ -263,7 +263,7 @@ export default class PageView
 		{
 			try{
 				let ret = await ctx.currentDoc.readFileBinary(
-					{ saveFile : false , silent : false }
+					{ saveFile : true , silent : false }
 					, (current, total)=>{ console.log('' + current + '/' + total + ' transfered.');}
 				);
 				
