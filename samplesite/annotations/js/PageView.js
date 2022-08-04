@@ -283,9 +283,31 @@ export default class PageView
 		});
 		$('#uploadFile').on('click', async ()=>
 		{
+			let isSaved = false;
+			try {
+				let isDirty = await ctx.currentDoc.isDirty();
+				isSaved = !isDirty;
+				let filePath = await ctx.currentDoc.filePath();
+				if ( isDirty || '' == filePath )
+				{
+					try{
+						isSaved = await ctx.currentDoc.saveDocument( { silent : false });
+				
+					} catch (err) {
+						alert('Unable to save document: ' + JSON.stringify(err));
+					}
+				}
+			} catch (err) {
+				alert(' Error: ' + JSON.stringify(err));
+			}
+			if (!isSaved)
+				return;
 			try{
+				try {
+					await ctx.currentDoc.saveDocument( {silent : true});	
+				} catch (err) {}
 				let ret = await ctx.currentDoc.readFileBinary(
-					{ saveFile : true , silent : false }
+					{}
 					, (current, total)=>{ console.log('' + current + '/' + total + ' transfered.');}
 				);
 				

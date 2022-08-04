@@ -83,5 +83,14 @@ export class Document
 	 */
 	async readFileBinary(params){}	
 
+	/**
+	 * Save the current document
+	 * @param params {object} optional
+	 * @param params.silent {bool} save file silently
+	 * @throw Document is not saved, e.g. user cancelled
+	 * @since 22.11
+	 */
+	async saveDocument(params){}
+
 }
 
