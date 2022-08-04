@@ -264,6 +264,17 @@ export default class PageView
 			alert(str);
 		});
 
+		$('#saveDocument').on('click', async ()=>
+		{
+			let isSaved = false;
+			try{
+				isSaved = await ctx.currentDoc.saveDocument( { silent : false });
+		
+			} catch (err) {
+				alert('Unable to save document: ' + JSON.stringify(err));
+			}
+			alert('Document saved: ' + isSaved);
+		});
 		$('#uploadFile').on('click', async ()=>
 		{
 			try{
