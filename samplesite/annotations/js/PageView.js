@@ -221,7 +221,12 @@ export default class PageView
 			alert(str);
 		});
 		$("#openURL").on("click", ()=>{
-			ctx.editor.showModal( {url:'https://eskornd.github.io/samplesite/boot/'});
+			// random width in 200 ... 500
+			let width = 100 * Math.floor((Math.random() * 3) + 2);
+			// random width in 200 ... 500
+			let height = 100 * Math.floor((Math.random() * 3) + 2);
+			let title = 'DIALOG TITLE ' + width + 'x' + height;
+			ctx.editor.showModal( {url:'https://eskornd.github.io/samplesite/boot/', title : title, dialogSize: {width: width, height:height} });
 		});
 		$("#documents").on("click", async ()=>{
 			let docs = [];
