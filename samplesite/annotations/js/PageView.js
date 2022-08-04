@@ -273,7 +273,13 @@ export default class PageView
 			} catch (err) {
 				alert('Unable to save document: ' + JSON.stringify(err));
 			}
-			alert('Document saved: ' + isSaved);
+			let isDirty = true;
+			try {
+				isDirty = await ctx.currentDoc.isDirty();
+			} catch (err) {
+				alert('unable to get is dirty' + JSON.stringify(err));
+			}
+			alert('Document saved: ' + isSaved + ', isDirty: ' + isDirty);
 		});
 		$('#uploadFile').on('click', async ()=>
 		{
