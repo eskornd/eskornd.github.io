@@ -221,7 +221,7 @@ export default class PageView
 			alert(str);
 		});
 		$("#openURL").on("click", ()=>{
-			ctx.editor.showModal( {url:'https://eskornd.github.io/UECI/boot.html'});
+			ctx.editor.showModal( {url:'https://eskornd.github.io/samplesite/boot/'});
 		});
 		$("#documents").on("click", async ()=>{
 			let docs = [];
