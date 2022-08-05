@@ -219,6 +219,15 @@ export default class PageView
 				str += JSON.stringify(await ctx.editor.currentDocument());
 			} catch (err) {}
 
+			str += '\n';
+			str += 'ctx.editor.currentWindow().isModal(): ';
+			try {
+				let win = await ctx.editor.currentWindow();
+				str += JSON.stringify(await win.isModal());
+			} catch (err) {
+				alert('error: ' + JSON.stringify(err));
+			}
+
 			alert(str);
 		});
 		$("#openURL").on("click", ()=>{
