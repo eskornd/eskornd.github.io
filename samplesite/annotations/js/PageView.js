@@ -144,11 +144,12 @@ export default class PageView
 			,{x: 100, y:0, width: 20, height: 20}
 		]));
 		$("#highlight_random").attr('data', JSON.stringify({x:50, y:50, width: 200, height:50}));
-		$("#highlight_random").on('click', ()=>{
+		$("#highlight_random").on('click', async ()=>{
+			let box = await getCurrentDocumentPageBox('MediaBox');
 			let w = 200;
 			let h = 50;
-			let x = Math.random() * (ctx.currentPageSize.width - w);
-			let y = Math.random() * ( ctx.currentPageSize.height - h);
+			let x = box.x + Math.random() * (ctx.currentPageSize.width - w);
+			let y = box.y + Math.random() * ( ctx.currentPageSize.height - h);
 			let rect = {x:x, y:y, width: w, height:h};
 			$("#highlight_random").attr('data', JSON.stringify(rect));
 			let random255 = ()=>{
