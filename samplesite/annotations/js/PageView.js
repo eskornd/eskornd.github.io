@@ -230,6 +230,11 @@ export default class PageView
 
 			alert(str);
 		});
+		$("#runTests").on("click", ()=>{
+			let url = window.location.href;
+			url += '/tests.html';
+			window.location.href = url;
+		});
 		$("#openURL").on("click", ()=>{
 			// random width in 200 ... 500
 			let width = 100 * Math.floor((Math.random() * 3) + 2);
