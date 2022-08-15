@@ -183,6 +183,49 @@ tester.addTest('Document.pagesInfo.pageBoxes', async ()=>{
 	);}, 'trimBox pos matches');
 });
 
+tester.addTest('Document.setAnnotations', async ()=>{
+	const rectInput = {x: 10, y:20, width:100, height:50};
+	const rgbInput = { r: 64, g: 64, b:32};
+	const annotsInput = [ {boundingBox: rectInput, highlightColor:rgbInput} ];
+	try{
+		
+		let doc = await editor.currentDocument();	
+		
+		await doc.setAnnotations(annotsInput);
+	} catch (error) {
+		ASSERT(()=>{TRUE(false);}, 'setAnnotations failed: ' + error);
+	}	
+});
+
+tester.addTest('Document.getAnnotations', async ()=>{
+	const rectInput = {x: 10, y:20, width:100, height:50};
+	const rgbInput = { r: 64, g: 64, b:32};
+	const annotsInput = [ {boundingBox: rectInput, highlightColor:rgbInput} ];
+	let annotsOutput = [];
+	try{
+		let doc = await editor.currentDocument();	
+		
+		alert(JSON.stringify(annotsInput));
+		await doc.setAnnotations(annotsInput);
+		annotsOutput = await doc.getAnnotations();
+		alert(JSON.stringify(annotsOutput));
+	} catch (error) {
+	}	
+	ASSERT(()=>{TRUE( annotsInput.length == annotsOutput.length );}, 'nums of annotations matches');
+	
+	let rectOutput = annotsOutput[0].boundingBox;
+	let rgbOutput = annotsOutput[0].highlightColor;
+	
+	let boundingBoxEqual = (a, b)=>{
+		return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+	};
+	let rgbEqual = (a, b)=>{
+		return a.r === b.r && a.g === b.g && a.b === b.b;
+	};
+	ASSERT(()=>{TRUE( boundingBoxEqual(rectInput, rectOutput) );}, 'boundingBox matches');
+	ASSERT(()=>{TRUE( rgbEqual(rgbInput, rgbOutput) );}, 'rgb matches');
+});
+
 tester.addTest('Document.readFileBinary', async ()=>{
 	let hash = '';
 	let isDirty = undefined;
