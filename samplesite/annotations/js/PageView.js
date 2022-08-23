@@ -166,6 +166,9 @@ export default class PageView
 				alert(JSON.stringify(annots, null, 4));
 			}
 		});
+		$('#activateAnnotationTool').on('click', async () => {
+			ctx.editor.activateAnnotationTool();
+		});
 		$('#showPageBoxes').on('click', async () => {
 			if (ctx.currentDoc == undefined )
 			{
