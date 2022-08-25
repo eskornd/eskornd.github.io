@@ -169,6 +169,29 @@ export default class PageView
 		$('#activateAnnotationTool').on('click', async () => {
 			ctx.editor.activateAnnotationTool();
 		});
+		$('#setNodeID').on('click', async () => {
+			try {
+				let doc = await ctx.editor.currentDocument();	
+				let currentNodeID = '';
+				try { currentNodeID = await doc.getNodeID(); } catch (err) {}
+				let nodeID = prompt('Please enter node ID', currentNodeID );
+				if ( null != nodeID)
+				{
+					await doc.setNodeID(nodeID);
+				}
+			} catch (err) {
+				alert(' Unable to set NodeID: ' + JSON.stringify(err));
+			}
+		});
+		$('#getNodeID').on('click', async () => {
+			try {
+				let doc = await ctx.editor.currentDocument();	
+				let nodeID = await doc.getNodeID();
+				alert('Node ID: ' + nodeID);
+			} catch (err) {
+				alert(' Unable to get NodeID: ' + JSON.stringify(err));
+			}
+		});
 		$('#showPageBoxes').on('click', async () => {
 			if (ctx.currentDoc == undefined )
 			{
