@@ -205,10 +205,8 @@ tester.addTest('Document.getAnnotations', async ()=>{
 	try{
 		let doc = await editor.currentDocument();	
 		
-		alert(JSON.stringify(annotsInput));
 		await doc.setAnnotations(annotsInput);
 		annotsOutput = await doc.getAnnotations();
-		alert(JSON.stringify(annotsOutput));
 	} catch (error) {
 	}	
 	ASSERT(()=>{TRUE( annotsInput.length == annotsOutput.length );}, 'nums of annotations matches');
@@ -242,6 +240,53 @@ tester.addTest('Document.readFileBinary', async ()=>{
 	ASSERT(()=>{TRUE( arr.length == 1834200)}, 'Document size matches');
 });
 	
+tester.addTest('Document.setNodeID', async ()=>{
+	const nodeID = 'NODEID';
+	try{
+		
+		let doc = await editor.currentDocument();	
+		await doc.setNodeID(nodeID);
+	} catch (error) {
+		ASSERT(()=>{TRUE(false);}, 'setNodeID failed: ' + error);
+	}	
+});
+
+/* TODO: Enable once setNodeID is fully implemented (document becomes dirty)
+tester.addTest('Document.setNodeID_Dirty', async ()=>{
+	
+	const nodeID = 'ANY NODEID';
+	let isDirty = false;
+	try{
+		
+		let doc = await editor.currentDocument();	
+		await doc.setNodeID(nodeID);
+		
+		isDirty = await doc.isDirty();
+	} catch (error) {
+	}	
+	ASSERT(()=>{TRUE( isDirty);}, 'Document should be dirty after setNodeID');
+});
+*/
+
+/* TODO: Enable once getNodeID is implemented
+tester.addTest('Document.getNodeID', async ()=>{
+	const nodeIDIn = 'ANOTHER NODE ID';
+	let nodeIDOut = '';
+	try{
+		
+		let doc = await editor.currentDocument();	
+		
+		await doc.setNodeID(nodeIDIn);
+		nodeIDOut = await doc.getNodeID();
+			
+	} catch (error) {
+		ASSERT(()=>{TRUE(false);}, 'setAnnotations failed: ' + error);
+	}	
+
+	ASSERT(()=>{TRUE( nodeIDIn == nodeIDOut );}, 'node ID set/get matches');
+});
+*/
+
 
 async function testMain()
 {
