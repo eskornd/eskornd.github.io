@@ -84,17 +84,17 @@ export default class PageView
 	addAnnotation (annotation)
 	{
 		// add html
-		var displayText = annotation.name + ' @ x:' + annotation.rect.x + ', y:'+annotation.rect.y; 
-		var id = 'smile_' + gCount;
+		var displayText = "annotation" + gCount + ' @ x:' + annotation.boundingBox.x + ', y:' + annotation.boundingBox.y; 
+		var id = 'annotation' + gCount;
 		++gCount;
 		var obj = new HighlightEvent();
 		obj.type = HighlightType.eRect;
-		obj.rect = annotation.rect;
+		obj.rect = annotation.boundingBox;
 		var data = JSON.stringify(obj);
 		$("#highlight_section").append('<div class="clickable rectAnnotation" id="' + id +'">' + displayText + '</div>').ready(()=>{
 			var obj = new HighlightEvent();
 			obj.type = HighlightType.eRect;
-			obj.rect = annotation.rect;
+			obj.rect = annotation.boundingBox;
 			$('#' + id).attr('data', JSON.stringify(obj.rect));
 			highlightRectOrRects(obj.rect);
 		});

@@ -39,7 +39,9 @@ let ctx = {
 			}
 		} // on document changed
 
-		, onCreateAnnotationRequest : (annotation) => {
+		, onAnnotationCreated : (annotation) => {
+			ctx.currentDoc.setAnnotations([annotation]);
+			ctx.view.addAnnotation(annotation);
 		} // onCreateAnnotationRequest
 	}
 };

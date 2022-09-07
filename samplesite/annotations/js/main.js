@@ -22,8 +22,8 @@ async function initEskoConnector()
 			inEditor.onDocumentChanged = async () => { 
 				ctx.controller.onDocumentChanged();
 			};
-			inEditor.onCreateAnnotationRequest = async (annotation) => {
-				ctx.controller.onCreateAnnotationRequest(annotation);
+			inEditor.onAnnotationCreated = async (annotation) => {
+				ctx.controller.onAnnotationCreated(annotation);
 			};
 			log("setEditor(): " + JSON.stringify(inEditor));
 			
