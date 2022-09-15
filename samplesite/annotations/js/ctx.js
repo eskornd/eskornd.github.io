@@ -20,6 +20,12 @@ let ctx = {
 				} catch (err){
 					console.error(err);
 				}
+				let nodeIDText = '';
+				try {
+					 nodeIDText += await doc.getNodeID();
+				} catch (err){
+					console.error(err);
+				}
 				let pageSizeText = '';
 				for (let i =0;i<pageBoxes.length; ++ i)
 				{
@@ -31,6 +37,7 @@ let ctx = {
 				}
 				ctx.view.setPageSizeText(pageSizeText);
 				ctx.view.setIsDirtyText(dirtyText);
+				ctx.view.setNodeIDText(nodeIDText);
 			} else {
 				ctx.view.setCurrentDocumentTitle('NO DOCUMENT OPENED');
 				ctx.view.setCurrentDocumentFilePath('');

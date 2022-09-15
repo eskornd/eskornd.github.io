@@ -83,6 +83,11 @@ export default class PageView
 		$('#isDirty').text(dirtyText);
 	}
 
+	setNodeIDText(nodeIDText)
+	{
+		$('#nodeID').text(nodeIDText);
+	}
+
 	addAnnotation (annotation)
 	{
 		// add html
