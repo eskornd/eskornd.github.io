@@ -16,6 +16,7 @@ async function highlight(annos)
 	}
 	if (ctx.currentDoc !== undefined )
 	{
+		ctx.currentAnnotations = annos;
 		await ctx.currentDoc.setAnnotations(annos);
 	}
 }
@@ -35,6 +36,7 @@ async function highlightRectOrRects(rects)
 	}
 	if (ctx.currentDoc !== undefined )
 	{
+		ctx.currentAnnotations = annos;
 		await ctx.currentDoc.setAnnotations(annos);
 	}
 }
@@ -57,8 +59,8 @@ export default class PageView
 
 	setOpenUrlDisabled()
 	{
-		var str = $("#openURL").text();
-		$("#openURL").text(str + ' (disabled)');
+		var str = $("#showModalDialog").text();
+		$("#showModalDialog").text(str + ' (disabled)');
 	}
 	
 	setCurrentDocumentTitle(docText)
@@ -96,7 +98,6 @@ export default class PageView
 			obj.type = HighlightType.eRect;
 			obj.rect = annotation.boundingBox;
 			$('#' + id).attr('data', JSON.stringify(obj.rect));
-			highlightRectOrRects(obj.rect);
 		});
 	}
 
@@ -261,13 +262,16 @@ export default class PageView
 			url += '/tests.html';
 			window.location.href = url;
 		});
-		$("#openURL").on("click", ()=>{
+		$("#showModalDialog").on("click", ()=>{
 			// random width in 200 ... 500
 			let width = 100 * Math.floor((Math.random() * 3) + 2);
 			// random width in 200 ... 500
 			let height = 100 * Math.floor((Math.random() * 3) + 2);
 			let title = 'DIALOG TITLE ' + width + 'x' + height;
 			ctx.editor.showModal( {url:'https://eskornd.github.io/samplesite/boot/', title : title, dialogSize: {width: width, height:height} });
+		});
+		$("#openInBrowser").on("click", ()=>{
+			ctx.editor.openInBrowser( 'https://eskornd.github.io/samplesite/boot/');
 		});
 		$("#documents").on("click", async ()=>{
 			let docs = [];

@@ -1,6 +1,7 @@
 let ctx = {
 	currentDocID : 0,
 	currentPageSize : {width: 0, height: 0},
+	currentAnnotations : [],
 	controller :
 	{
 		onDocumentChanged : async ()=>{
@@ -40,7 +41,8 @@ let ctx = {
 		} // on document changed
 
 		, onAnnotationCreated : (annotation) => {
-			ctx.currentDoc.setAnnotations([annotation]);
+			ctx.currentAnnotations.push(annotation);
+			ctx.currentDoc.setAnnotations(ctx.currentAnnotations);
 			ctx.view.addAnnotation(annotation);
 		} // onCreateAnnotationRequest
 	}
