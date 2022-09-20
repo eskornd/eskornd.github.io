@@ -180,7 +180,7 @@ export default class PageView
 				let doc = await ctx.editor.currentDocument();	
 				let currentClusterNodeID = {};
 				try { currentClusterNodeID = await doc.getClusterNodeID(); } catch (err) {}
-				let cluster = prompt('Please enter node ID', currentClusterNodeID.cluster );
+				let cluster = prompt('Please enter cluster', currentClusterNodeID.cluster );
 				let nodeID = prompt('Please enter node ID', currentClusterNodeID.nodeID );
 				if ( null != nodeID && null != cluster )
 				{
