@@ -48,22 +48,22 @@ export class Document
 	async title(){return '';}
 
 	/**
-	 * Get node ID of the document
-	 * @return {string}
+	 * Get cluster node ID of the document
+	 * @return {ClusterNodeID}
 	 * @throws if document is not valid
 	 * @since 22.11
 	 */
-	async getNodeID(){}
+	async getClusterNodeID(){}
 
 	/**
-	 * Set node ID to the document
+	 * Set cluster node ID to the document
 	 * (This will not trigger a file save operation)
-	 * @param nodeID {string} the node ID
+	 * @param clusterNodeID {ClusterNodeID} document cluster nodeID 
 	 * @return {undefined}
 	 * @throws if document is not valid
 	 * @since 22.11
 	 */
-	async setNodeID(nodeID){}
+	async setClusterNodeID(clusterNodeID){}
 	
 	/**
 	 * Return whether the current document is dirty or not
@@ -78,6 +78,7 @@ export class Document
 	 * @param params {object} optional
 	 * @param params.saveFile {bool} save the file if not yet saved, default true
 	 * @param params.silent {bool} save file silently
+	 * @return Uint8Array of the file binary {Uint8Array}
 	 * @throw Document is not saved, e.g. user cancelled
 	 * @since 22.11
 	 */

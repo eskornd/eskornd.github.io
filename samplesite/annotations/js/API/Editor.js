@@ -28,6 +28,14 @@ export class Editor
 	async showModal(modalParams) {}
 
 	/**
+	 * open a URL in browser
+	 *
+	 * @param url {String}
+	 * @since 22.11
+	 */ 
+	async openInBrowser(url) {}
+
+	/**
 	 * Notified when document is opened/closed/switched in host application
 	 * web view can override this function
 	 * @since 22.07
@@ -40,6 +48,21 @@ export class Editor
 	 * @since 22.11
 	 */
 	async onDocumentPageBoxesChanged(){}
+
+	/**
+	 * Notified when annotation created
+	 * web view can override this function
+	 * @param annotation {Annotation}
+	 * @since 22.11
+	 */
+	async onAnnotationCreated(annotation){}
+
+	/**
+	 * Activate Annotation Tool
+	 * @return undefined
+	 * @since 22.11
+	 */
+	async activateAnnotationTool(){}
 
 	/**
 	 * Get current version string of editor

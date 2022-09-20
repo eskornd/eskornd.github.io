@@ -178,12 +178,13 @@ export default class PageView
 		$('#setNodeID').on('click', async () => {
 			try {
 				let doc = await ctx.editor.currentDocument();	
-				let currentNodeID = '';
-				try { currentNodeID = await doc.getNodeID(); } catch (err) {}
-				let nodeID = prompt('Please enter node ID', currentNodeID );
+				let currentClusterNodeID = {};
+				try { currentClusterNodeID = await doc.getClusterNodeID(); } catch (err) {}
+				let nodeID = prompt('Please enter node ID', currentClusterNodeID.nodeID );
 				if ( null != nodeID)
 				{
-					await doc.setNodeID(nodeID);
+					await doc.setClusterNodeID({ cluster: 'CLUSTER', nodeID: nodeID});
+
 				}
 			} catch (err) {
 				alert(' Unable to set NodeID: ' + JSON.stringify(err));
@@ -192,8 +193,8 @@ export default class PageView
 		$('#getNodeID').on('click', async () => {
 			try {
 				let doc = await ctx.editor.currentDocument();	
-				let nodeID = await doc.getNodeID();
-				alert('Node ID: ' + nodeID);
+				let clusterNodeID = await doc.getClusterNodeID();
+				alert('Node ID: ' + clusterNodeID.nodeID);
 			} catch (err) {
 				alert(' Unable to get NodeID: ' + JSON.stringify(err));
 			}
