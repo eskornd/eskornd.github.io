@@ -20,9 +20,9 @@ let ctx = {
 				} catch (err){
 					console.error(err);
 				}
-				let nodeIDText = '';
+				let clusterNodeIDText = '';
 				try {
-					 nodeIDText += await doc.getNodeID();
+					 clusterNodeIDText += JSON.stringify(await doc.getClusterNodeID());
 				} catch (err){
 					console.error(err);
 				}
@@ -37,7 +37,7 @@ let ctx = {
 				}
 				ctx.view.setPageSizeText(pageSizeText);
 				ctx.view.setIsDirtyText(dirtyText);
-				ctx.view.setNodeIDText(nodeIDText);
+				ctx.view.setClusterNodeIDText(clusterNodeIDText);
 			} else {
 				ctx.view.setCurrentDocumentTitle('NO DOCUMENT OPENED');
 				ctx.view.setCurrentDocumentFilePath('');

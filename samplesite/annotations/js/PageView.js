@@ -83,9 +83,9 @@ export default class PageView
 		$('#isDirty').text(dirtyText);
 	}
 
-	setNodeIDText(nodeIDText)
+	setClusterNodeIDText(nodeIDText)
 	{
-		$('#nodeID').text(nodeIDText);
+		$('#clusterNodeID').text(nodeIDText);
 	}
 
 	addAnnotation (annotation)
@@ -180,10 +180,11 @@ export default class PageView
 				let doc = await ctx.editor.currentDocument();	
 				let currentClusterNodeID = {};
 				try { currentClusterNodeID = await doc.getClusterNodeID(); } catch (err) {}
+				let cluster = prompt('Please enter node ID', currentClusterNodeID.cluster );
 				let nodeID = prompt('Please enter node ID', currentClusterNodeID.nodeID );
-				if ( null != nodeID)
+				if ( null != nodeID && null != cluster )
 				{
-					await doc.setClusterNodeID({ cluster: 'CLUSTER', nodeID: nodeID});
+					await doc.setClusterNodeID({ cluster: cluster, nodeID: nodeID});
 
 				}
 			} catch (err) {
@@ -194,7 +195,7 @@ export default class PageView
 			try {
 				let doc = await ctx.editor.currentDocument();	
 				let clusterNodeID = await doc.getClusterNodeID();
-				alert('Node ID: ' + clusterNodeID.nodeID);
+				alert('Cluster: ' + clusterNodeID.cluster + ', Node ID: ' + clusterNodeID.nodeID);
 			} catch (err) {
 				alert(' Unable to get NodeID: ' + JSON.stringify(err));
 			}
