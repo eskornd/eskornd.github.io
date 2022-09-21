@@ -245,47 +245,45 @@ tester.addTest('Document.setNodeID', async ()=>{
 	try{
 		
 		let doc = await editor.currentDocument();	
-		await doc.setNodeID(nodeID);
+		await doc.setClusterNodeID({cluster:'CLUSTER_ID', nodeID : 'NODE_ID'});
 	} catch (error) {
-		ASSERT(()=>{TRUE(false);}, 'setNodeID failed: ' + error);
+		ASSERT(()=>{TRUE(false);}, 'setClusterNodeID failed: ' + error);
 	}	
 });
 
-/* TODO: Enable once setNodeID is fully implemented (document becomes dirty)
-tester.addTest('Document.setNodeID_Dirty', async ()=>{
+// TODO: Enable once setNodeID is fully implemented (document becomes dirty)
+tester.addTest('Document.setClusterNodeID_Dirty', async ()=>{
 	
 	const nodeID = 'ANY NODEID';
 	let isDirty = false;
 	try{
 		
 		let doc = await editor.currentDocument();	
-		await doc.setNodeID(nodeID);
+		await doc.setClusterNodeID({cluster:'CLUSTER_ID', nodeID : 'NODE_ID'});
 		
 		isDirty = await doc.isDirty();
 	} catch (error) {
 	}	
-	ASSERT(()=>{TRUE( isDirty);}, 'Document should be dirty after setNodeID');
+	ASSERT(()=>{TRUE( isDirty);}, 'Document should be dirty after setClusterNodeID');
 });
-*/
 
-/* TODO: Enable once getNodeID is implemented
-tester.addTest('Document.getNodeID', async ()=>{
-	const nodeIDIn = 'ANOTHER NODE ID';
-	let nodeIDOut = '';
+// TODO: Enable once getNodeID is implemented
+tester.addTest('Document.getClusterNodeID', async ()=>{
+	let clusterNodeIDIn = {cluster : 'CLUSTER_001', nodeID: 'NODE_002'};
+	let clusterNodeIDOut = {cluster : '', nodeID: ''};
 	try{
 		
 		let doc = await editor.currentDocument();	
 		
-		await doc.setNodeID(nodeIDIn);
-		nodeIDOut = await doc.getNodeID();
+		await doc.setClusterNodeID(clusterNodeIDIn);
+		clusterNodeIDOut  = await doc.getClusterNodeID();
 			
 	} catch (error) {
 		ASSERT(()=>{TRUE(false);}, 'setAnnotations failed: ' + error);
 	}	
 
-	ASSERT(()=>{TRUE( nodeIDIn == nodeIDOut );}, 'node ID set/get matches');
+	ASSERT(()=>{TRUE( clusterNodeIDIn.cluster == clusterNodeIDOut.cluster && clusterNodeIDIn.nodeID == clusterNodeIDOut.nodeID );}, 'cluster Node ID set/get matches');
 });
-*/
 
 
 async function testMain()

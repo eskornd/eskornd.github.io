@@ -185,6 +185,8 @@ export default class PageView
 				if ( null != nodeID && null != cluster )
 				{
 					await doc.setClusterNodeID({ cluster: cluster, nodeID: nodeID});
+					let newClusterNodeID = await doc.getClusterNodeID();
+					alert('New cluster Node ID: ' + JSON.stringify(newClusterNodeID));
 
 				}
 			} catch (err) {
