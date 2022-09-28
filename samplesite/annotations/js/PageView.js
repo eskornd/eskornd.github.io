@@ -12,6 +12,7 @@ async function highlight(annos)
 	console.assert(Array.isArray(annos), 'annos must be array of Annotations');
 	for ( const i in annos)
 	{
+		console.assert(annos[i].hasOwnProperty('id'), 'id is mandatory for Annotation object: ' + i);
 		console.assert(annos[i].hasOwnProperty('boundingBox'), 'boundingBox is mandatory for Annotation object: ' + i);
 	}
 	if (ctx.currentDoc !== undefined )
@@ -28,11 +29,11 @@ async function highlightRectOrRects(rects)
 	{
 		for ( const i in rects)
 		{
-			annos.push({boundingBox : rects[i]});
+			annos.push({id: "id" + i, title: i, boundingBox : rects[i]});
 		}
 	} else {
 		let rect = rects;
-		annos = [{ boundingBox : rect}];
+		annos = [{id: "id0", title: "0", boundingBox : rect}];
 	}
 	if (ctx.currentDoc !== undefined )
 	{
@@ -423,7 +424,7 @@ export default class PageView
 			var highlightColor = $("#" + e.target.id).attr('highlightColor');
 			if ( undefined != highlightColor)
 			{
-				highlight([{boundingBox : JSON.parse(data), highlightColor : JSON.parse(highlightColor)}]);
+				highlight([{id: "id0", title: "0", boundingBox : JSON.parse(data), highlightColor : JSON.parse(highlightColor)}]);
 				return;
 			}
 			var obj = JSON.parse(data);

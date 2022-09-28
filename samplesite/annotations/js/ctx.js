@@ -48,6 +48,9 @@ let ctx = {
 		} // on document changed
 
 		, onAnnotationCreated : (annotation) => {
+			let count = ctx.currentAnnotations.length;
+			annotation.id = "id" + count;
+			annotation.title = count.toString();
 			ctx.currentAnnotations.push(annotation);
 			ctx.currentDoc.setAnnotations(ctx.currentAnnotations);
 			ctx.view.addAnnotation(annotation);
