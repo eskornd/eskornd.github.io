@@ -81,6 +81,13 @@ export class Editor
 	async versionString(){}
 	
 	/**
+	 * Get application info, including language
+	 * @return {AppInfo}
+	 * @since 22.11
+	 */
+	async appInfo(){}
+	
+	/**
 	 * Get the storage of editor
 	 * @return {Storage} 
 	 * @since 22.11

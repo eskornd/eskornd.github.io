@@ -17,8 +17,15 @@ export class Annotation
 		 */
 		this.id = '';
 
+		/**
+		 * The annotation's title that will be drawn on the editor document view. Provided by web-view
+		 * @since 22.11
+		 * @type {String}
+		 */
+		this.title = '';
+
 		/** 
-		 * The bounding box the highlight area
+		 * The bounding box of the highlight area
 		 * Must exists
 		 * @since 22.07
 		 * @type {Rect}
@@ -26,7 +33,7 @@ export class Annotation
 		this.boundingBox = new Rect();
 
 		/**
-		 * The pen color to be used ed by the highlight
+		 * The pen color to be used by the highlight
 		 * @since 22.07
 		 * @type {RGBColor}
 		 */

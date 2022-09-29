@@ -285,6 +285,25 @@ tester.addTest('Document.getClusterNodeID', async ()=>{
 	ASSERT(()=>{TRUE( clusterNodeIDIn.cluster == clusterNodeIDOut.cluster && clusterNodeIDIn.nodeID == clusterNodeIDOut.nodeID );}, 'cluster Node ID set/get matches');
 });
 
+tester.addTest('Annotation.title', async ()=>{
+	const idIn = "ID_001";
+	const titleIn = "TITLE_002";
+	const rect = { x: 0, y: 0, width: 100, height: 100 };
+	const rgb = { r: 255, g: 0, b: 0 };
+	const annotsIn = [{ id: idIn, title: titleIn, boundingBox: rect, highlightColor: rgb }];
+	let annotsOut = [];
+	try{
+		let doc = await editor.currentDocument();	
+
+		await doc.setAnnotations(annotsIn);
+		annotsOut = await doc.getAnnotations();
+	} catch (error) {
+	}	
+	ASSERT(()=>{TRUE( annotsIn.length == annotsOut.length );}, 'nums of annotations matches');
+	
+	ASSERT(()=>{TRUE( annotsOut[0].id == idIn );}, 'id matches');
+	ASSERT(()=>{TRUE( annotsOut[0].title = titleIn );}, 'title matches');
+});
 
 async function testMain()
 {
