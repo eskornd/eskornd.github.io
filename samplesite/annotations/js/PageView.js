@@ -58,6 +58,11 @@ export default class PageView
 		$('#pageUrl').text(urlText);
 	}
 
+	setLanguageText(languageText)
+	{
+		$('#language').text(languageText);
+	}
+
 	setOpenUrlDisabled()
 	{
 		var str = $("#showModalDialog").text();

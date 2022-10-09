@@ -9,6 +9,8 @@ async function onInitialized()
 	var appName = await ctx.editor.appName();
 	var verStr = await ctx.editor.versionString();
 	ctx.view.setHostAppText(appName + ' ' + verStr);
+	var appInfo = await ctx.editor.appInfo();
+	ctx.view.setLanguageText(appInfo.language);
 }
 
 async function initEskoConnector()
