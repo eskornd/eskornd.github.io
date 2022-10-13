@@ -363,9 +363,6 @@ export default class PageView
 			if (!isSaved)
 				return;
 			try{
-				try {
-					await ctx.currentDoc.saveDocument( {silent : true});	
-				} catch (err) {}
 				let ret = await ctx.currentDoc.readFileBinary(
 					{}
 					, (current, total)=>{ console.log('' + current + '/' + total + ' transfered.');}
