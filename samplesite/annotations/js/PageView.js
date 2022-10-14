@@ -42,6 +42,19 @@ async function highlightRectOrRects(rects)
 	}
 }
 
+async function userInputClusterNodeID()
+{
+	let currentClusterNodeID = {};
+	let doc = await ctx.editor.currentDocument();	
+	try { 
+		currentClusterNodeID = await doc.getClusterNodeID(); 
+	} catch (err) {}
+
+	let cluster = prompt('Please enter cluster', currentClusterNodeID.cluster );
+	let nodeID = prompt('Please enter node ID', currentClusterNodeID.nodeID );
+	return {cluster: cluster, nodeID: nodeID};
+}
+
 var gCount = 0;
 export default class PageView
 {
@@ -184,17 +197,10 @@ export default class PageView
 		$('#setNodeID').on('click', async () => {
 			try {
 				let doc = await ctx.editor.currentDocument();	
-				let currentClusterNodeID = {};
-				try { currentClusterNodeID = await doc.getClusterNodeID(); } catch (err) {}
-				let cluster = prompt('Please enter cluster', currentClusterNodeID.cluster );
-				let nodeID = prompt('Please enter node ID', currentClusterNodeID.nodeID );
-				if ( null != nodeID && null != cluster )
-				{
-					await doc.setClusterNodeID({ cluster: cluster, nodeID: nodeID});
-					let newClusterNodeID = await doc.getClusterNodeID();
-					alert('New cluster Node ID: ' + JSON.stringify(newClusterNodeID));
-
-				}
+				let clusterNodeID = await userInputClusterNodeID()
+				await doc.setClusterNodeID(clusterNodeID);
+				let newClusterNodeID = await doc.getClusterNodeID();
+				alert('New cluster Node ID: ' + JSON.stringify(newClusterNodeID));
 			} catch (err) {
 				alert(' Unable to set NodeID: ' + JSON.stringify(err));
 			}
@@ -343,9 +349,22 @@ export default class PageView
 		});
 		$('#uploadFile').on('click', async ()=>
 		{
+			// For uploading, we'll now allow setting a cluster node ID for the temp exported file
+			// ask whether to set a cluster node id for the exported file
+			const shouldSetID = confirm('Set Cluster Node ID for temp file?');
+			let clusterNodeID = undefined;
+			if (shouldSetID)
+			{
+				clusterNodeID = await userInputClusterNodeID();	
+			}	
 			try{
+				let params = {};
+				if ( undefined != clusterNodeID )
+				{
+					params.clusterNodeID = clusterNodeID;
+				}
 				let ret = await ctx.currentDoc.readFileBinary(
-					{}
+					params
 					, (current, total)=>{ console.log('' + current + '/' + total + ' transfered.');}
 				);
 				
