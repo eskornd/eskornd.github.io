@@ -186,7 +186,7 @@ tester.addTest('Document.pagesInfo.pageBoxes', async ()=>{
 tester.addTest('Document.setAnnotations', async ()=>{
 	const rectInput = {x: 10, y:20, width:100, height:50};
 	const rgbInput = { r: 64, g: 64, b:32};
-	const annotsInput = [ {boundingBox: rectInput, highlightColor:rgbInput} ];
+	const annotsInput = [ {id: 'ID001', title:'TITLE_001',  boundingBox: rectInput, highlightColor:rgbInput} ];
 	try{
 		
 		let doc = await editor.currentDocument();	
@@ -200,7 +200,7 @@ tester.addTest('Document.setAnnotations', async ()=>{
 tester.addTest('Document.getAnnotations', async ()=>{
 	const rectInput = {x: 10, y:20, width:100, height:50};
 	const rgbInput = { r: 64, g: 64, b:32};
-	const annotsInput = [ {boundingBox: rectInput, highlightColor:rgbInput} ];
+	const annotsInput = [ {id: 'ID001', title:'TITLE_001',  boundingBox: rectInput, highlightColor:rgbInput} ];
 	let annotsOutput = [];
 	try{
 		let doc = await editor.currentDocument();	
@@ -209,6 +209,7 @@ tester.addTest('Document.getAnnotations', async ()=>{
 		annotsOutput = await doc.getAnnotations();
 	} catch (error) {
 	}	
+
 	ASSERT(()=>{TRUE( annotsInput.length == annotsOutput.length );}, 'nums of annotations matches');
 	
 	let rectOutput = annotsOutput[0].boundingBox;
@@ -236,8 +237,8 @@ tester.addTest('Document.readFileBinary', async ()=>{
 		throw err;
 	}
 	
-	ASSERT(()=>{TRUE( !isDirty)}, 'Document should not be dirty');
-	ASSERT(()=>{TRUE( arr.length == 1834200)}, 'Document size matches');
+	// readFileBinary now exports tmp file, so that the file size might be little different due to the timpstamp written in the file
+	ASSERT(()=>{TRUE( arr.length > 1830000 && arr.length < 1840000)}, 'Document size matches');
 });
 	
 tester.addTest('Document.setNodeID', async ()=>{
