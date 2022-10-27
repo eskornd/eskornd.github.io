@@ -9,7 +9,7 @@ export class AppInfo
 	{
 		/**
 		 * Current system language
-		 * e.g.  'en_US',
+		 * e.g.  'en-us',
 		 * @type {String} 
 		 * @since 22.11
 		 */

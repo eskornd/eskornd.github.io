@@ -74,12 +74,11 @@ export class Document
 	async isDirty(){}
 
 	/**
-	 * Get File as Binary 
+	 * Get File as Binary
+	 * 
 	 * @param params {object} optional
-	 * @param params.saveFile {bool} save the file if not yet saved, default true
-	 * @param params.silent {bool} save file silently
+	 * @param params.clusterNodeID {ClusterNodeID} optional parameter, the clusterNodeID to be written in the temp exported binary file. This doesn't affect the current working document.
 	 * @return Uint8Array of the file binary {Uint8Array}
-	 * @throw Document is not saved, e.g. user cancelled
 	 * @since 22.11
 	 */
 	async readFileBinary(params){}	

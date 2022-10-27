@@ -107,7 +107,7 @@ class AdobeCEPInitializer
 		try {
 			return this.initEditor_AI();
 		} catch (err) {
-			return Promise.reject(err);
+			return Promise.reject(new Error('Unable to connect to EditorConnector: ' + JSON.stringify(err)) );
 		}
 	}
 		

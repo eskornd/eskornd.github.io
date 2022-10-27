@@ -56,6 +56,7 @@ async function initEskoConnector()
 	try {
 		editor= await InitEditor();
 	} catch (err) {
+		alert('main.js: Unable to InitEditor(): ' + JSON.stringify(err));
 	}
 
 	if ( null != editor )

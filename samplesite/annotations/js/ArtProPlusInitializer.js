@@ -21,7 +21,7 @@ class ArtProPlusInitializer
 			if ( timeout <= 0 )
 			{
 				clearInterval(intervalHandle);
-				return Promise.reject(new Error('initEditor timeout'));
+				return Promise.reject(new Error('Unable to connect to ArtProPlus: initEditor timeout'));
 			}
 		}, step);
 
