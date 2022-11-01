@@ -363,11 +363,10 @@ export default class PageView
 				{
 					params.clusterNodeID = clusterNodeID;
 				}
-				let ret = await ctx.currentDoc.readFileBinary();
-				// let ret = await ctx.currentDoc.readFileBinary(
-				// 	params
-				// 	, (current, total)=>{ console.log('' + current + '/' + total + ' transfered.');}
-				// );
+				let ret = await ctx.currentDoc.readFileBinary(
+					params
+					, (current, total)=>{ console.log('' + current + '/' + total + ' transfered.');}
+				);
 				
 				console.log('Received Uint8Array ' + ret.length + ' now calculating hash...');
 				// Process MD5 in tiles to avoid memory overflow
