@@ -14,7 +14,14 @@ async function go()
 	}
 
 	let elem = document.getElementById('Download');
-	let listener = elem.addEventListener('click',async ()=>{ alert ('clicked');});
+	let listener = elem.addEventListener('click',async ()=>{ 
+		try {
+			let win = await editor.currentWindow();
+			let ret = await win.endModal({ assets : ['/Users/nexu/Desktop/Can 12 oz.zae', '/Users/nexu/Desktop/Paint bucket_5L.zae']});
+		} catch (err) {
+			alert('Exception: ' + err );
+		}
+	});
 }
 
 go();
