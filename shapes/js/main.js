@@ -16,6 +16,10 @@ async function go()
 	let elem = document.getElementById('Download');
 	let listener = elem.addEventListener('click',async ()=>{ 
 		try {
+			//download
+			let utils = await editor.utils();
+			const url = 'https://eskornd.github.io/shapes/assets/Can%2012%20oz.zae';
+			let filePath = utils.download({url:url});
 			let win = await editor.currentWindow();
 			let ret = await win.endModal({ assets : ['/Users/nexu/Desktop/Can 12 oz.zae', '/Users/nexu/Desktop/Paint bucket_5L.zae']});
 		} catch (err) {
