@@ -18,10 +18,13 @@ async function go()
 		try {
 			//download
 			let utils = await editor.utils();
-			const url = 'https://eskornd.github.io/shapes/assets/Can%2012%20oz.zae';
-			let filePath = await utils.downloadAs({url:url});
+			const url1 = 'https://eskornd.github.io/shapes/assets/Can%2012%20oz.zae';
+			const url2 = 'https://eskornd.github.io/shapes/assets/Paint%20bucket_5L.zae';
+			const url3 = 'https://speedtest-ca.turnkeyinternet.net/1000mb.bin'; // testing only
+			//let filePath = await utils.downloadAs({url:url});
+			
 			let win = await editor.currentWindow();
-			let ret = await win.endModal({ assets : ['/Users/nexu/Desktop/Can 12 oz.zae', '/Users/nexu/Desktop/Paint bucket_5L.zae']});
+			let ret = await win.endModal({assets: [url1, url2]});
 		} catch (err) {
 			alert('Exception: ' + err );
 		}
