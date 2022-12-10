@@ -17,11 +17,11 @@ async function go()
 	let listener = elem.addEventListener('click',async ()=>{ 
 		try {
 			//download
-			let utils = await editor.utils();
+			// let utils = await editor.utils();
+			//let filePath = await utils.downloadAs({url:url});
 			const url1 = 'https://eskornd.github.io/shapes/assets/Can%2012%20oz.zae';
 			const url2 = 'https://eskornd.github.io/shapes/assets/Paint%20bucket_5L.zae';
-			const url3 = 'https://speedtest-ca.turnkeyinternet.net/1000mb.bin'; // testing only
-			//let filePath = await utils.downloadAs({url:url});
+			// const url3 = 'https://speedtest-ca.turnkeyinternet.net/1000mb.bin'; // testing only
 			
 			let win = await editor.currentWindow();
 			let ret = await win.endModal({assets: [url1, url2]});
