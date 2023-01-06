@@ -76,9 +76,9 @@ export default class PageView
 		$('#language').text(languageText);
 	}
 
-	setCustomerCode(customerCode)
+	setCustomerID(customerID)
 	{
-		$('#customerCode').text(customerCode);
+		$('#customerID').text(customerID);
 	}
 
 	setOpenUrlDisabled()

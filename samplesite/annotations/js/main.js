@@ -11,7 +11,7 @@ async function onInitialized()
 	ctx.view.setHostAppText(appName + ' ' + verStr);
 	var appInfo = await ctx.editor.appInfo();
 	ctx.view.setLanguageText(appInfo.language);
-	ctx.view.setCustomerCode(appInfo.customerCode);
+	ctx.view.setCustomerID(appInfo.customerID);
 }
 
 async function initEskoConnector()
