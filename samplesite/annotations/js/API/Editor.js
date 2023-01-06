@@ -100,6 +100,13 @@ export class Editor
 	 * @since 22.11
 	 */
 	async currentWindow(){}
+
+	/**
+	 * Get utilitis object
+	 *
+	 * @return {Utils}
+	 */
+	async utils(){}
 }
 
 

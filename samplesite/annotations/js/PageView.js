@@ -76,6 +76,11 @@ export default class PageView
 		$('#language').text(languageText);
 	}
 
+	setCustomerCode(customerCode)
+	{
+		$('#customerCode').text(customerCode);
+	}
+
 	setOpenUrlDisabled()
 	{
 		var str = $("#showModalDialog").text();
