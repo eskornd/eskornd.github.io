@@ -7,6 +7,23 @@ function makeRect(x, y, width, height)
 	return {x:x , y: y, width: width, height: height};
 }
 
+function makeRandomRect(box)
+{
+	let w = 200;
+	let h = 50;
+	let x = box.x + Math.random() * (ctx.currentPageSize.width - w);
+	let y = box.y + Math.random() * (ctx.currentPageSize.height - h);
+	return makeRect(x, y, w, h);
+}
+
+function getRandomColor()
+{
+	let random255 = ()=>{
+		return Math.floor(Math.random()*255);
+	};
+	return { r: random255(), g: random255(), b: random255()};
+}
+
 async function highlight(annos)
 {
 	console.assert(Array.isArray(annos), 'annos must be array of Annotations');
@@ -164,6 +181,47 @@ export default class PageView
 			highlightRectOrRects(makeRect(box.x, box.y, box.width, box.height));
 		});
 
+		$("#highlight_oval").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect(box);
+			let color = getRandomColor();
+			highlight([{id: "id0", title: "0", highlightColor : color, type: "Oval", rect: rect}]);
+		});
+		$("#highlight_line").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect(box);
+			let color = getRandomColor();
+			highlight([{id: "id0", title: "0", highlightColor : color, type: "Line", rect: rect}]);
+		});
+		$("#highlight_arrow").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect(box);
+			let color = getRandomColor();
+			highlight([{id: "id0", title: "0", highlightColor : color, type: "Arrow", rect: rect}]);
+		});
+		$("#highlight_freehand").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect(box);
+			let points = [];
+			for (let i = 0; i < 200; i++) {
+				let x = i;
+				let y = 32 * Math.sin(x / 8);
+				x += rect.x;
+				y += rect.y;
+				points.push({x: x, y: y});
+			}
+			let color = getRandomColor();
+			highlight([{id: "id0", title: "0", highlightColor : color, type: "Freehand", points: points}]);
+		});
+		$("#highlight_note").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect(box);
+			rect.width = 0;
+			rect.height = 0;
+			let color = getRandomColor();
+			highlight([{id: "id0", title: "0", highlightColor : color, type: "Note", rect: rect}]);
+		});
+
 		$("#highlight_100").attr('data', JSON.stringify({x:0, y:0, width: 100, height:100}));
 		$("#highlight_multi").attr('data', JSON.stringify([
 			{x: 0, y:0, width: 20, height: 20}
@@ -176,16 +234,9 @@ export default class PageView
 		$("#highlight_random").attr('data', JSON.stringify({x:50, y:50, width: 200, height:50}));
 		$("#highlight_random").on('click', async ()=>{
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let w = 200;
-			let h = 50;
-			let x = box.x + Math.random() * (ctx.currentPageSize.width - w);
-			let y = box.y + Math.random() * ( ctx.currentPageSize.height - h);
-			let rect = {x:x, y:y, width: w, height:h};
+			let rect = makeRandomRect(box);
 			$("#highlight_random").attr('data', JSON.stringify(rect));
-			let random255 = ()=>{
-				return Math.floor(Math.random()*255);
-			};
-			let color = { r: random255(), g: random255(), b: random255()};
+			let color = getRandomColor();
 			$("#highlight_random").attr('highlightColor', JSON.stringify(color));
 		});
 		$("#highlight_clearAll").attr('data', JSON.stringify([]));
