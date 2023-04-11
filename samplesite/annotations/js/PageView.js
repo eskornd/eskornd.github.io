@@ -23,11 +23,8 @@ function makeRandomRect(box)
 
 function makeRandomRect2(box)
 {
-	let x0 = box.x + Math.random() * (ctx.currentPageSize.width - w);
-	let y0 = box.y + Math.random() * (ctx.currentPageSize.height - h);
-	let x1 = x0 + 200;
-	let y1 = y1 + 50;
-	return makeRect2(x0, y0, x1, y1);
+	let rect = makeRandomRect(box);
+	return makeRect2(rect.x, rect.y, rect.x + rect.width, rect.y + rect.height);
 }
 
 function getRandomColor()
@@ -44,7 +41,7 @@ async function highlight(annos)
 	for ( const i in annos)
 	{
 		console.assert(annos[i].hasOwnProperty('id'), 'id is mandatory for Annotation object: ' + i);
-		console.assert(annos[i].hasOwnProperty('boundingBox'), 'boundingBox is mandatory for Annotation object: ' + i);
+		console.assert(annos[i].hasOwnProperty('type'), 'type is mandatory for Annotation object: ' + i);
 	}
 	if (ctx.currentDoc !== undefined )
 	{
@@ -220,8 +217,8 @@ export default class PageView
 			for (let i = 0; i < 200; i++) {
 				let x = i;
 				let y = 32 * Math.sin(x / 8);
-				x += rect.x;
-				y += rect.y;
+				x += rect.x0;
+				y += rect.y0;
 				points.push({x: x, y: y});
 			}
 			let color = getRandomColor();
@@ -230,8 +227,8 @@ export default class PageView
 		$("#highlight_note").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
-			rect.width = 0;
-			rect.height = 0;
+			rect.x1 = rect.x0;
+			rect.y1 = rect.y0;
 			let color = getRandomColor();
 			highlight([{id: "id0", title: "0", highlightColor : color, type: "Note", rect: rect}]);
 		});
