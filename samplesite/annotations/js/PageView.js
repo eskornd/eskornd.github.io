@@ -198,6 +198,12 @@ export default class PageView
 			let color = getRandomColor();
 			highlight([{id: "id0", title: "0", highlightColor : color, type: "Oval", rect: rect}]);
 		});
+		$("#highlight_highlight").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect2(box);
+			let color = getRandomColor();
+			highlight([{id: "id0", title: "0", highlightColor : color, type: "Highlight", rect: rect}]);
+		});
 		$("#highlight_line").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
