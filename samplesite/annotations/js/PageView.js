@@ -4,7 +4,12 @@ import {log} from './log.js';
 
 function makeRect(x, y, width, height)
 {
-	return {x:x , y: y, width: width, height: height};
+	return {x: x, y: y, width: width, height: height};
+}
+
+function makeRect2(x0, y0, x1, y1)
+{
+	return {x0: x0, y0: y0, x1: x1, y1: y1};
 }
 
 function makeRandomRect(box)
@@ -14,6 +19,15 @@ function makeRandomRect(box)
 	let x = box.x + Math.random() * (ctx.currentPageSize.width - w);
 	let y = box.y + Math.random() * (ctx.currentPageSize.height - h);
 	return makeRect(x, y, w, h);
+}
+
+function makeRandomRect2(box)
+{
+	let x0 = box.x + Math.random() * (ctx.currentPageSize.width - w);
+	let y0 = box.y + Math.random() * (ctx.currentPageSize.height - h);
+	let x1 = x0 + 200;
+	let y1 = y1 + 50;
+	return makeRect2(x0, y0, x1, y1);
 }
 
 function getRandomColor()
@@ -183,25 +197,25 @@ export default class PageView
 
 		$("#highlight_oval").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect(box);
+			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
 			highlight([{id: "id0", title: "0", highlightColor : color, type: "Oval", rect: rect}]);
 		});
 		$("#highlight_line").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect(box);
+			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
 			highlight([{id: "id0", title: "0", highlightColor : color, type: "Line", rect: rect}]);
 		});
 		$("#highlight_arrow").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect(box);
+			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
 			highlight([{id: "id0", title: "0", highlightColor : color, type: "Arrow", rect: rect}]);
 		});
 		$("#highlight_freehand").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect(box);
+			let rect = makeRandomRect2(box);
 			let points = [];
 			for (let i = 0; i < 200; i++) {
 				let x = i;
@@ -215,7 +229,7 @@ export default class PageView
 		});
 		$("#highlight_note").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect(box);
+			let rect = makeRandomRect2(box);
 			rect.width = 0;
 			rect.height = 0;
 			let color = getRandomColor();
