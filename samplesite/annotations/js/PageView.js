@@ -24,7 +24,10 @@ function makeRandomRect(box)
 function makeRandomRect2(box)
 {
 	let rect = makeRandomRect(box);
-	return makeRect2(rect.x, rect.y, rect.x + rect.width, rect.y + rect.height);
+	let randomDir = ()=>{
+		return Math.random() > 0.5 ? 1 : -1;
+	}
+	return makeRect2(rect.x, rect.y, rect.x + randomDir() * rect.width, rect.y + randomDir() * rect.height);
 }
 
 function getRandomColor()
@@ -196,25 +199,25 @@ export default class PageView
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: "id0", title: "0", highlightColor : color, type: "Oval", rect: rect}]);
+			highlight([{id: "id0", title: "hello oval", highlightColor : color, type: "Oval", rect: rect}]);
 		});
 		$("#highlight_highlight").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: "id0", title: "0", highlightColor : color, type: "Highlight", rect: rect}]);
+			highlight([{id: "id0", title: "hello highlight", highlightColor : color, type: "Highlight", rect: rect}]);
 		});
 		$("#highlight_line").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: "id0", title: "0", highlightColor : color, type: "Line", rect: rect}]);
+			highlight([{id: "id0", title: "hello line", highlightColor : color, type: "Line", rect: rect}]);
 		});
 		$("#highlight_arrow").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: "id0", title: "0", highlightColor : color, type: "Arrow", rect: rect}]);
+			highlight([{id: "id0", title: "hello arrow", highlightColor : color, type: "Arrow", rect: rect}]);
 		});
 		$("#highlight_freehand").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
@@ -228,7 +231,7 @@ export default class PageView
 				points.push({x: x, y: y});
 			}
 			let color = getRandomColor();
-			highlight([{id: "id0", title: "0", highlightColor : color, type: "Freehand", points: points}]);
+			highlight([{id: "id0", title: "hello freehand", highlightColor : color, type: "Freehand", points: points}]);
 		});
 		$("#highlight_note").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
@@ -236,7 +239,48 @@ export default class PageView
 			rect.x1 = rect.x0;
 			rect.y1 = rect.y0;
 			let color = getRandomColor();
-			highlight([{id: "id0", title: "0", highlightColor : color, type: "Note", rect: rect}]);
+			highlight([{id: "id0", title: "hello note", highlightColor : color, type: "Note", rect: rect}]);
+		});
+
+		$("#highlight_greenHanger").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let annots = [];
+			let rect = makeRect2(box.x + 73, box.y + 79, box.x + 125, box.y + 131);
+			let color = {r: 255, g: 0, b: 0};
+			let annot = {id: "id0", title: "Recycle", highlightColor: color, type: "Rectangle", rect: rect};
+			annots.push(annot);
+			rect = makeRect2(box.x + 237, box.y + 85, box.x + 287, box.y + 135);
+			color = {r: 255, g: 127, b: 0};
+			annot = {id: "id1", title: "Sun", highlightColor: color, type: "Oval", rect: rect};
+			annots.push(annot);
+			rect = makeRect2(box.x + 82, box.y + 167, box.x + 274, box.y + 351);
+			color = {r: 0, g: 0, b: 255};
+			annot = {id: "id2", title: "Paragraph", highlightColor: color, type: "Highlight", rect: rect};
+			annots.push(annot);
+			rect = makeRect2(box.x + 73, box.y + 399, box.x + 244, box.y + 399);
+			color = {r: 0, g: 255, b: 0};
+			annot = {id: "id3", title: "Green", highlightColor: color, type: "Line", rect: rect};
+			annots.push(annot);
+			rect = makeRect2(box.x + 324, box.y + 529, box.x + 179, box.y + 569);
+			color = {r: 0, g: 255, b: 255};
+			annot = {id: "id4", title: "Hang", highlightColor: color, type: "Arrow", rect: rect};
+			annots.push(annot);
+			let points = [];
+			for (let i = 0; i < 80; i += 2) {
+				let x = i;
+				let y = 3.2 * Math.sin(x / 5);
+				x += box.x + 144;
+				y += box.y + 88;
+				points.push({x: x, y: y});
+			}
+			color = {r: 200, g: 200, b: 200};
+			annot = {id: "id5", title: "Wave", highlightColor: color, type: "Freehand", points: points};
+			annots.push(annot);
+			rect = makeRect2(box.x + 275, box.y + 410, box.x + 275, box.y + 410);
+			color = {r: 255, g: 0, b: 255};
+			annot = {id: "id6", title: "Leaf", highlightColor: color, type: "Note", rect: rect};
+			annots.push(annot);
+			highlight(annots);
 		});
 
 		$("#highlight_100").attr('data', JSON.stringify({x:0, y:0, width: 100, height:100}));
