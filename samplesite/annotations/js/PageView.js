@@ -38,6 +38,28 @@ function getRandomColor()
 	return { r: random255(), g: random255(), b: random255()};
 }
 
+function calculateHash(stream)
+{
+	// Process MD5 in tiles to avoid memory overflow
+	let md5 = CryptoJS.algo.MD5.create();
+	let processed = 0;
+	const total = stream.length;
+	const kTileSize = 512*1024;
+	while (processed < total)
+	{
+		let remaining = total - processed;
+		let len = remaining < kTileSize ? remaining : kTileSize;
+		let tile = new Uint8Array(stream.buffer, processed, len); 
+		let wa = CryptoJS.lib.WordArray.create(tile);
+		md5.update(wa);
+		processed += len;
+		console.log('    crypto-js md5: ' + processed + '/' + total + ' processed');
+	}
+
+	let hash = md5.finalize();
+	return hash;
+}
+
 async function highlight(annos)
 {
 	console.assert(Array.isArray(annos), 'annos must be array of Annotations');
@@ -486,27 +508,33 @@ export default class PageView
 				);
 				
 				console.log('Received Uint8Array ' + ret.length + ' now calculating hash...');
-				// Process MD5 in tiles to avoid memory overflow
-				let md5 = CryptoJS.algo.MD5.create();
-				let processed = 0;
-				const total = ret.length;
-				const kTileSize = 512*1024;
-				while (processed < total )
-				{
-					let remaining = total - processed;
-					let len = remaining < kTileSize ? remaining : kTileSize;
-					let tile = new Uint8Array(ret.buffer, processed, len); 
-					let wa = CryptoJS.lib.WordArray.create(tile);
-					md5.update(wa);
-					processed += len;
-					console.log('    crypto-js md5: ' + processed + '/' + total + ' processed');
-				}
-				
-				let hash = md5.finalize();
+				let hash = calculateHash(ret);
 				alert('Received Uint8Array ' + ret.length + ' bytes\nMD5: ' + hash);
 				
 			} catch (err) {
 				alert('Unable to read file binary: ' + JSON.stringify(err));
+				console.error(err);
+			}
+		});
+
+		$('#uploadSDFile').on('click', async ()=>
+		{
+			try {
+				let ret = await ctx.currentDoc.getPlacedSDFilePaths();
+				let filePaths = JSON.parse(ret);
+				console.assert(Array.isArray(filePaths));
+				for (const i in filePaths)
+				{
+					let filePath = filePaths[i];
+					alert('Reading structural design file: ' + filePath);
+					ret = await ctx.currentDoc.readPlacedSDFileBinary(filePath);
+
+					console.log('Received Uint8Array ' + ret.length + ' now calculating hash...');
+					let hash = calculateHash(ret);
+					alert('Received Uint8Array ' + ret.length + ' bytes\nMD5: ' + hash);
+				}
+			} catch (err) {
+				alert('Unable to read SD file binary: ' + JSON.stringify(err));
 				console.error(err);
 			}
 		});
