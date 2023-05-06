@@ -520,14 +520,13 @@ export default class PageView
 		$('#uploadSDFile').on('click', async ()=>
 		{
 			try {
-				let ret = await ctx.currentDoc.getPlacedSDFilePaths();
-				let filePaths = JSON.parse(ret);
+				let filePaths = await ctx.currentDoc.getPlacedSDFilePaths();
 				console.assert(Array.isArray(filePaths));
 				for (const i in filePaths)
 				{
 					let filePath = filePaths[i];
 					alert('Reading structural design file: ' + filePath);
-					ret = await ctx.currentDoc.readPlacedSDFileBinary(filePath);
+					let ret = await ctx.currentDoc.readPlacedSDFileBinary(filePath);
 
 					console.log('Received Uint8Array ' + ret.length + ' now calculating hash...');
 					let hash = calculateHash(ret);
