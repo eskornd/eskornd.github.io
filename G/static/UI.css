@@ -1,0 +1,157 @@
+@font-face {
+    font-family: 'GLYPH_DISPLAY_FACE';
+    src: url('Macondo-Regular.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GLYPH_BODYTEXT_FACE';
+    src: url('AsapCondensed-Regular.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GLYPH_FIXED_FACE';
+    src: url('novamono-webfont.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+body {
+    font-size: 16 pt;
+	color: #444B53;
+}
+
+
+@media screen and (min-width: 600px) {
+    * {
+        font-size: 100%;
+    }
+}
+
+@media (pointer: coarse) {
+    * {
+        font-size: 28pt;
+    }
+}
+
+
+.info {
+    font-family: GLYPH_FIXED_FACE;
+	font-size: 12pt;
+}
+
+.info {
+    font-family: GLYPH_FIXED_FACE;
+}
+
+.wdn-text-hidden
+{
+    font-size: 0px;
+    width: 1px;
+    height: 1px;
+    display: inline-block;
+    overflow: hidden;
+    position: absolute !important;
+    border: 0px none !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+#root {
+    margin: 1em;
+}
+/* max-width */
+@media (pointer: coarse) {
+    #root {
+        margin: 0em;
+    }
+}
+
+#banner {
+    text-align: center;
+}
+
+#footer {
+    text-align: center;
+    font-family: GLYPH_DISPLAY_FACE;
+    position: relative;
+}
+
+#logo {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#drop_zone {
+    font-size: 100%;
+    border: 4px dashed gray;
+    border-radius: 10px;
+    height: 4 em;
+    text-align: center;
+    font-family: GLYPH_DISPLAY_FACE;
+}
+
+#drop_hints {
+    font-size: 150%;
+	font-family: GLYPH_BODYTEXT_FACE;
+}
+
+#dropped_filename {
+    font-size: 150%;
+}
+
+#font_collection {
+    font-size: 100%;
+}
+#progressbar {
+    border: 0px solid gray;
+    border-radius: 5px;
+    margin: 1px auto;
+    height: 1em;
+    text-align: center;
+}
+
+.svg_text{
+    font-size: 0.75em;
+}
+
+.svg_annotate_text
+{
+    font-size: 0.6em;
+}
+
+.my_glyph {
+    
+    border: 0.2em solid #F0F0F0;
+    border-radius: 5px;
+    margin: 0.25em;
+    background-color: #F5F5F5;
+    font-family: GLYPH_FIXED_FACE;
+}
+
+.my_glyph:hover {
+    border: 2 px solid #C0C0C0;
+    background-color: #D5D5D5;
+    cursor: pointer;
+}
+
+#font_face:hover {
+    cursor: pointer;
+}
+
+#font_info_table {
+    font-size: 100%;
+}
+
+#glyph_info_table {
+    font-size: 80%;
+}
+
+#tabs {
+    border: none;
+    font-family: GLYPH_BODYTEXT_FACE;
+}
