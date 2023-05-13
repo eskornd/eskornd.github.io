@@ -1,0 +1,51 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+</head>
+<body style="background-color:#F7F7F7; font-family:'Courier New';">
+	<script type="text/javascript">
+
+function redirectTo(url)
+{
+	console.log('redirecting to ' + url);
+	window.location.href = url;
+}
+
+function launch() 
+{
+	redirectTo(document.getElementById('url').value);
+}
+
+function onSelected()
+{
+	let urlText = document.getElementById('dropdown').value;
+	let elem = document.getElementById('url');	
+	elem.value = urlText;
+}
+
+	</script>
+
+	<div>
+		<span><label>Presets:</label></span>
+		<span>
+			<select id='dropdown' onchange="onSelected()">
+				<option value="https://eskornd.github.io/samplesite/annotations/">https://eskornd.github.io/samplesite/annotations/</option>
+				<option value="http://localhost:8000/samplesite/annotations">http://localhost:8000/samplesite/annotations</option>	
+				<option value="https://login.cloudi.city/">https://login.cloudi.city/</option>
+				<option value="https://approve.eu.esko.cloud/">https://approve.eu.esko.cloud/</option>
+				<option value="https://applink.ci.dev.cloudi.city/panelcomponent/panel/main">https://applink.ci.dev.cloudi.city/panelcomponent/panel/main</option>
+				<option value="https://w2p.ci.dev.cloudi.city/panelcomponent/panel/main">https://w2p.ci.dev.cloudi.city/panelcomponent/panel/main</option>
+				<option value="https://shapes.future.dev.cloudi.city/index">https://shapes.future.dev.cloudi.city/index</option>
+				<option value="https://applink.future.dev.cloudi.city/panelcomponent/panel/main">https://applink.future.dev.cloudi.city/panelcomponent/panel/main</option>
+				<option value="https://applink.eu.esko.cloud/panelcomponent/panel/main">https://applink.eu.esko.cloud/panelcomponent/panel/main</option>
+			</select>
+		</span>
+	</div>
+	<div>
+		<span><label>URL:</label></span>
+		<span><input id="url" type="text" size="48" value="https://eskornd.github.io/samplesite/annotations/"/></span>
+		<span><button style="width:80px;" onClick="launch();">launch</button></span>
+	</div>
+	
+</body>	
+</html>

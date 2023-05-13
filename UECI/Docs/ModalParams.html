@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Class: ModalParams | Class: ModalParams</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="">
+        
+            <img src="img/toast-ui.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Class: ModalParams</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Annotation.html">Annotation</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Annotation_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Annotation.html#boundingBox">boundingBox</a></li><li><a href="Annotation.html#highlightColor">highlightColor</a></li><li><a href="Annotation.html#highlightWeight">highlightWeight</a></li><li><a href="Annotation.html#id">id</a></li><li><a href="Annotation.html#points">points</a></li><li><a href="Annotation.html#rect">rect</a></li><li><a href="Annotation.html#title">title</a></li><li><a href="Annotation.html#type">type</a></li></ul></div></li><li><a href="AppInfo.html">AppInfo</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AppInfo_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="AppInfo.html#customerID">customerID</a></li><li><a href="AppInfo.html#language">language</a></li></ul></div></li><li><a href="ClusterNodeID.html">ClusterNodeID</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ClusterNodeID_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="ClusterNodeID.html#cluster">cluster</a></li><li><a href="ClusterNodeID.html#nodeID">nodeID</a></li></ul></div></li><li><a href="Document.html">Document</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Document_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Document.html#filePath">filePath</a></li><li><a href="Document.html#getAnnotations">getAnnotations</a></li><li><a href="Document.html#getClusterNodeID">getClusterNodeID</a></li><li><a href="Document.html#getPlacedSDFilePaths">getPlacedSDFilePaths</a></li><li><a href="Document.html#isDirty">isDirty</a></li><li><a href="Document.html#pagesInfo">pagesInfo</a></li><li><a href="Document.html#readFileBinary">readFileBinary</a></li><li><a href="Document.html#readPlacedSDFileBinary">readPlacedSDFileBinary</a></li><li><a href="Document.html#saveDocument">saveDocument</a></li><li><a href="Document.html#setAnnotations">setAnnotations</a></li><li><a href="Document.html#setClusterNodeID">setClusterNodeID</a></li><li><a href="Document.html#title">title</a></li></ul></div></li><li><a href="Editor.html">Editor</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Editor_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Editor.html#activateAnnotationTool">activateAnnotationTool</a></li><li><a href="Editor.html#appInfo">appInfo</a></li><li><a href="Editor.html#appName">appName</a></li><li><a href="Editor.html#currentDocument">currentDocument</a></li><li><a href="Editor.html#currentWindow">currentWindow</a></li><li><a href="Editor.html#onAnnotationCreated">onAnnotationCreated</a></li><li><a href="Editor.html#onDocumentChanged">onDocumentChanged</a></li><li><a href="Editor.html#onDocumentPageBoxesChanged">onDocumentPageBoxesChanged</a></li><li><a href="Editor.html#openInBrowser">openInBrowser</a></li><li><a href="Editor.html#showModal">showModal</a></li><li><a href="Editor.html#storage">storage</a></li><li><a href="Editor.html#version">version</a></li><li><a href="Editor.html#versionString">versionString</a></li></ul></div></li><li><a href="ModalParams.html">ModalParams</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ModalParams_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="ModalParams.html#dialogSize">dialogSize</a></li><li><a href="ModalParams.html#title">title</a></li><li><a href="ModalParams.html#url">url</a></li></ul></div></li><li><a href="PageBox.html">PageBox</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="PageBox_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="PageBox.html#rect">rect</a></li><li><a href="PageBox.html#type">type</a></li></ul></div></li><li><a href="PageInfo.html">PageInfo</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="PageInfo_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="PageInfo.html#height">height</a></li><li><a href="PageInfo.html#pageBoxes">pageBoxes</a></li><li><a href="PageInfo.html#width">width</a></li></ul></div></li><li><a href="Point.html">Point</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Point_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Point.html#x">x</a></li><li><a href="Point.html#y">y</a></li></ul></div></li><li><a href="Rect.html">Rect</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Rect_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Rect.html#height">height</a></li><li><a href="Rect.html#width">width</a></li><li><a href="Rect.html#x">x</a></li><li><a href="Rect.html#y">y</a></li></ul></div></li><li><a href="Rect2.html">Rect2</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Rect2_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Rect2.html#x0">x0</a></li><li><a href="Rect2.html#x1">x1</a></li><li><a href="Rect2.html#y0">y0</a></li><li><a href="Rect2.html#y1">y1</a></li></ul></div></li><li><a href="RGBColor.html">RGBColor</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="RGBColor_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="RGBColor.html#b">b</a></li><li><a href="RGBColor.html#g">g</a></li><li><a href="RGBColor.html#r">r</a></li></ul></div></li><li><a href="Size.html">Size</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Size_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Size.html#height">height</a></li><li><a href="Size.html#width">width</a></li></ul></div></li><li><a href="Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Storage_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Storage.html#getValue">getValue</a></li><li><a href="Storage.html#setValue">setValue</a></li></ul></div></li><li><a href="Window.html">Window</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Window_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Window.html#close">close</a></li><li><a href="Window.html#endModal">endModal</a></li><li><a href="Window.html#isModal">isModal</a></li><li><a href="Window.html#resize">resize</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>ModalParams</h2>
+        
+            <div class="class-description">ModalParams parameter of showModal()</div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="ModalParams">
+            
+                ModalParams
+                
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+            <h3 class="subsection-title">Classes</h3>
+            
+
+<dl>
+    
+        <dt>
+            <h4 class="name">
+                <a href="ModalParams.html">ModalParams</a>
+                <div class="container-source members">
+                    <code><a href="ModalParams.html">ModalParams</a></code>
+                </div>
+            </h4>
+        </dt>
+        
+    
+</dl>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+
+<dt>
+<h4 class="name" id="dialogSize">
+    <span class="type-signature"></span>dialogSize<span class="type-signature"> :<a href="Size.html">Size</a></span>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        The popup dialog size
+optional
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Size.html">Size</a></span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="title">
+    <span class="type-signature"></span>title<span class="type-signature"> :String</span>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Title of the modal dialog, utf8
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">String</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="url">
+    <span class="type-signature"></span>url<span class="type-signature"> :string</span>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        The URL to be opened
+Mandatory
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="img/toast-ui.png" style="">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = 'ModalParams_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
