@@ -104,15 +104,15 @@ function MakeGIWrapper(fontFile, index)
 	return isLoaded ? gi : undefined;
 }
 
-function LoadFont()
+function LoadFont(fontFile)
 {
-	const fontFile = 'MacondoSwashCaps-Regular.ttf';
 	let gi = MakeGIWrapper(fontFile, 0);
 	let render = new GlyphRender(gi);
 	render.setGridSize(144.0);
 	
 	//Font Info	
-	$('#short_info').html(gi.faceInfo().postscriptName);
+	$('#font_filename').html(fontFile);
+	$('#font_short_info').html(gi.faceInfo().postscriptName);
     $('#font_info').html(FaceInfoToHTML(gi.faceInfo()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
 
@@ -132,11 +132,84 @@ function LoadFont()
 		
 }
 
+function mountFile(fileObject, onFileMounted)
+{
+    var reader = new FileReader();
+    reader.onload = function ()
+    {
+        var filename = fileObject.name;
+        var data = new Uint8Array(reader.result);
+        try {
+            gGlyphModule.FS.createDataFile('/', filename, data, true /*read*/, false/*write*/, false/*own*/);
+        }catch (err)
+        {
+            console.log('Exception in FS.createDataFile(): ' + err.message);
+        }
+        console.log('file onload(): ' + filename);
+        var stat = gGlyphModule.FS.stat(filename);
+        console.log(stat);
+        if (stat.size == 0)
+        {
+            alert('Empty file: ' + filename + ' ' + stat.size +' bytes?');
+        }
+        onFileMounted(filename);
+    }
+    reader.readAsArrayBuffer(fileObject);
+}
+
+
+function InitDropZone()
+{
+    $("#drop_zone").on('dragenter', function(e)
+		{
+			e.preventDefault();
+			$(this).css("background", "#3F8CDD");
+		});
+    $("#drop_zone").on('dragleave', function(e)
+		{
+			e.preventDefault();
+			$(this).css("background", "#FFFFFF");
+		});
+    $("#drop_zone").on('dragover', function(e)
+		{
+			e.preventDefault();
+			$(this).css("background", "#3F8CDD");
+		});
+    $("#drop_zone").on('drop', function(e)
+		{
+			e.preventDefault();
+			if (e.originalEvent.dataTransfer.files.length)
+			{
+				console.log(toString(e.originalEvent));
+				var files = e.originalEvent.dataTransfer.files;
+				console.log('dropped ' + files.length + ' files.');
+				var file = files.item(0);
+
+				var callback = function(percentage)
+				{
+					console.log('callback()' + percentage);
+				};
+				let onFileMounted = function (filename, callback)
+				{
+					//loadFontFile(filename, callback);
+					LoadFont(filename);
+				};
+
+				// clearUI();
+				// Async, when file mounted -> onFileMouted
+				mountFile(file, onFileMounted);
+			}
+			$(this).css("background", "#FFFFFF");
+		});
+}
+
 async function main()
 {
 	gGlyphModule = await LoadModule();
 	//validateGlyphModule(gGlyphModule);	
-	LoadFont();
+	LoadFont('MacondoSwashCaps-Regular.ttf');
+	InitDropZone()
+	
 }
 
 $(()=>{

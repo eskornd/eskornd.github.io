@@ -6849,6 +6849,7 @@ var ASM_CONSTS = {
 
 
 
+
   var FSNode = /** @constructor */ function(parent, name, mode, rdev) {
     if (!parent) {
       parent = this;  // root node sets parent to itself
@@ -7579,6 +7580,7 @@ Module["FS_createPreloadedFile"] = FS.createPreloadedFile;
 Module["FS_createLazyFile"] = FS.createLazyFile;
 Module["FS_createDevice"] = FS.createDevice;
 Module["FS_unlink"] = FS.unlink;
+Module["FS"] = FS;
 var unexportedRuntimeSymbols = [
   'run',
   'UTF8ArrayToString',
@@ -7787,7 +7789,6 @@ var unexportedRuntimeSymbols = [
   'Browser',
   'setMainLoop',
   'wget',
-  'FS',
   'MEMFS',
   'TTY',
   'PIPEFS',
