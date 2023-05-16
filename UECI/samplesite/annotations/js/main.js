@@ -1,5 +1,5 @@
 import {log} from './log.js';
-import {validateEditor} from './validate.js';
+// import {validateEditor} from './validate.js';
 import {Model} from './Model.js';
 import {ctx} from './ctx.js';
 import PageView from './PageView.js';
@@ -31,7 +31,7 @@ async function initEskoConnector()
 			log("setEditor(): " + JSON.stringify(inEditor));
 			
 			//validate
-			validateEditor(inEditor);
+			// validateEditor(inEditor);
 			
 			connector.editor = inEditor;
 			ctx.editor = inEditor;
