@@ -54,7 +54,13 @@ let ctx = {
 			ctx.currentAnnotations.push(annotation);
 			ctx.currentDoc.setAnnotations(ctx.currentAnnotations);
 			ctx.view.addAnnotation(annotation);
-		} // onCreateAnnotationRequest
+		} // on annotation created
+
+		, onDocumentPageNumberChanged : async () => {
+			let doc = await ctx.editor.currentDocument();
+			let pageNumber = await doc.pageNumber();
+			ctx.view.setPageNumberText(pageNumber + 1);
+		} // on document page number changed
 	}
 };
 

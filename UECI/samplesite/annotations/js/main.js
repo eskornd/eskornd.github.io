@@ -28,6 +28,9 @@ async function initEskoConnector()
 			inEditor.onAnnotationCreated = async (annotation) => {
 				ctx.controller.onAnnotationCreated(annotation);
 			};
+			inEditor.onDocumentPageNumberChanged = async () => {
+				ctx.controller.onDocumentPageNumberChanged();
+			};
 			log("setEditor(): " + JSON.stringify(inEditor));
 			
 			//validate
@@ -42,6 +45,7 @@ async function initEskoConnector()
 			setTimeout(()=>{
 				onInitialized();
 				ctx.controller.onDocumentChanged();
+				ctx.controller.onDocumentPageNumberChanged();
 			}, 100);
 		},
 		version : 21011001

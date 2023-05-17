@@ -165,6 +165,11 @@ export default class PageView
 		$('#clusterNodeID').text(nodeIDText);
 	}
 
+	setPageNumberText(pageNumberText)
+	{
+		$('#pageNumber').text(pageNumberText);
+	}
+
 	addAnnotation (annotation)
 	{
 		// add html
