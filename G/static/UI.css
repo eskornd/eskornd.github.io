@@ -95,6 +95,10 @@ body {
     font-family: GLYPH_DISPLAY_FACE;
 }
 
+#font_short_info {
+	font-family: GLYPH_BODYTEXT_FACE;
+}
+
 #drop_hints {
     font-size: 150%;
 	font-family: GLYPH_BODYTEXT_FACE;

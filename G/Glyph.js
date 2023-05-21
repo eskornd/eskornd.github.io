@@ -7160,7 +7160,6 @@ var asmLibraryArg = {
   "invoke_iiidii": invoke_iiidii,
   "invoke_iiii": invoke_iiii,
   "invoke_iiiii": invoke_iiiii,
-  "invoke_iiiiid": invoke_iiiiid,
   "invoke_iiiiii": invoke_iiiiii,
   "invoke_iiiiiii": invoke_iiiiiii,
   "invoke_iiiiiiii": invoke_iiiiiiii,
@@ -7280,7 +7279,7 @@ var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_i
 /** @type {function(...*):?} */
 var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
 
-var ___emscripten_embedded_file_data = Module['___emscripten_embedded_file_data'] = 218072;
+var ___emscripten_embedded_file_data = Module['___emscripten_embedded_file_data'] = 219192;
 function invoke_iii(index,a1,a2) {
   var sp = stackSave();
   try {
@@ -7436,17 +7435,6 @@ function invoke_iiiii(index,a1,a2,a3,a4) {
 }
 
 function invoke_iiiiii(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiid(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
     return getWasmTableEntry(index)(a1,a2,a3,a4,a5);

@@ -42,8 +42,8 @@ export class GlyphRender
 		// update element template
 		const class_name = 'my_glyph';
 		this._elem_prefix = '';
-		this._elem_prefix += '<span>';
-		this._elem_prefix += `<svg class=\'${class_name}\' width=${grid_size} height=${grid_size} >`;
+		this._elem_prefix += `<span>`;
+		this._elem_prefix += `<svg class=\'${class_name}\' gid=THE_GID width=${grid_size} height=${grid_size} >`;
 		this._elem_suffix = '';
 
 		this._fence_attr = ' stroke=#E0E0E0 stroke-width=1.5 ';
@@ -74,6 +74,7 @@ export class GlyphRender
 	{
 		const glyph_info = this._glyph_infos[gid];
 		let elem = this._elem_prefix;
+		elem = elem.replaceAll('THE_GID', gid);
 		elem += `${this._gid_prefix}GID: ${gid}${this._gid_suffix}`;
 		elem += `${this._glyph_name_prefix}Name: ${glyph_info.name}${this._glyph_name_suffix}`;
 		elem += `${this._unicode_prefix}Unicode: ${glyph_info.unicodeLiteral}${this._unicode_suffix}`;
@@ -116,12 +117,18 @@ export class GlyphRender
 			for ( let gid=0; gid<num_glyphs; ++gid)
 			{
 				const path_d = this._path_ds[gid];
-				console.log(path_d);
 				this._html_elements[gid] = this.toElement(gid, this._grid_size, path_d);
 			}
 		}
 		return this._html_elements;
 	}
 
+	glyphSVG(gid, fontSize)
+	{
+		const gi = this._gi;
+		let matrix = [fontSize, 0, 0, fontSize, 0, 0];
+		let path_d = gi.svg_d(gid, matrix);
+		return path_d;
+	}
 }
 

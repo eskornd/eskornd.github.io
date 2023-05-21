@@ -1,6 +1,7 @@
 import {GlyphRender} from './GlyphRender.js'
 
 var gGlyphModule;
+var gRender;
 
 function ToLinkHtml(text, url)
 {
@@ -108,11 +109,13 @@ function LoadFont(fontFile)
 {
 	let gi = MakeGIWrapper(fontFile, 0);
 	let render = new GlyphRender(gi);
-	render.setGridSize(144.0);
+	gRender = render;
+	render.setGridSize(96.0);
 	
 	//Font Info	
-	$('#font_filename').html(fontFile);
-	$('#font_short_info').html(gi.faceInfo().postscriptName);
+	const short_info = `${gi.faceInfo().postscriptName} of ${fontFile}.`;
+	//$('#font_filename').html(fontFile);
+	$('#font_short_info').html(short_info);
     $('#font_info').html(FaceInfoToHTML(gi.faceInfo()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
 
@@ -123,7 +126,7 @@ function LoadFont(fontFile)
     let glyphs_div = $('#all_glyphs');
     glyphs_div.html('');
 	let html = '';
-	for ( let i=10; i<elems.length; ++i)
+	for ( let i=0; i<elems.length; ++i)
 	{
 		html += elems[i];
 		const elem = elems[i];
@@ -137,28 +140,28 @@ function mountFile(fileObject, onFileMounted)
     var reader = new FileReader();
     reader.onload = function ()
     {
-        var filename = fileObject.name;
-        var data = new Uint8Array(reader.result);
+        let fileName = fileObject.name;
+        let data = new Uint8Array(reader.result);
         try {
-            gGlyphModule.FS.createDataFile('/', filename, data, true /*read*/, false/*write*/, false/*own*/);
+            gGlyphModule.FS.createDataFile('/', fileName, data, true /*read*/, false/*write*/, false/*own*/);
         }catch (err)
         {
             console.log('Exception in FS.createDataFile(): ' + err.message);
         }
-        console.log('file onload(): ' + filename);
-        var stat = gGlyphModule.FS.stat(filename);
+        console.log('file onload(): ' + fileName);
+        let stat = gGlyphModule.FS.stat(fileName);
         console.log(stat);
         if (stat.size == 0)
         {
-            alert('Empty file: ' + filename + ' ' + stat.size +' bytes?');
+            alert('Empty file: ' + fileName + ' ' + stat.size +' bytes?');
         }
-        onFileMounted(filename);
+        onFileMounted(fileName);
     }
     reader.readAsArrayBuffer(fileObject);
 }
 
 
-function InitDropZone()
+function InitDropZoneEvents()
 {
     $("#drop_zone").on('dragenter', function(e)
 		{
@@ -182,17 +185,12 @@ function InitDropZone()
 			{
 				console.log(toString(e.originalEvent));
 				var files = e.originalEvent.dataTransfer.files;
-				console.log('dropped ' + files.length + ' files.');
+				// console.log('File dropped ' + files.length + ' files.');
 				var file = files.item(0);
 
-				var callback = function(percentage)
+				let onFileMounted = (fileName) =>
 				{
-					console.log('callback()' + percentage);
-				};
-				let onFileMounted = function (filename, callback)
-				{
-					//loadFontFile(filename, callback);
-					LoadFont(filename);
+					LoadFont(fileName);
 				};
 
 				// clearUI();
@@ -203,13 +201,43 @@ function InitDropZone()
 		});
 }
 
+function InitGlyphEvents()
+{
+	$('.my_glyph').on('click', (e)=>{
+		let gid = Number($(e.target).attr('gid'));
+		let div = $("#glyph_info");
+		const ginfo_str = '_GINFO_STR_';
+		let spans_str = '<span>SPANS_STR</span>';
+		div.html(spans_str + '<pre style="font-family:Nova Mono; font-size:12;">' + ginfo_str + '</pre>');
+		let elems = gRender.glyphElements();
+		const glyph_size = 256.0;
+		const frame_size = 1.6 * 256.0;
+		const left_margin = 0.3 * glyph_size;
+		const baseline = 0.3 * glyph_size;
+		const w_h = 'width=' + frame_size + ' height=' + frame_size;
+		let svg = gRender.glyphSVG(gid, glyph_size);
+		let svg_str = '<svg ' + w_h + '><path transform="translate(' + left_margin + ', ' + (glyph_size -baseline) + ')" d="' + svg + '" fill="black" stroke="black" stroke-width="0"/>';
+		let span_str = '<p><span>' + svg_str + '</span></p>';
+
+		div.html(span_str);
+		div.dialog({
+				   modal: true,
+				   width: 480,
+				   height: 640,
+				   buttons: { Ok: function() { $( this ).dialog( "close" );}}
+				   });
+	});
+}
 async function main()
 {
 	gGlyphModule = await LoadModule();
+	
 	//validateGlyphModule(gGlyphModule);	
 	LoadFont('MacondoSwashCaps-Regular.ttf');
-	InitDropZone()
 	
+	//events
+	InitDropZoneEvents();
+	InitGlyphEvents();	
 }
 
 $(()=>{
