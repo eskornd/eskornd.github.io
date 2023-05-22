@@ -25,11 +25,14 @@ async function initEskoConnector()
 			inEditor.onDocumentChanged = async () => { 
 				ctx.controller.onDocumentChanged();
 			};
-			inEditor.onAnnotationCreated = async (annotation) => {
-				ctx.controller.onAnnotationCreated(annotation);
+			inEditor.onAnnotationCreated2 = async (annotation, params) => {
+				ctx.controller.onAnnotationCreated2(annotation, params);
 			};
 			inEditor.onDocumentPageNumberChanged = async () => {
 				ctx.controller.onDocumentPageNumberChanged();
+			};
+			inEditor.onDocumentPageBoxesChanged = async () => {
+				ctx.controller.onDocumentPageBoxesChanged();
 			};
 			log("setEditor(): " + JSON.stringify(inEditor));
 			
@@ -45,7 +48,6 @@ async function initEskoConnector()
 			setTimeout(()=>{
 				onInitialized();
 				ctx.controller.onDocumentChanged();
-				ctx.controller.onDocumentPageNumberChanged();
 			}, 100);
 		},
 		version : 21011001

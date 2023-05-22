@@ -16,25 +16,22 @@ let ctx = {
 				let pageBoxes = await doc.pagesInfo();
 				let dirtyText = '';
 				try {
-					 dirtyText += await doc.isDirty();
+					dirtyText += await doc.isDirty();
 				} catch (err){
 					console.error(err);
 				}
 				let clusterNodeIDText = '';
 				try {
-					 clusterNodeIDText += JSON.stringify(await doc.getClusterNodeID());
+					clusterNodeIDText += JSON.stringify(await doc.getClusterNodeID());
 				} catch (err){
 					console.error(err);
 				}
-				let pageSizeText = '';
-				for (let i =0;i<pageBoxes.length; ++ i)
-				{
-					let w = pageBoxes[i].width;
-					let h = pageBoxes[i].height;
-					pageSizeText = '' + w + ' x ' + h;
-					ctx.currentPageSize = {width : w , height : h};
-					break;
-				}
+				let w = pageBoxes[0].width;
+				let h = pageBoxes[0].height;
+				let pageSizeText = '' + w + ' x ' + h;
+				ctx.currentPageSize = {width : w , height : h};
+				let pageNumber = await doc.pageNumber();
+				ctx.view.setPageNumberText(pageNumber + 1);
 				ctx.view.setPageSizeText(pageSizeText);
 				ctx.view.setIsDirtyText(dirtyText);
 				ctx.view.setClusterNodeIDText(clusterNodeIDText);
@@ -47,20 +44,31 @@ let ctx = {
 			}
 		} // on document changed
 
-		, onAnnotationCreated : (annotation) => {
-			let count = ctx.currentAnnotations.length;
-			annotation.id = "id" + count;
-			annotation.title = count.toString();
-			ctx.currentAnnotations.push(annotation);
-			ctx.currentDoc.setAnnotations(ctx.currentAnnotations);
-			ctx.view.addAnnotation(annotation);
-		} // on annotation created
+		, onDocumentPageBoxesChanged : async () => {
+			let doc = await ctx.editor.currentDocument();
+			let pageBoxes = await doc.pagesInfo();
+			let w = pageBoxes[0].width;
+			let h = pageBoxes[0].height;
+			let pageSizeText = '' + w + ' x ' + h;
+			ctx.currentPageSize = {width : w , height : h};
+			ctx.view.setPageSizeText(pageSizeText);
+		} // on document page boxes changed
 
 		, onDocumentPageNumberChanged : async () => {
 			let doc = await ctx.editor.currentDocument();
 			let pageNumber = await doc.pageNumber();
 			ctx.view.setPageNumberText(pageNumber + 1);
 		} // on document page number changed
+
+		, onAnnotationCreated2 : (annotation, params) => {
+			let pageNumber = params.pageNumber;
+			let count = ctx.currentAnnotations.length;
+			annotation.id = "id" + count;
+			annotation.title = count + " (Page " + (pageNumber + 1) + ")";
+			ctx.currentAnnotations.push(annotation);
+			ctx.currentDoc.setAnnotations(ctx.currentAnnotations);
+			ctx.view.addAnnotation(annotation);
+		} // on annotation created
 	}
 };
 
