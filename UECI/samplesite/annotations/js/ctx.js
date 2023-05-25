@@ -82,11 +82,11 @@ let ctx = {
 			annotations.push(annotation);
 			ctx.currentDoc.setAnnotations(annotations);
 			let annotationLocal = {
-				boundingBox: {
-					x: annotation.rect.x0 - ctx.currentPageRect.x,
-					y: annotation.rect.y0 - ctx.currentPageRect.y,
-					width: annotation.rect.x1 - annotation.rect.x0,
-					height: annotation.rect.y1 - annotation.rect.y0,
+				rect: {
+					x0: annotation.rect.x0 - ctx.currentPageRect.x,
+					x1: annotation.rect.x1 - ctx.currentPageRect.x,
+					y0: annotation.rect.y0 - ctx.currentPageRect.y,
+					y1: annotation.rect.y1 - ctx.currentPageRect.y,
 				}
 			};
 			ctx.view.addAnnotation(annotationLocal);

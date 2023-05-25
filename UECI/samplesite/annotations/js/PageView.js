@@ -2,32 +2,23 @@ import {ctx} from './ctx.js';
 import {HighlightEvent, HighlightType} from './HighlightEvent.js';
 import {log} from './log.js';
 
-function makeRect(x, y, width, height)
-{
-	return {x: x, y: y, width: width, height: height};
-}
-
 function makeRect2(x0, y0, x1, y1)
 {
 	return {x0: x0, y0: y0, x1: x1, y1: y1};
 }
 
-function makeRandomRect(box)
-{
-	let w = 200;
-	let h = 50;
-	let x = box.x + Math.random() * (box.width - w);
-	let y = box.y + Math.random() * (box.height - h);
-	return makeRect(x, y, w, h);
-}
-
 function makeRandomRect2(box)
 {
-	let rect = makeRandomRect(box);
 	let randomDir = ()=>{
 		return Math.random() > 0.5 ? 1 : -1;
 	}
-	return makeRect2(rect.x, rect.y, rect.x + randomDir() * rect.width, rect.y + randomDir() * rect.height);
+	let w = 200;
+	let h = 50;
+	let x0 = box.x + Math.random() * (box.width - w);
+	let y0 = box.y + Math.random() * (box.height - h);
+	let x1 = x0 + randomDir() * w;
+	let y1 = y0 + randomDir() * h;
+	return makeRect2(x0, y0, x1, y1);
 }
 
 function getRandomColor()
@@ -80,7 +71,7 @@ async function highlightRects(rects)
 	let annos = [];
 	for (const i in rects)
 	{
-		annos.push({id: "id" + i, title: i, boundingBox: rects[i]});
+		annos.push({id: "id" + i, title: i, type: "Rectangle", rect: rects[i]});
 	}
 	if (ctx.currentDoc !== undefined)
 	{
@@ -171,13 +162,13 @@ export default class PageView
 	addAnnotation (annotation)
 	{
 		// add html
-		var displayText = "annotation" + gCount + ' @ x:' + annotation.boundingBox.x + ', y:' + annotation.boundingBox.y; 
+		var displayText = "annotation" + gCount + ' @ x:' + annotation.rect.x0 + ', y:' + annotation.rect.y0; 
 		var id = 'annotation' + gCount;
 		++gCount;
 		$("#highlight_section").append('<div class="clickable rectAnnotation" id="' + id +'">' + displayText + '</div>').ready(()=>{
 			var obj = new HighlightEvent();
 			obj.type = HighlightType.eRect;
-			obj.rect = annotation.boundingBox;
+			obj.rect = annotation.rect;
 			$('#' + id).attr('data', JSON.stringify(obj.rect));
 		});
 	}
@@ -209,11 +200,11 @@ export default class PageView
 		};
 		$("#highlight_trimbox").on("click", async ()=>{
 			let box = await getCurrentDocumentPageBox('TrimBox');
-			highlightRect(makeRect(box.x, box.y, box.width, box.height));
+			highlightRect(makeRect2(box.x, box.y, box.x + box.width, box.y + box.height));
 		});
 		$("#highlight_mediabox").on("click", async ()=>{
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			highlightRect(makeRect(box.x, box.y, box.width, box.height));
+			highlightRect(makeRect2(box.x, box.y, box.x + box.width, box.y + box.height));
 		});
 
 		$("#highlight_oval").on("click", async ()=> {
@@ -304,19 +295,19 @@ export default class PageView
 			highlight(annots);
 		});
 
-		$("#highlight_100").attr('data', JSON.stringify({x:0, y:0, width: 100, height:100}));
+		$("#highlight_100").attr('data', JSON.stringify({x0: 0, y0: 0, x1: 100, y1: 100}));
 		$("#highlight_multi").attr('data', JSON.stringify([
-			{x: 0, y:0, width: 20, height: 20}
-			,{x: 50, y:50, width: 20, height: 20}
-			,{x: 100, y:100, width: 20, height: 20}
-			,{x: 100, y:50, width: 20, height: 20}
-			,{x: 50, y:0, width: 20, height: 20}
-			,{x: 100, y:0, width: 20, height: 20}
+			{x0: 0, y0: 0, x1: 20, y1: 20}
+			,{x0: 50, y0: 50, x1: 70, y1: 70}
+			,{x0: 100, y0: 100, x1: 120, y1: 120}
+			,{x0: 100, y0: 50, x1: 120, y1: 70}
+			,{x0: 50, y0: 0, x1: 70, y1: 20}
+			,{x0: 100, y0: 0, x1: 120, y1: 20}
 		]));
-		$("#highlight_random").attr('data', JSON.stringify({x:50, y:50, width: 200, height:50}));
+		$("#highlight_random").attr('data', JSON.stringify({x0: 50, y0: 50, x1: 250, y1: 100}));
 		$("#highlight_random").on('click', async ()=>{
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect(box);
+			let rect = makeRandomRect2(box);
 			$("#highlight_random").attr('data', JSON.stringify(rect));
 			let color = getRandomColor();
 			$("#highlight_random").attr('highlightColor', JSON.stringify(color));
@@ -569,7 +560,7 @@ export default class PageView
 			var highlightColor = $("#" + e.target.id).attr('highlightColor');
 			if ( undefined != highlightColor)
 			{
-				highlight([{id: "id0", title: "0", boundingBox : JSON.parse(data), highlightColor : JSON.parse(highlightColor)}]);
+				highlight([{id: "id0", title: "0", type: "Rectangle", rect: JSON.parse(data), highlightColor: JSON.parse(highlightColor)}]);
 				return;
 			}
 			var obj = JSON.parse(data);
@@ -586,18 +577,16 @@ export default class PageView
 			for (const i in rects)
 			{
 				let rect = rects[i];
-				rect.x += box.x;
-				rect.y += box.y;
+				rect.x0 += box.x;
+				rect.x1 += box.x;
+				rect.y0 += box.y;
+				rect.y1 += box.y;
 			}
 			highlightRects(rects);
 		});
 		$("#refresh").on("click", ()=>{
 			location.reload();
 		});
-	}
-
-	updateDocumentTitle()
-	{
 	}
 }
 
