@@ -1,5 +1,5 @@
 import {ctx} from './ctx.js';
-import {PageBox, HighlightEvent, HighlightType} from './HighlightEvent.js';
+import {HighlightEvent, HighlightType} from './HighlightEvent.js';
 import {log} from './log.js';
 
 function makeRect(x, y, width, height)
@@ -16,8 +16,8 @@ function makeRandomRect(box)
 {
 	let w = 200;
 	let h = 50;
-	let x = box.x + Math.random() * (ctx.currentPageSize.width - w);
-	let y = box.y + Math.random() * (ctx.currentPageSize.height - h);
+	let x = box.x + Math.random() * (box.width - w);
+	let y = box.y + Math.random() * (box.height - h);
 	return makeRect(x, y, w, h);
 }
 
@@ -70,29 +70,27 @@ async function highlight(annos)
 	}
 	if (ctx.currentDoc !== undefined )
 	{
-		ctx.currentAnnotations = annos;
 		await ctx.currentDoc.setAnnotations(annos);
 	}
 }
 
-async function highlightRectOrRects(rects)
+async function highlightRects(rects)
 {
+	console.assert(Array.isArray(rects));
 	let annos = [];
-	if (Array.isArray(rects))
+	for (const i in rects)
 	{
-		for ( const i in rects)
-		{
-			annos.push({id: "id" + i, title: i, boundingBox : rects[i]});
-		}
-	} else {
-		let rect = rects;
-		annos = [{id: "id0", title: "0", boundingBox : rect}];
+		annos.push({id: "id" + i, title: i, boundingBox: rects[i]});
 	}
-	if (ctx.currentDoc !== undefined )
+	if (ctx.currentDoc !== undefined)
 	{
-		ctx.currentAnnotations = annos;
 		await ctx.currentDoc.setAnnotations(annos);
 	}
+}
+
+async function highlightRect(rect)
+{
+	highlightRects([rect]);
 }
 
 async function userInputClusterNodeID()
@@ -176,10 +174,6 @@ export default class PageView
 		var displayText = "annotation" + gCount + ' @ x:' + annotation.boundingBox.x + ', y:' + annotation.boundingBox.y; 
 		var id = 'annotation' + gCount;
 		++gCount;
-		var obj = new HighlightEvent();
-		obj.type = HighlightType.eRect;
-		obj.rect = annotation.boundingBox;
-		var data = JSON.stringify(obj);
 		$("#highlight_section").append('<div class="clickable rectAnnotation" id="' + id +'">' + displayText + '</div>').ready(()=>{
 			var obj = new HighlightEvent();
 			obj.type = HighlightType.eRect;
@@ -215,11 +209,11 @@ export default class PageView
 		};
 		$("#highlight_trimbox").on("click", async ()=>{
 			let box = await getCurrentDocumentPageBox('TrimBox');
-			highlightRectOrRects(makeRect(box.x, box.y, box.width, box.height));
+			highlightRect(makeRect(box.x, box.y, box.width, box.height));
 		});
 		$("#highlight_mediabox").on("click", async ()=>{
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			highlightRectOrRects(makeRect(box.x, box.y, box.width, box.height));
+			highlightRect(makeRect(box.x, box.y, box.width, box.height));
 		});
 
 		$("#highlight_oval").on("click", async ()=> {
@@ -569,7 +563,7 @@ export default class PageView
 		});
 
 		// use event delegate rather than direct bind, so that we can handle dynamic items
-		$('#highlight_section').on('click', '.rectAnnotation', (e)=>{ 
+		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
 			var data = $("#" + e.target.id).attr('data');
 			var highlightColor = $("#" + e.target.id).attr('highlightColor');
@@ -579,7 +573,23 @@ export default class PageView
 				return;
 			}
 			var obj = JSON.parse(data);
-			highlightRectOrRects(obj);
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rects = [];
+			if (Array.isArray(obj))
+			{
+				rects = obj;
+			}
+			else
+			{
+				rects = [obj];
+			}
+			for (const i in rects)
+			{
+				let rect = rects[i];
+				rect.x += box.x;
+				rect.y += box.y;
+			}
+			highlightRects(rects);
 		});
 		$("#refresh").on("click", ()=>{
 			location.reload();

@@ -1,7 +1,20 @@
+function getPageBox(pageBoxes, boxName)
+{
+	let rect = undefined;
+	for (const i in pageBoxes)
+	{
+		if (pageBoxes[i].type == boxName)
+		{
+			rect = pageBoxes[i].rect;
+			break;
+		}
+	}
+	return rect;
+}
+
 let ctx = {
 	currentDocID : 0,
-	currentPageSize : {width: 0, height: 0},
-	currentAnnotations : [],
+	currentPageRect : {x: 0, y: 0, width: 0, height: 0},
 	controller :
 	{
 		onDocumentChanged : async ()=>{
@@ -13,7 +26,6 @@ let ctx = {
 				let docID = doc.id;
 				ctx.currentDocID = docID;
 				ctx.currentDoc = doc;
-				let pageBoxes = await doc.pagesInfo();
 				let dirtyText = '';
 				try {
 					dirtyText += await doc.isDirty();
@@ -26,10 +38,11 @@ let ctx = {
 				} catch (err){
 					console.error(err);
 				}
-				let w = pageBoxes[0].width;
-				let h = pageBoxes[0].height;
+				let pagesInfo = await doc.pagesInfo();
+				let w = pagesInfo[0].width;
+				let h = pagesInfo[0].height;
 				let pageSizeText = '' + w + ' x ' + h;
-				ctx.currentPageSize = {width : w , height : h};
+				ctx.currentPageRect = getPageBox(pagesInfo[0].pageBoxes, "MediaBox");
 				let pageNumber = await doc.pageNumber();
 				ctx.view.setPageNumberText(pageNumber + 1);
 				ctx.view.setPageSizeText(pageSizeText);
@@ -46,11 +59,11 @@ let ctx = {
 
 		, onDocumentPageBoxesChanged : async () => {
 			let doc = await ctx.editor.currentDocument();
-			let pageBoxes = await doc.pagesInfo();
-			let w = pageBoxes[0].width;
-			let h = pageBoxes[0].height;
+			let pagesInfo = await doc.pagesInfo();
+			let w = pagesInfo[0].width;
+			let h = pagesInfo[0].height;
 			let pageSizeText = '' + w + ' x ' + h;
-			ctx.currentPageSize = {width : w , height : h};
+			ctx.currentPageRect = getPageBox(pagesInfo[0].pageBoxes, "MediaBox");
 			ctx.view.setPageSizeText(pageSizeText);
 		} // on document page boxes changed
 
@@ -60,14 +73,23 @@ let ctx = {
 			ctx.view.setPageNumberText(pageNumber + 1);
 		} // on document page number changed
 
-		, onAnnotationCreated2 : (annotation, params) => {
+		, onAnnotationCreated2 : async (annotation, params) => {
 			let pageNumber = params.pageNumber;
-			let count = ctx.currentAnnotations.length;
+			let annotations = await ctx.currentDoc.getAnnotations();
+			let count = annotations.length;
 			annotation.id = "id" + count;
 			annotation.title = count + " (Page " + (pageNumber + 1) + ")";
-			ctx.currentAnnotations.push(annotation);
-			ctx.currentDoc.setAnnotations(ctx.currentAnnotations);
-			ctx.view.addAnnotation(annotation);
+			annotations.push(annotation);
+			ctx.currentDoc.setAnnotations(annotations);
+			let annotationLocal = {
+				boundingBox: {
+					x: annotation.rect.x0 - ctx.currentPageRect.x,
+					y: annotation.rect.y0 - ctx.currentPageRect.y,
+					width: annotation.rect.x1 - annotation.rect.x0,
+					height: annotation.rect.y1 - annotation.rect.y0,
+				}
+			};
+			ctx.view.addAnnotation(annotationLocal);
 		} // on annotation created
 	}
 };
