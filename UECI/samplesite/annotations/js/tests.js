@@ -184,9 +184,9 @@ tester.addTest('Document.pagesInfo.pageBoxes', async ()=>{
 });
 
 tester.addTest('Document.setAnnotations', async ()=>{
-	const rectInput = {x: 10, y:20, width:100, height:50};
+	const rectInput = {x0: 10, y0: 20, x1: 110, y1: 70};
 	const rgbInput = { r: 64, g: 64, b:32};
-	const annotsInput = [ {id: 'ID001', title:'TITLE_001',  boundingBox: rectInput, highlightColor:rgbInput} ];
+	const annotsInput = [ {id: 'ID001', title:'TITLE_001', type: "Rectangle", rect: rectInput, highlightColor: rgbInput} ];
 	try{
 		
 		let doc = await editor.currentDocument();	
@@ -198,9 +198,9 @@ tester.addTest('Document.setAnnotations', async ()=>{
 });
 
 tester.addTest('Document.getAnnotations', async ()=>{
-	const rectInput = {x: 10, y:20, width:100, height:50};
+	const rectInput = {x0: 10, y0: 20, x1: 110, y1: 70};
 	const rgbInput = { r: 64, g: 64, b:32};
-	const annotsInput = [ {id: 'ID001', title:'TITLE_001',  boundingBox: rectInput, highlightColor:rgbInput} ];
+	const annotsInput = [ {id: 'ID001', title:'TITLE_001', type: "Rectangle", rect: rectInput, highlightColor: rgbInput} ];
 	let annotsOutput = [];
 	try{
 		let doc = await editor.currentDocument();	
@@ -212,16 +212,16 @@ tester.addTest('Document.getAnnotations', async ()=>{
 
 	ASSERT(()=>{TRUE( annotsInput.length == annotsOutput.length );}, 'nums of annotations matches');
 	
-	let rectOutput = annotsOutput[0].boundingBox;
+	let rectOutput = annotsOutput[0].rect;
 	let rgbOutput = annotsOutput[0].highlightColor;
 	
-	let boundingBoxEqual = (a, b)=>{
-		return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+	let rectEqual = (a, b)=>{
+		return a.x0 === b.x0 && a.y0 === b.y0 && a.x1 === b.x1 && a.y1 === b.y1;
 	};
 	let rgbEqual = (a, b)=>{
 		return a.r === b.r && a.g === b.g && a.b === b.b;
 	};
-	ASSERT(()=>{TRUE( boundingBoxEqual(rectInput, rectOutput) );}, 'boundingBox matches');
+	ASSERT(()=>{TRUE( rectEqual(rectInput, rectOutput) );}, 'rect matches');
 	ASSERT(()=>{TRUE( rgbEqual(rgbInput, rgbOutput) );}, 'rgb matches');
 });
 
@@ -289,9 +289,9 @@ tester.addTest('Document.getClusterNodeID', async ()=>{
 tester.addTest('Annotation.title', async ()=>{
 	const idIn = "ID_001";
 	const titleIn = "TITLE_002";
-	const rect = { x: 0, y: 0, width: 100, height: 100 };
+	const rect = { x0: 0, y0: 0, x1: 100, y1: 100 };
 	const rgb = { r: 255, g: 0, b: 0 };
-	const annotsIn = [{ id: idIn, title: titleIn, boundingBox: rect, highlightColor: rgb }];
+	const annotsIn = [{ id: idIn, title: titleIn, type: "Rectangle", rect: rect, highlightColor: rgb }];
 	let annotsOut = [];
 	try{
 		let doc = await editor.currentDocument();	
