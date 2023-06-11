@@ -110,7 +110,7 @@ function LoadFont(fontFile)
 	let gi = MakeGIWrapper(fontFile, 0);
 	let render = new GlyphRender(gi);
 	gRender = render;
-	render.setGridSize(96.0);
+	render.setGridSize(128.0);
 	
 	//Font Info	
 	const short_info = `${gi.faceInfo().postscriptName} of ${fontFile}.`;
@@ -210,14 +210,33 @@ function InitGlyphEvents()
 		let spans_str = '<span>SPANS_STR</span>';
 		div.html(spans_str + '<pre style="font-family:Nova Mono; font-size:12;">' + ginfo_str + '</pre>');
 		let elems = gRender.glyphElements();
-		const glyph_size = 256.0;
-		const frame_size = 1.6 * 256.0;
+		const ascender = gRender._font_props.ascender / gRender._font_props.units_per_EM;
+		const glyph_size = 192.0;
+		const frame_size = 1.6 * glyph_size;
 		const left_margin = 0.3 * glyph_size;
-		const baseline = 0.3 * glyph_size;
+		const glyph_info = gRender._glyph_infos[gid];
+		const glyph_adv = glyph_info.advanceX;
+		const fence_right = left_margin + glyph_adv * glyph_size;
+		const baseline = glyph_size - 0.0 * glyph_size;
+		const fence_top = baseline - (ascender* glyph_size);
 		const w_h = 'width=' + frame_size + ' height=' + frame_size;
 		let svg = gRender.glyphSVG(gid, glyph_size);
-		let svg_str = '<svg ' + w_h + '><path transform="translate(' + left_margin + ', ' + (glyph_size -baseline) + ')" d="' + svg + '" fill="black" stroke="black" stroke-width="0"/>';
-		let span_str = '<p><span>' + svg_str + '</span></p>';
+		const text_x = left_margin;
+		let text_y = baseline;
+		const line_height = glyph_size * 0.05;
+		text_y += line_height;
+		let svg_str = '<svg class=my_glyph ' + w_h + '>' 
+			+ `<rect x=0 y=0 width=${frame_size} height=${frame_size} fill=#EFEFEF stroke=#DFDFDF stroke-width=2/>` 
+			+ `<line x1=0 y1=${baseline} x2=${frame_size} y2=${baseline} stroke=grey stroke-width=1></line>`
+			+ `<line x1=${left_margin} y1=${baseline} x2=${left_margin} y2=${fence_top} stroke=grey stroke-width=1></line>`
+			+ `<line x1=${fence_right} y1=${baseline} x2=${fence_right} y2=${fence_top} stroke=grey stroke-width=1></line>`
+			+ `<path transform="translate(${left_margin} , ${baseline})" d="${svg}" fill="black" stroke="black" stroke-width="0"/>`
+			//+ `<text class="svg_text" x=${text_x} y=${text_y}>AAAA</text>`
+			+ '';
+		const detail_json = JSON.stringify(glyph_info, null, 4);
+		let span_str = '<p><span>' + svg_str + '</span></p>'
+			+ `<p><pre>${detail_json}</pre></p>`
+		;
 
 		div.html(span_str);
 		div.dialog({

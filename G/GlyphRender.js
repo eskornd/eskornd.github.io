@@ -43,7 +43,7 @@ export class GlyphRender
 		const class_name = 'my_glyph';
 		this._elem_prefix = '';
 		this._elem_prefix += `<span>`;
-		this._elem_prefix += `<svg class=\'${class_name}\' gid=THE_GID width=${grid_size} height=${grid_size} >`;
+		this._elem_prefix += `<svg class=\'${class_name}\' gid=THE_GID width=${grid_size} height=${grid_size}>`;
 		this._elem_suffix = '';
 
 		this._fence_attr = ' stroke=#E0E0E0 stroke-width=1.5 ';
@@ -54,17 +54,19 @@ export class GlyphRender
 		this._elem_suffix += `<line x1=${shift_x} y1=${this._fence_y1} x2=${shift_x} y2=${this._fence_y2} ${this._fence_attr} />`;
 		this._elem_suffix += '</svg>';
 		this._elem_suffix += '</span>';
-		const text_size = 12.0;
+		const text_size = 0.05 * grid_size;
+		const font_size_attr = '';
+
 		const text_x = 0.25 * double_margin;
-		const line_height = 1.2 * text_size;
+		const line_height = 2.0 * text_size;
 		let text_y = baseline_y ;
 		text_y += line_height;
 		text_y += line_height;
-		this._gid_prefix = `<text class="svg_text" x=${text_x} y=${text_y}>`
+		this._gid_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr}>`
 		text_y += line_height;
-		this._glyph_name_prefix = `<text class="svg_text" x=${text_x} y=${text_y}>`
+		this._glyph_name_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr}>`
 		text_y += line_height;
-		this._unicode_prefix = `<text class="svg_text" x=${text_x} y=${text_y}>`
+		this._unicode_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr}>`
 		this._gid_suffix = '</text>';
 		this._glyph_name_suffix = '</text>';
 		this._unicode_suffix = '</text>';
