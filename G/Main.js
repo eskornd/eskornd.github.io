@@ -132,7 +132,9 @@ function LoadFont(fontFile)
 		const elem = elems[i];
 		glyphs_div.append(elem);
 	}
-		
+	setTimeout(()=>{
+		InitGlyphEvents();	
+	}, 0);
 }
 
 function mountFile(fileObject, onFileMounted)
@@ -257,7 +259,6 @@ async function main()
 	
 	//events
 	InitDropZoneEvents();
-	InitGlyphEvents();	
 }
 
 $(()=>{
