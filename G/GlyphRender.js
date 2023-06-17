@@ -25,18 +25,19 @@ export class GlyphRender
 		const ratio = 0.5;
 		const glyph_size = grid_size * ratio;
 		this._glyph_size = glyph_size;
-		const double_margin = grid_size * (1 - ratio);
-		const shift_x = 0.6 * double_margin;
-		const shift_y = 0.9 * double_margin;
-		const baseline_y = grid_size - shift_y;
+
+		let pen_y = 0.5 * grid_size + 0.5*(this._font_props.ascender/this._font_props.units_per_EM * glyph_size);
+		pen_y += -(0.1*grid_size);
+		const baseline_y = pen_y;
+		const ascender_y = baseline_y - (this._font_props.ascender/this._font_props.units_per_EM * glyph_size);
 		// to view matrix
 		// gi.svg_d is 0,0 based right-down positive
 		const a = glyph_size;
 		const b = 0;
 		const c = 0;
 		const d = glyph_size;
-		const tx = 0 + shift_x;
-		const ty = -grid_size + shift_y;
+		const tx = 0;
+		const ty = -pen_y;
 		this._matrix=[a, b, c, d, tx, ty];
 
 		// update element template
@@ -46,27 +47,28 @@ export class GlyphRender
 		this._elem_prefix += `<svg class=\'${class_name}\' gid=THE_GID width=${grid_size} height=${grid_size}>`;
 		this._elem_suffix = '';
 
-		this._fence_attr = ' stroke=#E0E0E0 stroke-width=1.5 ';
-		this._fence_x1 = shift_x;
-		this._fence_y1 = baseline_y;
-		this._fence_y2 = baseline_y - (this._font_props.ascender/this._font_props.units_per_EM) * glyph_size;
-		this._elem_suffix += `<line x1=0 y1=${baseline_y} x2=${grid_size} y2=${baseline_y} ${this._fence_attr} />`;
-		this._elem_suffix += `<line x1=${shift_x} y1=${this._fence_y1} x2=${shift_x} y2=${this._fence_y2} ${this._fence_attr} />`;
+		this._line_attr = ' stroke=#E0E0E0 stroke-width=1 ';
+		this._text_attr = ' fill=#5F5F5F ';
+		this._pen_attr = ' stroke=#C0C0C0 stroke-width=1.5 ';
+		this._fence_y1 = pen_y;
+		this._fence_y2 = pen_y + (0.1 * glyph_size);
+		this._elem_suffix += `<line x1=0 y1=${baseline_y} x2=${grid_size} y2=${baseline_y} ${this._line_attr} />`;
+		this._elem_suffix += `<line x1=0 y1=${ascender_y} x2=${grid_size} y2=${ascender_y} ${this._line_attr} />`;
 		this._elem_suffix += '</svg>';
 		this._elem_suffix += '</span>';
-		const text_size = 0.05 * grid_size;
+		const text_size = 0.075 * glyph_size;
 		const font_size_attr = '';
 
-		const text_x = 0.25 * double_margin;
+		const text_x = 0.1 * glyph_size;
 		const line_height = 2.0 * text_size;
 		let text_y = baseline_y ;
+		text_y += 2*line_height;
+		const text_attr = this._text_attr;
+		this._gid_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr} ${text_attr}>`;
 		text_y += line_height;
+		this._glyph_name_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr} ${text_attr}>`;
 		text_y += line_height;
-		this._gid_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr}>`
-		text_y += line_height;
-		this._glyph_name_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr}>`
-		text_y += line_height;
-		this._unicode_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr}>`
+		this._unicode_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr} ${text_attr}>`;
 		this._gid_suffix = '</text>';
 		this._glyph_name_suffix = '</text>';
 		this._unicode_suffix = '</text>';
@@ -74,17 +76,54 @@ export class GlyphRender
 
 	toElement(gid, grid_size, path_d)
 	{
-		const glyph_info = this._glyph_infos[gid];
-		let elem = this._elem_prefix;
-		elem = elem.replaceAll('THE_GID', gid);
-		elem += `${this._gid_prefix}GID: ${gid}${this._gid_suffix}`;
-		elem += `${this._glyph_name_prefix}Name: ${glyph_info.name}${this._glyph_name_suffix}`;
-		elem += `${this._unicode_prefix}Unicode: ${glyph_info.unicodeLiteral}${this._unicode_suffix}`;
-		elem += `<path d="${path_d}" />`;
-		const right_fence_x = this._fence_x1 + glyph_info.advanceX * this._glyph_size; 
-		elem += `<line x1=${right_fence_x} y1=${this._fence_y1} x2=${right_fence_x} y2=${this._fence_y2} ${this._fence_attr} />`;
-		elem += this._elem_suffix;
-		return elem;
+		return this.drawSVG(gid, this._gi, this._grid_size, this._glyph_size, this._font_props, this._glyph_infos[gid]);
+
+	}
+
+	drawSVG(gid, gi, grid_size, glyph_size, font_props, glyph_info)
+	{
+
+		const pen_x =  0.5 * ( grid_size - (glyph_info.advanceX * glyph_size) ); 
+		const pen_adv_x =  pen_x + (glyph_info.advanceX * glyph_size) ; 
+		//const pen_y = 0.5 * grid_size + 0.5*(font_props.ascender/font_props.units_per_EM * glyph_size);
+		const pen_y = 0.5 * grid_size + 0.5*((font_props.ascender + font_props.descender)/font_props.units_per_EM * glyph_size);
+		const ascender_y = pen_y - (font_props.ascender/font_props.units_per_EM * glyph_size);
+		const descender_y = pen_y - (font_props.descender/font_props.units_per_EM * glyph_size);
+		const mx = [glyph_size, 0, 0, glyph_size, pen_x, -pen_y];
+		const path_d = gi.svg_d(gid, mx);
+		const prefix = `<svg class=my_glyph gid=${gid} width=${grid_size} height=${grid_size}>`;	
+		const path = `<path d="${path_d}" />`;
+		// lines
+		const line_attr = ' stroke=#EFEFEF stroke-width=1 ';
+		const pen_attr = ' stroke-linecap=round stroke=#BFBFBF stroke-width=1.5 ';
+		const baseline = `<line x1=${0} y1=${pen_y} x2=${grid_size} y2=${pen_y} ${line_attr} />`;
+		const ascender_line = `<line x1=${0} y1=${ascender_y} x2=${grid_size} y2=${ascender_y} ${line_attr} />`;
+		const descender_line = `<line x1=${0} y1=${descender_y} x2=${grid_size} y2=${descender_y} ${line_attr} />`;
+		// Pen
+		const pen_y1 = pen_y +20;
+		const pen_len = 0.1 * glyph_size;
+		let pen = '';
+		pen += `<line x1=${pen_x} y1=${pen_y} x2=${pen_x} y2=${pen_y + pen_len} ${pen_attr} />`;
+		pen += `<line x1=${pen_x} y1=${pen_y} x2=${pen_x - pen_len} y2=${pen_y} ${pen_attr} />`;
+		pen += `<line x1=${pen_adv_x} y1=${pen_y} x2=${pen_adv_x} y2=${pen_y + pen_len} ${pen_attr} />`;
+		pen += `<line x1=${pen_adv_x} y1=${pen_y} x2=${pen_adv_x + pen_len} y2=${pen_y} ${pen_attr} />`;
+		pen += `<text x=${pen_adv_x} y=${pen_y + (2*pen_len)} style="fill:#7F7F7F; font-size: 0.5em;">${glyph_info.advanceX}</text>`;
+		const lines = baseline + ascender_line + descender_line;
+		// Info
+		let info_attr=' style="fill:#7F7F7F; font-size: 0.5em;" ';
+		const line_height = grid_size * 0.06;
+		const info_margin = 0.5 * line_height;
+		const info_x = info_margin;
+		let info_y = grid_size - info_margin;
+		let info = '';
+		info += `<text x=${info_x} y=${info_y} ${info_attr} >Unicode: ${glyph_info.unicodeLiteral}</text>`
+		info_y -= line_height;
+		info += `<text x=${info_x} y=${info_y} ${info_attr} >Name: ${glyph_info.name}</text>`
+		info_y -= line_height;
+		info += `<text x=${info_x} y=${info_y} ${info_attr} >GID:${gid}</text>`
+		const suffix = `</svg>`;
+
+		return prefix + path + lines + pen + info + suffix;
 	}
 
 	loadGlyphs()
@@ -98,10 +137,15 @@ export class GlyphRender
 		this._num_loaded = 0;
 		this._path_ds = new Array(num_glyphs);
 		this._glyph_infos = new Array(num_glyphs);
+		console.log('### grid size: ' + this._grid_size);
+		console.log('### glyph size: ' + this._glyph_size);
 		for ( let gid=0; gid<num_glyphs; ++gid)
 		{
-			this._path_ds[gid] = gi.svg_d(gid, this._matrix);	
-			this._glyph_infos[gid] = gi.glyphInfo(gid);
+			const glyph_info = gi.glyphInfo(gid);
+			this._glyph_infos[gid] = glyph_info;
+			let mx = this._matrix;
+			mx[4] = 0.5 * ( this._grid_size - (glyph_info.advanceX * this._glyph_size) );
+			this._path_ds[gid] = gi.svg_d(gid, mx);	
 			++this._num_loaded;
 		}
 		console.assert(this._num_loaded == num_glyphs);

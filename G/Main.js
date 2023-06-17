@@ -212,28 +212,29 @@ function InitGlyphEvents()
 		let elems = gRender.glyphElements();
 		const ascender = gRender._font_props.ascender / gRender._font_props.units_per_EM;
 		const glyph_size = 192.0;
-		const frame_size = 1.6 * glyph_size;
-		const left_margin = 0.3 * glyph_size;
+		const grid_size = 1.6 * glyph_size;
 		const glyph_info = gRender._glyph_infos[gid];
 		const glyph_adv = glyph_info.advanceX;
-		const fence_right = left_margin + glyph_adv * glyph_size;
+		const pen_x = 0.5 * (grid_size - (glyph_adv * glyph_size));
+		const pen_adv_x = pen_x + glyph_adv * glyph_size;
 		const baseline = glyph_size - 0.0 * glyph_size;
 		const fence_top = baseline - (ascender* glyph_size);
-		const w_h = 'width=' + frame_size + ' height=' + frame_size;
+		const w_h = 'width=' + grid_size + ' height=' + grid_size;
 		let svg = gRender.glyphSVG(gid, glyph_size);
-		const text_x = left_margin;
+		const text_x = pen_x;
 		let text_y = baseline;
 		const line_height = glyph_size * 0.05;
 		text_y += line_height;
 		let svg_str = '<svg class=my_glyph ' + w_h + '>' 
-			+ `<rect x=0 y=0 width=${frame_size} height=${frame_size} fill=#EFEFEF stroke=#DFDFDF stroke-width=2/>` 
-			+ `<line x1=0 y1=${baseline} x2=${frame_size} y2=${baseline} stroke=grey stroke-width=1></line>`
-			+ `<line x1=${left_margin} y1=${baseline} x2=${left_margin} y2=${fence_top} stroke=grey stroke-width=1></line>`
-			+ `<line x1=${fence_right} y1=${baseline} x2=${fence_right} y2=${fence_top} stroke=grey stroke-width=1></line>`
-			+ `<path transform="translate(${left_margin} , ${baseline})" d="${svg}" fill="black" stroke="black" stroke-width="0"/>`
+			+ `<rect x=0 y=0 width=${grid_size} height=${grid_size} fill=#EFEFEF stroke=#DFDFDF stroke-width=2/>` 
+			+ `<line x1=0 y1=${baseline} x2=${grid_size} y2=${baseline} stroke=grey stroke-width=1></line>`
+			+ `<line x1=${pen_x} y1=${baseline} x2=${pen_x} y2=${fence_top} stroke=grey stroke-width=1></line>`
+			+ `<line x1=${pen_adv_x} y1=${baseline} x2=${pen_adv_x} y2=${fence_top} stroke=grey stroke-width=1></line>`
+			+ `<path transform="translate(${pen_x} , ${baseline})" d="${svg}" fill="black" stroke="black" stroke-width="0"/>`
 			//+ `<text class="svg_text" x=${text_x} y=${text_y}>AAAA</text>`
 			+ '';
 		const detail_json = JSON.stringify(glyph_info, null, 4);
+		svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
 		let span_str = '<p><span>' + svg_str + '</span></p>'
 			+ `<p><pre>${detail_json}</pre></p>`
 		;
