@@ -208,38 +208,10 @@ function InitGlyphEvents()
 	$('.my_glyph').on('click', (e)=>{
 		let gid = Number($(e.target).attr('gid'));
 		let div = $("#glyph_info");
-		const ginfo_str = '_GINFO_STR_';
-		let spans_str = '<span>SPANS_STR</span>';
-		div.html(spans_str + '<pre style="font-family:Nova Mono; font-size:12;">' + ginfo_str + '</pre>');
-		let elems = gRender.glyphElements();
-		const ascender = gRender._font_props.ascender / gRender._font_props.units_per_EM;
-		const glyph_size = 192.0;
-		const grid_size = 1.6 * glyph_size;
-		const glyph_info = gRender._glyph_infos[gid];
-		const glyph_adv = glyph_info.advanceX;
-		const pen_x = 0.5 * (grid_size - (glyph_adv * glyph_size));
-		const pen_adv_x = pen_x + glyph_adv * glyph_size;
-		const baseline = glyph_size - 0.0 * glyph_size;
-		const fence_top = baseline - (ascender* glyph_size);
-		const w_h = 'width=' + grid_size + ' height=' + grid_size;
-		let svg = gRender.glyphSVG(gid, glyph_size);
-		const text_x = pen_x;
-		let text_y = baseline;
-		const line_height = glyph_size * 0.05;
-		text_y += line_height;
-		let svg_str = '<svg class=my_glyph ' + w_h + '>' 
-			+ `<rect x=0 y=0 width=${grid_size} height=${grid_size} fill=#EFEFEF stroke=#DFDFDF stroke-width=2/>` 
-			+ `<line x1=0 y1=${baseline} x2=${grid_size} y2=${baseline} stroke=grey stroke-width=1></line>`
-			+ `<line x1=${pen_x} y1=${baseline} x2=${pen_x} y2=${fence_top} stroke=grey stroke-width=1></line>`
-			+ `<line x1=${pen_adv_x} y1=${baseline} x2=${pen_adv_x} y2=${fence_top} stroke=grey stroke-width=1></line>`
-			+ `<path transform="translate(${pen_x} , ${baseline})" d="${svg}" fill="black" stroke="black" stroke-width="0"/>`
-			//+ `<text class="svg_text" x=${text_x} y=${text_y}>AAAA</text>`
-			+ '';
+		let glyph_info = gRender._glyph_infos[gid];
 		const detail_json = JSON.stringify(glyph_info, null, 4);
-		svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
-		let span_str = '<p><span>' + svg_str + '</span></p>'
-			+ `<p><pre>${detail_json}</pre></p>`
-		;
+		const svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
+		let span_str = '<p><span>' + svg_str + '</span></p>' + `<p><pre>${detail_json}</pre></p>`;
 
 		div.html(span_str);
 		div.dialog({

@@ -94,23 +94,23 @@ export class GlyphRender
 		const prefix = `<svg class=my_glyph gid=${gid} width=${grid_size} height=${grid_size}>`;	
 		const path = `<path d="${path_d}" />`;
 		// lines
-		const line_attr = ' stroke=#EFEFEF stroke-width=1 ';
-		const pen_attr = ' stroke-linecap=round stroke=#BFBFBF stroke-width=1.5 ';
+		const line_attr = ' stroke=#EFEFEF stroke-width=1 stroke-opacity=0.75 ';
+		const pen_attr = ' stroke=#BFBFBF stroke-width=1.5 stroke-opacity=0.75 stroke-linecap=round ';
 		const baseline = `<line x1=${0} y1=${pen_y} x2=${grid_size} y2=${pen_y} ${line_attr} />`;
 		const ascender_line = `<line x1=${0} y1=${ascender_y} x2=${grid_size} y2=${ascender_y} ${line_attr} />`;
 		const descender_line = `<line x1=${0} y1=${descender_y} x2=${grid_size} y2=${descender_y} ${line_attr} />`;
 		// Pen
 		const pen_y1 = pen_y +20;
 		const pen_len = 0.1 * glyph_size;
+		let info_attr=' style="fill:#7F7F7F; font-size: 0.5em;" ';
 		let pen = '';
 		pen += `<line x1=${pen_x} y1=${pen_y} x2=${pen_x} y2=${pen_y + pen_len} ${pen_attr} />`;
 		pen += `<line x1=${pen_x} y1=${pen_y} x2=${pen_x - pen_len} y2=${pen_y} ${pen_attr} />`;
 		pen += `<line x1=${pen_adv_x} y1=${pen_y} x2=${pen_adv_x} y2=${pen_y + pen_len} ${pen_attr} />`;
 		pen += `<line x1=${pen_adv_x} y1=${pen_y} x2=${pen_adv_x + pen_len} y2=${pen_y} ${pen_attr} />`;
-		pen += `<text x=${pen_adv_x} y=${pen_y + (2*pen_len)} style="fill:#7F7F7F; font-size: 0.5em;">${glyph_info.advanceX}</text>`;
+		pen += `<text x=${pen_adv_x} y=${pen_y + (2*pen_len)} ${info_attr}>${glyph_info.advanceX}</text>`;
 		const lines = baseline + ascender_line + descender_line;
 		// Info
-		let info_attr=' style="fill:#7F7F7F; font-size: 0.5em;" ';
 		const line_height = grid_size * 0.06;
 		const info_margin = 0.5 * line_height;
 		const info_x = info_margin;
