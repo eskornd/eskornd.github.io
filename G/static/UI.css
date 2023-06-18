@@ -45,7 +45,7 @@ body {
 
 .detail_info {
     font-family: GLYPH_FIXED_FACE;
-	font-size: 0.6em;
+	font-size: 0.75em;
 }
 
 .wdn-text-hidden
@@ -160,3 +160,23 @@ body {
     border: none;
     font-family: GLYPH_BODYTEXT_FACE;
 }
+
+.grid-item1{
+	grid-area: a;
+}
+.grid-item2{
+	grid-area: b;
+}
+.grid-item3{
+	grid-area: c;
+}
+.grid-item4{
+	grid-area: d;
+}
+.grid-container {
+	display: grid;
+	grid-template-areas: 
+	"a a b"
+	"a a b"
+	"c d d";
+};

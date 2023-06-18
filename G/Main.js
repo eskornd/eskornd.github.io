@@ -223,20 +223,23 @@ function onGlyphClicked(gid)
 	const svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
 
 	let run_info = '';
+	run_info += 'Shaping:\n'
 	const text_runs = gRender._gi.deshape(gid);
 	for ( let i=0; i<text_runs.size(); ++i)
 	{
 		const run = text_runs.get(i);
-		run_info += `${run.unicodeString} ${run.otString} <br>`;
+		run_info += `\t${run.unicodeString} ${run.otString} \n`;
 	}
-	let span_str = `<p>${svg_str}</p>`;
-	span_str += `<p><span><pre class="detail_info">${detail_json}</pre><span class="detail_info">${run_info}</span></p>`;
 
-	div.html(span_str);
+	let div_group = `<div class="grid-container">
+		<div class="grid-item1">${svg_str}</div>
+		<div class="grid-item2"><pre class="detail_info">${detail_json}</pre></div>
+		<div class="grid-item3"><pre class="detail_info">${run_info}</pre></div></div>`;
+	div.html(div_group);
 	div.dialog({
 		modal: true,
-		width: 480,
-		height: 640,
+		width: 600,
+		height: 600,
 		buttons: { Ok: function() { $( this ).dialog( "close" );}}
 	});
 
