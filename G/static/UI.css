@@ -40,11 +40,12 @@ body {
 
 .info {
     font-family: GLYPH_FIXED_FACE;
-	font-size: 12pt;
+	font-size: 1.0em;
 }
 
-.info {
+.detail_info {
     font-family: GLYPH_FIXED_FACE;
+	font-size: 0.6em;
 }
 
 .wdn-text-hidden

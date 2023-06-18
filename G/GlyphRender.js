@@ -82,7 +82,11 @@ export class GlyphRender
 
 	drawSVG(gid, gi, grid_size, glyph_size, font_props, glyph_info)
 	{
-
+		if ( undefined == glyph_info || undefined == glyph_info.advanceX)
+		{
+			console.error('invalid glyph_info!!!');
+			return '';
+		}
 		const pen_x =  0.5 * ( grid_size - (glyph_info.advanceX * glyph_size) ); 
 		const pen_adv_x =  pen_x + (glyph_info.advanceX * glyph_size) ; 
 		//const pen_y = 0.5 * grid_size + 0.5*(font_props.ascender/font_props.units_per_EM * glyph_size);
@@ -91,7 +95,7 @@ export class GlyphRender
 		const descender_y = pen_y - (font_props.descender/font_props.units_per_EM * glyph_size);
 		const mx = [glyph_size, 0, 0, glyph_size, pen_x, -pen_y];
 		const path_d = gi.svg_d(gid, mx);
-		const prefix = `<svg class=my_glyph gid=${gid} width=${grid_size} height=${grid_size}>`;	
+		const prefix = `<svg onclick="onGlyphClicked(${gid});" class=my_glyph gid=${gid} width=${grid_size} height=${grid_size}>`;	
 		const path = `<path d="${path_d}" />`;
 		// lines
 		const line_attr = ' stroke=#EFEFEF stroke-width=1 stroke-opacity=0.75 ';

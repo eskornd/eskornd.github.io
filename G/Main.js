@@ -132,9 +132,6 @@ function LoadFont(fontFile)
 		const elem = elems[i];
 		glyphs_div.append(elem);
 	}
-	setTimeout(()=>{
-		InitGlyphEvents();	
-	}, 0);
 }
 
 function mountFile(fileObject, onFileMounted)
@@ -195,7 +192,7 @@ function InitDropZoneEvents()
 					LoadFont(fileName);
 				};
 
-				// clearUI();
+				clearUI();
 				// Async, when file mounted -> onFileMouted
 				mountFile(file, onFileMounted);
 			}
@@ -203,25 +200,6 @@ function InitDropZoneEvents()
 		});
 }
 
-function InitGlyphEvents()
-{
-	$('.my_glyph').on('click', (e)=>{
-		let gid = Number($(e.target).attr('gid'));
-		let div = $("#glyph_info");
-		let glyph_info = gRender._glyph_infos[gid];
-		const detail_json = JSON.stringify(glyph_info, null, 4);
-		const svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
-		let span_str = '<p><span>' + svg_str + '</span></p>' + `<p><pre>${detail_json}</pre></p>`;
-
-		div.html(span_str);
-		div.dialog({
-				   modal: true,
-				   width: 480,
-				   height: 640,
-				   buttons: { Ok: function() { $( this ).dialog( "close" );}}
-				   });
-	});
-}
 async function main()
 {
 	gGlyphModule = await LoadModule();
@@ -231,8 +209,44 @@ async function main()
 	
 	//events
 	InitDropZoneEvents();
+
+	window.onGlyphClicked = onGlyphClicked;
 }
 
+function onGlyphClicked(gid)
+{
+	let div = $("#glyph_info");
+	console.log(`clicking glyph ${gid}`);
+	let glyph_info = gRender._glyph_infos[gid];
+	const detail_json = JSON.stringify(glyph_info, null, 4);
+	console.log(detail_json);
+	const svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
+
+	let run_info = '';
+	const text_runs = gRender._gi.deshape(gid);
+	for ( let i=0; i<text_runs.size(); ++i)
+	{
+		const run = text_runs.get(i);
+		run_info += `${run.unicodeString} ${run.otString} <br>`;
+	}
+	let span_str = `<p>${svg_str}</p>`;
+	span_str += `<p><span><pre class="detail_info">${detail_json}</pre><span class="detail_info">${run_info}</span></p>`;
+
+	div.html(span_str);
+	div.dialog({
+		modal: true,
+		width: 480,
+		height: 640,
+		buttons: { Ok: function() { $( this ).dialog( "close" );}}
+	});
+
+}
+
+function clearUI()
+{
+    $('#all_glyphs').html('');
+}
+ 
 $(()=>{
 	main();
 });
