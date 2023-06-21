@@ -82,11 +82,6 @@ export class GlyphRender
 
 	drawSVG(gid, gi, grid_size, glyph_size, font_props, glyph_info)
 	{
-		if ( undefined == glyph_info || undefined == glyph_info.advanceX)
-		{
-			console.error('invalid glyph_info!!!');
-			return '';
-		}
 		const pen_x =  0.5 * ( grid_size - (glyph_info.advanceX * glyph_size) ); 
 		const pen_adv_x =  pen_x + (glyph_info.advanceX * glyph_size) ; 
 		//const pen_y = 0.5 * grid_size + 0.5*(font_props.ascender/font_props.units_per_EM * glyph_size);
@@ -95,7 +90,7 @@ export class GlyphRender
 		const descender_y = pen_y - (font_props.descender/font_props.units_per_EM * glyph_size);
 		const mx = [glyph_size, 0, 0, glyph_size, pen_x, -pen_y];
 		const path_d = gi.svg_d(gid, mx);
-		const prefix = `<svg onclick="onGlyphClicked(${gid});" class=my_glyph gid=${gid} width=${grid_size} height=${grid_size}>`;	
+		const prefix = `<svg onclick="onGlyphClicked(${gid});" class=my_glyph gid=${gid} width=${grid_size} height=${grid_size}>`;
 		const path = `<path d="${path_d}" />`;
 		// lines
 		const line_attr = ' stroke=#EFEFEF stroke-width=1 stroke-opacity=0.75 ';
@@ -106,7 +101,8 @@ export class GlyphRender
 		// Pen
 		const pen_y1 = pen_y +20;
 		const pen_len = 0.1 * glyph_size;
-		let info_attr=' style="fill:#7F7F7F; font-size: 0.5em;" ';
+		const info_em_size = 0.7; //em
+		let info_attr=` style="fill:#7F7F7F; font-size: ${info_em_size}em;" `;
 		let pen = '';
 		pen += `<line x1=${pen_x} y1=${pen_y} x2=${pen_x} y2=${pen_y + pen_len} ${pen_attr} />`;
 		pen += `<line x1=${pen_x} y1=${pen_y} x2=${pen_x - pen_len} y2=${pen_y} ${pen_attr} />`;
@@ -115,16 +111,16 @@ export class GlyphRender
 		pen += `<text x=${pen_adv_x} y=${pen_y + (2*pen_len)} ${info_attr}>${glyph_info.advanceX}</text>`;
 		const lines = baseline + ascender_line + descender_line;
 		// Info
-		const line_height = grid_size * 0.06;
+		const line_height = grid_size * 0.12 * info_em_size;
 		const info_margin = 0.5 * line_height;
 		const info_x = info_margin;
 		let info_y = grid_size - info_margin;
 		let info = '';
-		info += `<text x=${info_x} y=${info_y} ${info_attr} >Unicode: ${glyph_info.unicodeLiteral}</text>`
+		info += `<text x=${info_x} y=${info_y} ${info_attr} >${glyph_info.unicodeLiteral}</text>`
 		info_y -= line_height;
-		info += `<text x=${info_x} y=${info_y} ${info_attr} >Name: ${glyph_info.name}</text>`
+		info += `<text x=${info_x} y=${info_y} ${info_attr} >${glyph_info.name}</text>`
 		info_y -= line_height;
-		info += `<text x=${info_x} y=${info_y} ${info_attr} >GID:${gid}</text>`
+		info += `<text x=${info_x} y=${info_y} ${info_attr} >#${gid}</text>`
 		const suffix = `</svg>`;
 
 		return prefix + path + lines + pen + info + suffix;

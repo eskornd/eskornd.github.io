@@ -210,6 +210,7 @@ async function main()
 	//events
 	InitDropZoneEvents();
 
+	// export as global function
 	window.onGlyphClicked = onGlyphClicked;
 }
 
@@ -247,7 +248,7 @@ function onGlyphClicked(gid)
 
 function clearUI()
 {
-    $('#all_glyphs').html('');
+	$('#all_glyphs').html('');
 }
  
 $(()=>{
