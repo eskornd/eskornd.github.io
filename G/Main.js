@@ -229,7 +229,8 @@ function onGlyphClicked(gid)
 	for ( let i=0; i<text_runs.size(); ++i)
 	{
 		const run = text_runs.get(i);
-		run_info += `\t${run.unicodeString} ${run.otString} \n`;
+		const contextual = run.isContextual ? `<abbr title="Contextual Substitution">(*)</abbr>` : '';
+		run_info += `\t${run.unicodeString} ${run.otString} ${contextual}\n`;
 	}
 
 	let div_group = `<div class="grid-container">

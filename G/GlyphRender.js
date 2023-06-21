@@ -22,56 +22,8 @@ export class GlyphRender
 	setGridSize(grid_size)
 	{
 		this._grid_size = grid_size;
-		const ratio = 0.5;
-		const glyph_size = grid_size * ratio;
-		this._glyph_size = glyph_size;
+		this._glyph_size = grid_size * 0.5;
 
-		let pen_y = 0.5 * grid_size + 0.5*(this._font_props.ascender/this._font_props.units_per_EM * glyph_size);
-		pen_y += -(0.1*grid_size);
-		const baseline_y = pen_y;
-		const ascender_y = baseline_y - (this._font_props.ascender/this._font_props.units_per_EM * glyph_size);
-		// to view matrix
-		// gi.svg_d is 0,0 based right-down positive
-		const a = glyph_size;
-		const b = 0;
-		const c = 0;
-		const d = glyph_size;
-		const tx = 0;
-		const ty = -pen_y;
-		this._matrix=[a, b, c, d, tx, ty];
-
-		// update element template
-		const class_name = 'my_glyph';
-		this._elem_prefix = '';
-		this._elem_prefix += `<span>`;
-		this._elem_prefix += `<svg class=\'${class_name}\' gid=THE_GID width=${grid_size} height=${grid_size}>`;
-		this._elem_suffix = '';
-
-		this._line_attr = ' stroke=#E0E0E0 stroke-width=1 ';
-		this._text_attr = ' fill=#5F5F5F ';
-		this._pen_attr = ' stroke=#C0C0C0 stroke-width=1.5 ';
-		this._fence_y1 = pen_y;
-		this._fence_y2 = pen_y + (0.1 * glyph_size);
-		this._elem_suffix += `<line x1=0 y1=${baseline_y} x2=${grid_size} y2=${baseline_y} ${this._line_attr} />`;
-		this._elem_suffix += `<line x1=0 y1=${ascender_y} x2=${grid_size} y2=${ascender_y} ${this._line_attr} />`;
-		this._elem_suffix += '</svg>';
-		this._elem_suffix += '</span>';
-		const text_size = 0.075 * glyph_size;
-		const font_size_attr = '';
-
-		const text_x = 0.1 * glyph_size;
-		const line_height = 2.0 * text_size;
-		let text_y = baseline_y ;
-		text_y += 2*line_height;
-		const text_attr = this._text_attr;
-		this._gid_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr} ${text_attr}>`;
-		text_y += line_height;
-		this._glyph_name_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr} ${text_attr}>`;
-		text_y += line_height;
-		this._unicode_prefix = `<text class="svg_text" x=${text_x} y=${text_y} ${font_size_attr} ${text_attr}>`;
-		this._gid_suffix = '</text>';
-		this._glyph_name_suffix = '</text>';
-		this._unicode_suffix = '</text>';
 	}
 
 	toElement(gid, grid_size, path_d)
@@ -111,7 +63,7 @@ export class GlyphRender
 		pen += `<text x=${pen_adv_x} y=${pen_y + (2*pen_len)} ${info_attr}>${glyph_info.advanceX}</text>`;
 		const lines = baseline + ascender_line + descender_line;
 		// Info
-		const line_height = grid_size * 0.12 * info_em_size;
+		const line_height = (grid_size * 0.1) * 1.2 * info_em_size;
 		const info_margin = 0.5 * line_height;
 		const info_x = info_margin;
 		let info_y = grid_size - info_margin;
@@ -143,9 +95,9 @@ export class GlyphRender
 		{
 			const glyph_info = gi.glyphInfo(gid);
 			this._glyph_infos[gid] = glyph_info;
-			let mx = this._matrix;
-			mx[4] = 0.5 * ( this._grid_size - (glyph_info.advanceX * this._glyph_size) );
-			this._path_ds[gid] = gi.svg_d(gid, mx);	
+			// let mx = this._matrix;
+			// mx[4] = 0.5 * ( this._grid_size - (glyph_info.advanceX * this._glyph_size) );
+			// this._path_ds[gid] = gi.svg_d(gid, mx);	
 			++this._num_loaded;
 		}
 		console.assert(this._num_loaded == num_glyphs);
