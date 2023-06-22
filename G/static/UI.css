@@ -130,7 +130,6 @@ body {
 }
 
 .my_glyph {
-    
     border: 0.2em solid #F0F0F0;
     border-radius: 5px;
     margin: 0.25em;
@@ -141,6 +140,9 @@ body {
 .my_glyph:hover {
     border: 2 px solid #C0C0C0;
     background-color: #D5D5D5;
+}
+
+.clickable:hover {
     cursor: pointer;
 }
 

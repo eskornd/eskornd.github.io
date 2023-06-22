@@ -221,7 +221,7 @@ function onGlyphClicked(gid)
 	let glyph_info = gRender._glyph_infos[gid];
 	const detail_json = JSON.stringify(glyph_info, null, 4);
 	console.log(detail_json);
-	const svg_str = gRender.drawSVG(gid, gRender._gi, 300, 192, gRender._font_props, gRender._glyph_infos[gid]);
+	const svg_str = gRender.drawSVG(gid, 300, 192);
 
 	let run_info = '';
 	run_info += 'Shaping:\n'
@@ -244,20 +244,38 @@ function onGlyphClicked(gid)
 
 	const SubstToString = (subst) => 
 	{
-		const from = JSON.stringify(VectorToArray(subst.from));
-		const to = JSON.stringify(VectorToArray(subst.to));
-		let str = `${from} -> ${to} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
+		const from_gids = VectorToArray(subst.from);
+		const to_gids = VectorToArray(subst.to);
+		let from = JSON.stringify(from_gids);
+		let to = JSON.stringify(to_gids);
+		let to_diagram = '';
+		let from_diagram ='';
+		const diagram_size = 36;
+		for ( let i = 0; i<from_gids.length; ++i)
+		{
+			let svg = gRender.drawSVG(from_gids[i], diagram_size, diagram_size * 0.75, { draw_line: false, draw_info:false, title: `#${from_gids[i]}`, draw_gid : true});
+			from_diagram += svg;
+		}
+
+		for ( let i = 0; i<to_gids.length; ++i)
+		{
+			let svg = gRender.drawSVG(to_gids[i], diagram_size, diagram_size * 0.75, { draw_line: false, draw_info:false, title: `#${to_gids[i]}`, draw_gid : true});
+			to_diagram += svg;
+		}
+
+		//let str = `${from}->${to} ${from_diagram}->${to_diagram} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
+		let str = `${from_diagram} -> ${to_diagram} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
 		return str;
 	};
 
-	let substitution_info = `Substitution:\n`;
+	let substitution_info = `Substitutions:\n`;
 	const substs = gRender._gi.findSubstitutions(gid);
 	for ( let i=0; i<substs.size(); ++i )
 	{
 		const subst = substs.get(i);
 		if ( i>0 )
 			substitution_info += '\n';
-		substitution_info += '\t' + SubstToString(subst);
+		substitution_info += SubstToString(subst);
 	}
 
 	let div_group = `<div class="grid-container">
