@@ -233,10 +233,38 @@ function onGlyphClicked(gid)
 		run_info += `\t${run.unicodeString} ${run.otString} ${contextual}\n`;
 	}
 
+	const VectorToArray = (v) => {
+		let arr = [];
+		for ( let i=0; i<v.size(); ++i)
+		{
+			arr.push(v.get(i));
+		}
+		return arr;
+	};
+
+	const SubstToString = (subst) => 
+	{
+		const from = JSON.stringify(VectorToArray(subst.from));
+		const to = JSON.stringify(VectorToArray(subst.to));
+		let str = `${from} -> ${to} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
+		return str;
+	};
+
+	let substitution_info = `Substitution:\n`;
+	const substs = gRender._gi.findSubstitutions(gid);
+	for ( let i=0; i<substs.size(); ++i )
+	{
+		const subst = substs.get(i);
+		if ( i>0 )
+			substitution_info += '\n';
+		substitution_info += '\t' + SubstToString(subst);
+	}
+
 	let div_group = `<div class="grid-container">
 		<div class="grid-item1">${svg_str}</div>
 		<div class="grid-item2"><pre class="detail_info">${detail_json}</pre></div>
-		<div class="grid-item3"><pre class="detail_info">${run_info}</pre></div></div>`;
+		<div class="grid-item3"><pre class="detail_info">${run_info}</pre></div></div>
+		<div class="grid-item4"><pre class="detail_info">${substitution_info}</pre></div></div>`;
 	div.html(div_group);
 	div.dialog({
 		modal: true,

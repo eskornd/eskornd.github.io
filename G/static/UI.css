@@ -178,5 +178,6 @@ body {
 	grid-template-areas: 
 	"a a b"
 	"a a b"
-	"c d d";
+	"c c c";
+	"d d d";
 };
