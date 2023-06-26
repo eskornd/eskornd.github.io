@@ -16,29 +16,6 @@ function ToLinkHtml(text, url)
     return str;
 }
 
-function validateGlyphModule(glyphModule)
-{
-	const fontFile = 'MacondoSwashCaps-Regular.ttf';
-	try{
-		console.log('GlyphModule Version: ', glyphModule.version());
-		let faces = glyphModule.GIWrapper.faces(fontFile);
-		for (let i = 0; i < faces.size(); i++) {
-			console.log('['+i+']', faces.get(i));
-		}
-		let gi = new glyphModule.GIWrapper();
-		let ret = gi.loadFace(fontFile, 0);
-		
-		let faceInfo = gi.faceInfo();
-		console.log('FaceInfo ' + JSON.stringify(faceInfo));
-
-	} catch (err) {
-		console.error(err);
-		return false;
-	}
-
-	return true;
-}
-
 async function LoadModule()
 {
 	console.log('LoadModule: initializing...');
@@ -105,9 +82,9 @@ function MakeGIWrapper(fontFile, index)
 	return isLoaded ? gi : undefined;
 }
 
-function LoadFont(fontFile)
+function InitFontFace(fontFile, faceIndex)
 {
-	let gi = MakeGIWrapper(fontFile, 0);
+	let gi = MakeGIWrapper(fontFile, faceIndex);
 	let render = new GlyphRender(gi);
 	gRender = render;
 	render.setGridSize(128.0);
@@ -132,6 +109,42 @@ function LoadFont(fontFile)
 		const elem = elems[i];
 		glyphs_div.append(elem);
 	}
+}
+
+function PickupFace(fontFile)
+{
+	var __face_index = 0;
+	let num_faces = 0;
+	let faces = [];
+	try {
+		faces = gGlyphModule.GIWrapper.faces(fontFile);
+		num_faces = faces.size();
+	} catch (err) {
+		alert('Unable to load font from: ' + fontFile + ' ' + JSON.stringify(err));
+	}
+	if (num_faces >1 )
+	{
+		let items = '';
+		for ( let i=0; i< num_faces; ++i)
+		{
+			items += `<div class="face_item" onclick="InitFontFace('${fontFile}', ${i});$('#choose_face_dialog').dialog('close');">${faces.get(i)}</div>`;
+		}
+		$('#face_list').html(items);
+		// no escape, no close button
+		$('#choose_face_dialog').dialog( {
+			closeOnEscape: false,
+			open: (ev, ui) => {
+				$(".ui-dialog-titlebar-close").hide();
+			}
+		});
+	} else {
+		InitFontFace(fontFile, __face_index);
+	}
+}
+
+function LoadFont(fontFile)
+{
+	PickupFace(fontFile, InitFontFace);	
 }
 
 function mountFile(fileObject, onFileMounted)
@@ -204,7 +217,6 @@ async function main()
 {
 	gGlyphModule = await LoadModule();
 	
-	//validateGlyphModule(gGlyphModule);	
 	LoadFont('MacondoSwashCaps-Regular.ttf');
 	
 	//events
@@ -212,6 +224,7 @@ async function main()
 
 	// export as global function
 	window.onGlyphClicked = onGlyphClicked;
+	window.InitFontFace = InitFontFace;
 }
 
 function onGlyphClicked(gid)

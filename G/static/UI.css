@@ -19,6 +19,7 @@
     font-style: normal;
 }
 
+
 body {
     font-size: 16 pt;
 	color: #444B53;
@@ -37,6 +38,9 @@ body {
     }
 }
 
+.hidden {
+	display: none;
+}
 
 .info {
     font-family: GLYPH_FIXED_FACE;
@@ -107,6 +111,13 @@ body {
 
 #dropped_filename {
     font-size: 150%;
+}
+
+.face_item {
+    cursor: pointer;
+	font-family: GLYPH_BODYTEXT_FACE;
+	font-size: 1.25em;
+	margin: 0.25em;
 }
 
 #font_collection {
