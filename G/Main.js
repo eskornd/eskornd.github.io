@@ -276,8 +276,7 @@ function onGlyphClicked(gid)
 			to_diagram += svg;
 		}
 
-		//let str = `${from}->${to} ${from_diagram}->${to_diagram} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
-		let str = `${from_diagram} -> ${to_diagram} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
+		let str = `${from_diagram}<span id="subst_item" title=""> -> </span>${to_diagram} ${subst.tagString} ${subst.lookupTypeString} Substitution from lookup#${subst.lookupIndex} ${subst.isContextual ? 'contextual' : ''}`;
 		return str;
 	};
 
@@ -301,7 +300,10 @@ function onGlyphClicked(gid)
 		modal: true,
 		width: 600,
 		height: 600,
-		buttons: { Ok: function() { $( this ).dialog( "close" );}}
+		buttons: { Ok: function() { $( this ).dialog( "close" );}},
+		open : (ev, ui) => { 
+			$( "#subst_item" ).tooltip({ content: 'TODO: subst context' });
+		}
 	});
 
 }
