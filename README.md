@@ -1,7 +1,5 @@
-# Welcome to the eskornd homepage 
-
 ## Tools
-* Inspect your font: [Glyph](https://eskornd.github.io/G)
+* [Glyph](https://eskornd.github.io/G)
 
-### UECI
+## UECI
 * [UECI SDK and API Reference](https://eskornd.github.io/UECI/)
