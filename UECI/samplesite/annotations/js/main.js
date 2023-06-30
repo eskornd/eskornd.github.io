@@ -28,6 +28,9 @@ async function initEskoConnector()
 			inEditor.onAnnotationCreated2 = async (annotation, params) => {
 				ctx.controller.onAnnotationCreated2(annotation, params);
 			};
+			inEditor.onAnnotationSelected = async (annotationID) => {
+				ctx.controller.onAnnotationSelected(annotationID);
+			};
 			inEditor.onDocumentPageNumberChanged = async () => {
 				ctx.controller.onDocumentPageNumberChanged();
 			};

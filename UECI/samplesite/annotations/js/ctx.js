@@ -91,6 +91,10 @@ let ctx = {
 			};
 			ctx.view.addAnnotation(annotationLocal);
 		} // on annotation created
+
+		, onAnnotationSelected : async (annotationID) => {
+			alert('onAnnotationSelected: ' + annotationID);
+		}
 	}
 };
 
