@@ -337,6 +337,12 @@ export default class PageView
 		$('#activateAnnotationTool').on('click', async () => {
 			ctx.editor.activateAnnotationTool();
 		});
+		$('#activateAnnotationToolSelect').on('click', async () => {
+			ctx.editor.activateAnnotationTool({ mode : "select" });
+		});
+		$('#activateAnnotationToolAdd').on('click', async () => {
+			ctx.editor.activateAnnotationTool({ mode: "add" });
+		});
 		$('#setNodeID').on('click', async () => {
 			try {
 				let doc = await ctx.editor.currentDocument();	
