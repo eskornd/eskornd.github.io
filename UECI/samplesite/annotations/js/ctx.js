@@ -79,6 +79,7 @@ let ctx = {
 			let count = annotations.length;
 			annotation.id = "id" + count;
 			annotation.title = count + " (Page " + (pageNumber + 1) + ")";
+			annotation.longTitle = `The ${count}th annotation of (Page ${(pageNumber + 1)})`;
 			annotations.push(annotation);
 			ctx.currentDoc.setAnnotations(annotations);
 			let annotationLocal = {
