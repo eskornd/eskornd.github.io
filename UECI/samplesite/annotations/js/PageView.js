@@ -259,6 +259,20 @@ export default class PageView
 			let color = getRandomColor();
 			highlight([{id: `${makeID()}`, title: "hello freehand", longTitle: "This is a freehand annotation. Author: noreply@esko.com", highlightColor : color, type: "Freehand", points: points}]);
 		});
+		$("#highlight_freehand_no_long_title").on("click", async ()=> {
+			let box = await getCurrentDocumentPageBox('MediaBox');
+			let rect = makeRandomRect2(box);
+			let points = [];
+			for (let i = 0; i < 200; i++) {
+				let x = i;
+				let y = 32 * Math.sin(x / 8);
+				x += rect.x0;
+				y += rect.y0;
+				points.push({x: x, y: y});
+			}
+			let color = getRandomColor();
+			highlight([{id: `${makeID()}`, title: "hello freehand", highlightColor : color, type: "Freehand", points: points}]);
+		});
 		$("#highlight_note").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
