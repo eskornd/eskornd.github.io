@@ -1,3 +1,5 @@
+import {randomID} from './utils.js';
+
 function getPageBox(pageBoxes, boxName)
 {
 	let rect = undefined;
@@ -77,7 +79,7 @@ let ctx = {
 			let pageNumber = params.pageNumber;
 			let annotations = await ctx.currentDoc.getAnnotations();
 			let count = annotations.length;
-			annotation.id = "id" + count;
+			annotation.id = randomID();
 			annotation.title = count + " (Page " + (pageNumber + 1) + ")";
 			annotation.longTitle = `The ${count}th annotation of (Page ${(pageNumber + 1)})`;
 			annotations.push(annotation);
