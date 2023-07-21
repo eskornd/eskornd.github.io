@@ -344,7 +344,7 @@ export default class PageView
 			ctx.editor.activateAnnotationTool();
 		});
 		$('#activateAnnotationToolSelect').on('click', async () => {
-			ctx.editor.activateAnnotationTool({ mode : "select" });
+			ctx.editor.activateAnnotationTool({ mode : "select", shots : 2 });
 		});
 		$('#activateAnnotationToolAdd').on('click', async () => {
 			ctx.editor.activateAnnotationTool({ mode: "add" });
