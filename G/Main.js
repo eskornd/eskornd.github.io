@@ -78,7 +78,21 @@ function FacePropertiesToHTML(props)
 function CodePointToHex(codePoint)
 {
 	let hex = Number(codePoint).toString(16).toUpperCase();
+	if (hex.length <= 4 )
+	{
+		hex = '0000'.substr(0, 4 - hex.length) + hex;
+	}
 	return 'U+' + hex;
+}
+
+function PaddedGID(gid)
+{
+	let dec = Number(gid).toString();
+	if (dec.length <= 4 )
+	{
+		dec = '    '.substr(0, 4 - dec.length) + dec;
+	}
+	return dec;
 }
 
 function CmapToHTML(cmap)
@@ -92,7 +106,7 @@ function CmapToHTML(cmap)
 			text += '\n';	
 		}
 		let entry = entries.get(i);
-		text += `${CodePointToHex(entry.codePoint)} -> ${entry.gid}, `;
+		text += `${CodePointToHex(entry.codePoint)} ->${PaddedGID(entry.gid)}, `;
 	}
 	text += '\n\n';
 	return text;
