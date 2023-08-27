@@ -75,6 +75,40 @@ function FacePropertiesToHTML(props)
     return str;
 }
 
+function CodePointToHex(codePoint)
+{
+	let hex = Number(codePoint).toString(16).toUpperCase();
+	return 'U+' + hex;
+}
+
+function CmapToHTML(cmap)
+{
+	let text = `Charmap ${cmap.platformID}, ${cmap.encodingID} \nplatform: ${cmap.platformName}\nencoding: ${cmap.encodingName}`;
+	const entries = cmap.entries;
+	for ( let i=0; i<entries.size(); ++i )
+	{
+		if ( i%10 == 0 )
+		{
+			text += '\n';	
+		}
+		let entry = entries.get(i);
+		text += `${CodePointToHex(entry.codePoint)} -> ${entry.gid}, `;
+	}
+	text += '\n\n';
+	return text;
+}
+
+function CmapsToHTML(cmaps)
+{
+	let text = '';
+	for ( let i=0; i<cmaps.size(); ++i )
+	{
+		const cmap = cmaps.get(i);
+		text += CmapToHTML(cmap);	
+	}
+	return text;
+}
+
 function MakeGIWrapper(fontFile, index)
 {
 	let gi = new gGlyphModule.GIWrapper();
@@ -95,6 +129,8 @@ function InitFontFace(fontFile, faceIndex)
 	$('#font_short_info').html(short_info);
     $('#font_info').html(FaceInfoToHTML(gi.faceInfo()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
+    $('#cmaps').html(CmapsToHTML(gi.charmaps()));
+
 
 	//let loaded = render.loadGlyphs();
 	let elems = render.glyphElements();
