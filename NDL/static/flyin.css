@@ -1,0 +1,36 @@
+.flyin {
+  animation: flyin 1.5s ease-out forwards;
+  opacity: 0;
+  transform: scale(1.5);
+  filter: blur(4px);
+}
+
+.flyin_text {
+  animation: flyin 2.0s ease-out forwards;
+  opacity: 0;
+  transform: scale(2.5);
+  filter: blur(4px);
+}
+
+@keyframes flyin {
+   to { 
+     filter: blur(0);
+     transform: scale(1);
+     opacity: 1;
+   }
+}
+
+.flyout {
+  animation: flyout 1.0s ease forwards;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(4px);
+}
+
+@keyframes flyout {
+   to { 
+     filter: blur(4px);
+     transform: scale(1.5);
+     opacity: 0;
+   }
+}

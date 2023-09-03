@@ -1,0 +1,77 @@
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+	<link rel="prefetch" href="static/FrederickatheGreat-Regular.woff2" as="font" type="font/woff2">
+    <link rel="stylesheet" type="text/css" href="static/FrederickatheGreat.css">
+    <link rel="stylesheet" type="text/css" href="static/UI.css">
+    <link rel="stylesheet" type="text/css" href="static/fadein.css">
+    <link rel="stylesheet" type="text/css" href="static/breathing.css">
+    <link rel="stylesheet" type="text/css" href="static/flyin.css">
+	<script type="text/javascript" src="static/jquery-3.4.1.min.js"></script>
+
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+	<title>Innovate with NDL.js</title>
+</head>
+
+<body>
+	<div class="flyin_text" style="font-size:2.5em;font-family:FrederickatheGreat;z-index:99;">
+		Innovate with NDL.js =>
+	</div>
+	<div>
+		<img class="breathing clickable" id="ndljsLogo" width=128 height=128 style="margin: 10px;" src="static/NDLJS_512x512.png" />
+	</div>
+		
+	<div id="scenarioParent" style="display:none;">
+		<div class="flyin scenarioRow">
+			<div>
+				<img class="scenario clickable" id="scenario01" src="images/scenario_SnA.png" />
+			</div>
+			<div>
+				Mini-Preflight
+			</div>
+		</div>
+		<div class="flyin scenarioRow">
+			<div>
+				<img class="scenario clickable" id="scenario02" src="images/scenario_WCR.png" />
+			</div>
+			<div>
+				Editing in WebCenter
+			</div>
+		</div>
+		<div class="flyin scenarioRow" >
+			<div>
+				<img class="scenario clickable" id="scenario03" src="images/scenario_2022.png" />
+			</div>
+				PDF+ Viewer
+			<div >
+			</div>
+		</div>
+	</div>
+</div>	
+	<script>
+	$('#ndljsLogo').on('click', ()=>{
+		if ( 'none' == $('#scenarioParent').css('display') )
+		{
+			$('.scenarioRow').removeClass('flyout');
+			$('.scenarioRow').addClass('flyin');
+			$('#scenarioParent').css('display', 'block');
+		} else {
+			$('.scenarioRow').removeClass('flyin');
+			$('.scenarioRow').addClass('flyout');
+			setTimeout(()=>$('#scenarioParent').css('display', 'none'), 1000);
+		}
+	});	
+	$('#scenario01').on('click', ()=>{
+		window.location.href = 'minipreflight.html';
+	});
+	$('#scenario02').on('click', ()=>{
+		window.location.href = 'wcr/project_2022.html';
+	});
+	$('#scenario03').on('click', ()=>{
+		window.location.href = 'editor.html';
+	});
+	</script>
+</body>
+</html>
