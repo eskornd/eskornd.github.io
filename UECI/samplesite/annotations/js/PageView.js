@@ -165,6 +165,11 @@ export default class PageView
 		$('#pageNumber').text(pageNumberText);
 	}
 
+	setHasAnnotationText(hasAnnotationText)
+	{
+		$('#hasAnnotation').text(hasAnnotationText);
+	}
+
 	addAnnotation (annotation)
 	{
 		// add html
@@ -344,7 +349,7 @@ export default class PageView
 			ctx.editor.activateAnnotationTool();
 		});
 		$('#activateAnnotationToolSelect').on('click', async () => {
-			ctx.editor.activateAnnotationTool({ mode : "select", shots : 2 });
+			ctx.editor.activateAnnotationTool({ mode : "select" });
 		});
 		$('#activateAnnotationToolAdd').on('click', async () => {
 			ctx.editor.activateAnnotationTool({ mode: "add" });

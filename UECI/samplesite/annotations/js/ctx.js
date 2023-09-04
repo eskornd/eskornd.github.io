@@ -46,10 +46,12 @@ let ctx = {
 				let pageSizeText = '' + w + ' x ' + h;
 				ctx.currentPageRect = getPageBox(pagesInfo[0].pageBoxes, "MediaBox");
 				let pageNumber = await doc.pageNumber();
+				let hasAnnotation = await doc.hasPDFAnnotation();
 				ctx.view.setPageNumberText(pageNumber + 1);
 				ctx.view.setPageSizeText(pageSizeText);
 				ctx.view.setIsDirtyText(dirtyText);
 				ctx.view.setClusterNodeIDText(clusterNodeIDText);
+				ctx.view.setHasAnnotationText(hasAnnotation);
 			} else {
 				ctx.view.setCurrentDocumentTitle('NO DOCUMENT OPENED');
 				ctx.view.setCurrentDocumentFilePath('');
