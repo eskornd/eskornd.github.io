@@ -30,6 +30,11 @@ function getRandomColor()
 	return { r: random255(), g: random255(), b: random255()};
 }
 
+function getRandomStroke()
+{
+	return Math.random() * 5;
+}
+
 function calculateHash(stream)
 {
 	// Process MD5 in tiles to avoid memory overflow
@@ -222,25 +227,29 @@ export default class PageView
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello oval", longTitle: "This is an oval annotation. Author: noreply@esko.com", highlightColor : color, type: "Oval", rect: rect}]);
+			let stroke = getRandomStroke();
+			highlight([{id: `${makeID()}`, title: "hello oval", longTitle: "This is an oval annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Oval", rect: rect}]);
 		});
 		$("#highlight_highlight").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello highlight", longTitle: "This is a highlight annotation. Author: noreply@esko.com", highlightColor : color, type: "Highlight", rect: rect}]);
+			let stroke = getRandomStroke();
+			highlight([{id: `${makeID()}`, title: "hello highlight", longTitle: "This is a highlight annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Highlight", rect: rect}]);
 		});
 		$("#highlight_line").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello line", longTitle: "This is a line annotation. Author: noreply@esko.com", highlightColor : color, type: "Line", rect: rect}]);
+			let stroke = getRandomStroke();
+			highlight([{id: `${makeID()}`, title: "hello line", longTitle: "This is a line annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Line", rect: rect}]);
 		});
 		$("#highlight_arrow").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello arrow", longTitle: "This is an arrow annotation. Author: noreply@esko.com", highlightColor : color, type: "Arrow", rect: rect}]);
+			let stroke = getRandomStroke();
+			highlight([{id: `${makeID()}`, title: "hello arrow", longTitle: "This is an arrow annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Arrow", rect: rect}]);
 		});
 		$("#highlight_freehand").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
@@ -254,7 +263,8 @@ export default class PageView
 				points.push({x: x, y: y});
 			}
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello freehand", longTitle: "This is a freehand annotation. Author: noreply@esko.com", highlightColor : color, type: "Freehand", points: points}]);
+			let stroke = getRandomStroke();
+			highlight([{id: `${makeID()}`, title: "hello freehand", longTitle: "This is a freehand annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Freehand", points: points}]);
 		});
 		$("#highlight_freehand_no_long_title").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
@@ -268,15 +278,17 @@ export default class PageView
 				points.push({x: x, y: y});
 			}
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello freehand", highlightColor : color, type: "Freehand", points: points}]);
+			let stroke = getRandomStroke();
+			highlight([{id: `${makeID()}`, title: "hello freehand", highlightColor : color, highlightWeight: stroke, type: "Freehand", points: points}]);
 		});
 		$("#highlight_note").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
+			let stroke = getRandomStroke();
 			rect.x1 = rect.x0;
 			rect.y1 = rect.y0;
 			let color = getRandomColor();
-			highlight([{id: `${makeID()}`, title: "hello note", longTitle: "This is a note annotation. Author: noreply@esko.com", highlightColor : color, type: "Note", rect: rect}]);
+			highlight([{id: `${makeID()}`, title: "hello note", longTitle: "This is a note annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Note", rect: rect}]);
 		});
 
 		$("#highlight_greenHanger").on("click", async ()=> {
@@ -288,7 +300,7 @@ export default class PageView
 			annots.push(annot);
 			rect = makeRect2(box.x + 237, box.y + 85, box.x + 287, box.y + 135);
 			color = {r: 255, g: 127, b: 0};
-			annot = {id: `${makeID()}`, title: "Sun", longTitle: "Sun annotation", highlightColor: color, type: "Oval", rect: rect};
+			annot = {id: `${makeID()}`, title: "Sun", longTitle: "Sun annotation", highlightColor: color, highlightWeight: 2.0, type: "Oval", rect: rect};
 			annots.push(annot);
 			rect = makeRect2(box.x + 82, box.y + 167, box.x + 274, box.y + 351);
 			color = {r: 0, g: 0, b: 255};
@@ -296,7 +308,7 @@ export default class PageView
 			annots.push(annot);
 			rect = makeRect2(box.x + 73, box.y + 399, box.x + 244, box.y + 399);
 			color = {r: 0, g: 255, b: 0};
-			annot = {id: `${makeID()}`, title: "Green", longTitle: "Green annotation", highlightColor: color, type: "Line", rect: rect};
+			annot = {id: `${makeID()}`, title: "Green", longTitle: "Green annotation", highlightColor: color, highlightWeight: 4.0, type: "Line", rect: rect};
 			annots.push(annot);
 			rect = makeRect2(box.x + 324, box.y + 529, box.x + 179, box.y + 569);
 			color = {r: 0, g: 255, b: 255};
@@ -311,7 +323,7 @@ export default class PageView
 				points.push({x: x, y: y});
 			}
 			color = {r: 200, g: 200, b: 200};
-			annot = {id: `${makeID()}`, title: "Wave", longTitle: "Wave annotation", highlightColor: color, type: "Freehand", points: points};
+			annot = {id: `${makeID()}`, title: "Wave", longTitle: "Wave annotation", highlightColor: color, highlightWeight: 3.0, type: "Freehand", points: points};
 			annots.push(annot);
 			rect = makeRect2(box.x + 275, box.y + 410, box.x + 275, box.y + 410);
 			color = {r: 255, g: 0, b: 255};
@@ -333,9 +345,13 @@ export default class PageView
 		$("#highlight_random").on('click', async ()=>{
 			let box = await getCurrentDocumentPageBox('MediaBox');
 			let rect = makeRandomRect2(box);
-			$("#highlight_random").attr('data', JSON.stringify(rect));
 			let color = getRandomColor();
-			$("#highlight_random").attr('highlightColor', JSON.stringify(color));
+			let stroke = getRandomStroke();
+			$("#highlight_random").attr({
+				data: JSON.stringify(rect),
+				highlightColor: JSON.stringify(color),
+				highlightWeight: stroke
+			});
 		});
 		$("#highlight_clearAll").attr('data', JSON.stringify([]));
 		$('#getAnnotations').on('click' , async () => {
@@ -614,9 +630,10 @@ export default class PageView
 			log(".rectAnnotation clicked");
 			var data = $("#" + e.target.id).attr('data');
 			var highlightColor = $("#" + e.target.id).attr('highlightColor');
-			if ( undefined != highlightColor)
+			var highlightWeight = $("#" + e.target.id).attr('highlightWeight');
+			if (undefined != highlightColor && undefined != highlightWeight)
 			{
-				highlight([{id: `${makeID()}`, title: "0", type: "Rectangle", rect: JSON.parse(data), highlightColor: JSON.parse(highlightColor)}]);
+				highlight([{id: `${makeID()}`, title: "0", type: "Rectangle", rect: JSON.parse(data), highlightColor: JSON.parse(highlightColor), highlightWeight: parseFloat(highlightWeight)}]);
 				return;
 			}
 			var obj = JSON.parse(data);
