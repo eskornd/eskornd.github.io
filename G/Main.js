@@ -56,6 +56,22 @@ function FaceInfoToHTML(info)
     return str;
 }
 
+function FaceFlagsToHTML(named_flags)
+{
+	let rowText = (label, text)=>{
+		let row = '<tr><td nowrap>' + label + '</td><td>' + text + '</td></tr>';
+		return row;
+	};
+    let str = '<table id="font_info_table">';
+	for ( let i=0; i<named_flags.size(); ++i )
+	{
+		let named_flag = named_flags.get(i);
+		str += rowText(named_flag.name, named_flag.flag);
+	}
+    str += '</table>';
+    return str;
+}
+
 function FacePropertiesToHTML(props)
 {
 	let rowText = (label, text)=>{
@@ -142,6 +158,7 @@ function InitFontFace(fontFile, faceIndex)
 	//$('#font_filename').html(fontFile);
 	$('#font_short_info').html(short_info);
     $('#font_info').html(FaceInfoToHTML(gi.faceInfo()));
+    $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
 
