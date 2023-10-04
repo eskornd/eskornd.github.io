@@ -146,6 +146,17 @@ function MakeGIWrapper(fontFile, index)
 	return isLoaded ? gi : undefined;
 }
 
+
+function UpdateSample()
+{
+	const text = $('#sample_input').val();
+	const fontSize = $('#font_size').val();
+	const paragraph_width = $('#sample_svg').width();
+	const svg_d = gRender.renderSampleText(text, fontSize, paragraph_width);
+	const html = `<path d="${svg_d}"></path>`;
+	$('#sample_svg').html(html);
+}
+
 function InitFontFace(fontFile, faceIndex)
 {
 	let gi = MakeGIWrapper(fontFile, faceIndex);
@@ -161,6 +172,13 @@ function InitFontFace(fontFile, faceIndex)
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
+	$('#sample_input').keyup( ()=>{
+		UpdateSample();
+	});
+	$(document).on('input', '#font_size',()=>{
+		UpdateSample();
+	});
+	UpdateSample();
 
 
 	//let loaded = render.loadGlyphs();

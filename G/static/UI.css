@@ -194,3 +194,6 @@ body {
 	"c c c";
 	"d d d";
 };
+
+input[type='text'] { font-size: 24px; };
+
