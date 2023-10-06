@@ -152,6 +152,7 @@ function UpdateSample()
 	const text = $('#sample_input').val();
 	const fontSize = $('#font_size').val();
 	const paragraph_width = $('#sample_svg').width();
+	console.log(`paragraph_width is ${paragraph_width}`);
 	const svg_d = gRender.renderSampleText(text, fontSize, paragraph_width);
 	const html = `<path d="${svg_d}"></path>`;
 	$('#sample_svg').html(html);
@@ -178,7 +179,10 @@ function InitFontFace(fontFile, faceIndex)
 	$(document).on('input', '#font_size',()=>{
 		UpdateSample();
 	});
-	UpdateSample();
+	$(window).on('resize', () => { UpdateSample(); });
+	setTimeout( () => {
+		UpdateSample();
+	}, 1000);
 
 
 	//let loaded = render.loadGlyphs();
