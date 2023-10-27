@@ -186,12 +186,5 @@ export class GlyphRender
 		let path_d = gi.svg_d(gid, matrix);
 		return path_d;
 	}
-
-	renderSampleText(text, fontSize, paragraphWidth)
-	{
-		const gi = this._gi;
-		const svg_d = gi.typeset(text, fontSize, paragraphWidth);
-		return svg_d;
-	}
 }
 
