@@ -600,6 +600,28 @@ export default class PageView
 			}
 		});
 
+		$('#downloadFile').on('click', async ()=>
+		{
+			try {
+				const req = new XMLHttpRequest();
+				req.open("GET", "./Letter_UECI.pdf", true);
+				req.responseType = "arraybuffer";
+
+				req.onload = (event) => {
+					const arrayBuffer = req.response;
+					if (arrayBuffer) {
+						const u8Arr = new Uint8Array(arrayBuffer);
+						ctx.currentDoc.writeFileBinary(u8Arr, "Letter_UECI.pdf");
+					}
+				};
+
+				req.send(null);
+			} catch (err) {
+				alert('Unable to download file: ' + JSON.stringify(err));
+				console.error(err);
+			}
+		});
+
 		$('#resizeDialog').on('click', async ()=> 
 		{
 			try {
