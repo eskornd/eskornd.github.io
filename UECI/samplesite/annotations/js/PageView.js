@@ -611,7 +611,7 @@ export default class PageView
 					const arrayBuffer = req.response;
 					if (arrayBuffer) {
 						const u8Arr = new Uint8Array(arrayBuffer);
-						ctx.currentDoc.writeFileBinary(u8Arr, "Letter_UECI.pdf");
+						ctx.editor.writeFileBinary(u8Arr, "Letter_UECI.pdf");
 					}
 				};
 
