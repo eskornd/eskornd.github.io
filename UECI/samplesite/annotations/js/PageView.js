@@ -506,9 +506,10 @@ export default class PageView
 			alert(str);
 		});
 
+		const domain = 'next.dev.cloudi.city';
 		$('#setUserToken').on('click', async ()=>
 		{
-			let keychain = await ctx.editor.keychain();
+			let keychain = await ctx.editor.keychain(domain);
 			let token = prompt('Please enter token');
 			keychain.setUserToken(token);
 		});
@@ -516,7 +517,7 @@ export default class PageView
 		{
 			try
 			{
-				let keychain = await ctx.editor.keychain();
+				let keychain = await ctx.editor.keychain(domain);
 				let token = await keychain.getUserToken();
 				alert(token);
 			}
@@ -527,7 +528,7 @@ export default class PageView
 		});
 		$('#deleteUserToken').on('click', async ()=>
 		{
-			let keychain = await ctx.editor.keychain();
+			let keychain = await ctx.editor.keychain(domain);
 			keychain.deleteUserToken();
 		});
 
