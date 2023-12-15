@@ -506,14 +506,38 @@ export default class PageView
 			alert(str);
 		});
 
-		const domain = 'next.dev.cloudi.city';
 		$('#setUserToken').on('click', async ()=>
+		{
+			let keychain = await ctx.editor.keychain();
+			let token = prompt('Please enter token');
+			keychain.setUserToken(token);
+		});
+		$('#getUserToken').on('click', async ()=>
+		{
+			try
+			{
+				let keychain = await ctx.editor.keychain();
+				let token = await keychain.getUserToken();
+				alert(token);
+			}
+			catch (err)
+			{
+				alert('Unable to get token' + JSON.stringify(err));
+			}
+		});
+		$('#deleteUserToken').on('click', async ()=>
+		{
+			let keychain = await ctx.editor.keychain();
+			keychain.deleteUserToken();
+		});
+		const domain = 'next.dev.cloudi.city';
+		$('#setUserToken_withDomain').on('click', async ()=>
 		{
 			let keychain = await ctx.editor.keychain(domain);
 			let token = prompt('Please enter token');
 			keychain.setUserToken(token);
 		});
-		$('#getUserToken').on('click', async ()=>
+		$('#getUserToken_withDomain').on('click', async ()=>
 		{
 			try
 			{
@@ -526,7 +550,7 @@ export default class PageView
 				alert('Unable to get token' + JSON.stringify(err));
 			}
 		});
-		$('#deleteUserToken').on('click', async ()=>
+		$('#deleteUserToken_withDomain').on('click', async ()=>
 		{
 			let keychain = await ctx.editor.keychain(domain);
 			keychain.deleteUserToken();
