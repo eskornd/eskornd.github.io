@@ -680,6 +680,10 @@ export default class PageView
 		{
 			window.location.href = 'tel:008618600001234';
 		});
+		$('#link_download_1mb').on('click', async() =>
+		{
+			window.location.href = 'https://www.dundeecity.gov.uk/sites/default/files/publications/civic_renewal_forms.zip';
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
