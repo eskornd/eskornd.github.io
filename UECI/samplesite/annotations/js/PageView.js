@@ -684,6 +684,10 @@ export default class PageView
 		{
 			window.location.href = 'https://www.dundeecity.gov.uk/sites/default/files/publications/civic_renewal_forms.zip';
 		});
+		$('#link_ueci').on('click', async() =>
+		{
+			window.location.href = 'ueci://open?url=https://www.esko.com/Content/Images/logo-esko.png';
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
