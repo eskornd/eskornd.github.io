@@ -672,6 +672,14 @@ export default class PageView
 			
 		});
 
+		$('#link_mailto').on('click', async () =>
+		{
+			window.location.href = 'mailto:noreply@esko.com';
+		});
+		$('#link_tel').on('click', async () =>
+		{
+			window.location.href = 'tel:008618600001234';
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
