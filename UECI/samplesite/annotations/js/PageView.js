@@ -688,6 +688,24 @@ export default class PageView
 		{
 			window.location.href = 'ueci://open?url=https://www.esko.com/Content/Images/logo-esko.png';
 		});
+		$('#jsalert').on('click', async() =>
+		{
+			alert('HELLO Javascript alert!');
+		});
+		$('#jsconfirm').on('click', async() =>
+		{
+			if ( confirm("Press a button!") == true)
+			{
+				alert('You pressed Yes');
+			} else {
+				alert('You pressed No');
+			}
+		});
+		$('#jsprompt').on('click', async() =>
+		{
+			let person = prompt("Please enter your name", "Harry Potter");
+			alert('You answered: ' + person);
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
