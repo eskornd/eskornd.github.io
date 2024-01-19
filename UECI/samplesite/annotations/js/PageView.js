@@ -706,6 +706,11 @@ export default class PageView
 			let person = prompt("Please enter your name", "Harry Potter");
 			alert('You answered: ' + person);
 		});
+		$('#postMessage').on('click', async() => 
+		{
+			let data = { name: 'EVENTNAME', level : 'warning', pos : { x:50, y:100 } };
+			window.postMessage(data);
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
