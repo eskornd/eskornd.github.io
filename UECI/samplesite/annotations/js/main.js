@@ -4,6 +4,7 @@ import {Model} from './Model.js';
 import {ctx} from './ctx.js';
 import PageView from './PageView.js';
 
+console.log('main.js loaded');
 async function onInitialized()
 {
 	var appName = await ctx.editor.appName();

@@ -5,6 +5,7 @@ async function InitEditor()
 	const userAgent = window.navigator.userAgent;
 	const isAdobeCEP = () => { return undefined != window.cep; };
 	const isArtProPlus = () => { return userAgent.includes('ArtPro+'); };
+	const isEskoCloudClient = () => { return userAgent.includes('EskoCloudClient'); };
 
 	let waitForEditor = new Promise((resolve, reject) =>{
 		document.addEventListener('com.esko.editorconnector.ready', (ev) => {
@@ -17,12 +18,12 @@ async function InitEditor()
 	if ( isAdobeCEP() )
 	{
 		initializer = new AdobeCEPInitializer();
-	} else if ( isArtProPlus() )
+	} else if ( isArtProPlus() || isEskoCloudClient() )
 	{
 		initializer = new ArtProPlusInitializer();
 	} else {
 		// Not supported
-		return Promise.reject('Not in ArtPro+ or DeskPack');
+		return Promise.reject('Initializer.js: Not in ArtPro+/EskoCloudClient or DeskPack');
 	}
 	
 	try {
