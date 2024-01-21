@@ -7,7 +7,7 @@ import PageView from './PageView.js';
 console.log('main.js loaded');
 async function onInitialized()
 {
-	var appName = await ctx.editor.appName().catch((err)->{console.error(JSON.stringify(err));});
+	var appName = await ctx.editor.appName().catch((err)=>{console.error(JSON.stringify(err));});
 	var verStr = await ctx.editor.versionString().catch((err)=>{console.error(JSON.stringify(err));});
 	ctx.view.setHostAppText(appName + ' ' + verStr);
 	var appInfo = await ctx.editor.appInfo();
