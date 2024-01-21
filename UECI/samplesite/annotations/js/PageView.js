@@ -98,7 +98,7 @@ async function highlightRect(rect)
 async function userInputClusterNodeID()
 {
 	let currentClusterNodeID = {};
-	let doc = await ctx.editor.currentDocument();	
+	let doc = await ctx.editor.currentDocument().catch((err)=>{ console.error(err);});	
 	try { 
 		currentClusterNodeID = await doc.getClusterNodeID(); 
 	} catch (err) {}
