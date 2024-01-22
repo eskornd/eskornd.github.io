@@ -1,3 +1,4 @@
+import {log, logErr} from './log.js'
 import {randomID} from './utils.js';
 
 function getPageBox(pageBoxes, boxName)
@@ -20,7 +21,7 @@ let ctx = {
 	controller :
 	{
 		onDocumentChanged : async ()=>{
-			let doc = await ctx.editor.currentDocument();
+			let doc = await ctx.editor.currentDocument().catch(logErr);
 			if ( doc !== undefined )
 			{
 				ctx.view.setCurrentDocumentTitle( await doc.title() );

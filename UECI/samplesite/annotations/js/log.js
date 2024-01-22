@@ -14,4 +14,9 @@ function log(text)
 	console.log(text);
 }
 
-export {log};
+function logErr(err)
+{
+	console.error(err);
+}
+
+export {log, logErr};

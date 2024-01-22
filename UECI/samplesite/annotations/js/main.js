@@ -1,16 +1,17 @@
-import {log} from './log.js';
+import {log, logErr} from './log.js';
 // import {validateEditor} from './validate.js';
 import {Model} from './Model.js';
 import {ctx} from './ctx.js';
+
 import PageView from './PageView.js';
 
 console.log('main.js loaded');
 async function onInitialized()
 {
-	var appName = await ctx.editor.appName().catch((err)=>{console.error(err);});
-	var verStr = await ctx.editor.versionString().catch((err)=>{console.error(err);});
+	var appName = await ctx.editor.appName().catch(logErr);
+	var verStr = await ctx.editor.versionString().catch(logErr);
 	ctx.view.setHostAppText(appName + ' ' + verStr);
-	var appInfo = await ctx.editor.appInfo().catch((err)=>{console.error(err);});
+	var appInfo = await ctx.editor.appInfo().catch(logErr);
 	ctx.view.setLanguageText(appInfo.language);
 	ctx.view.setCustomerID(appInfo.customerID);
 }
