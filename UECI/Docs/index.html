@@ -104,6 +104,14 @@ A typical example is when a document has been closed by the host application, th
 }
 
 </code></pre>
+<p>An alternative (simpler) way of catching the error;</p>
+<pre class="prettyprint source"><code>async function showDocumentTitle(doc)
+{
+	let title = await doc.title().catch( (err) => { console.error(err); } );
+    // do stuff with the title. title will be default on catching the error
+}
+
+</code></pre>
 <h3>Multiple web-components</h3>
 <p>The host editor is supposed to support interacting with multiple web-components. Each web-component window will have its own ID, and the ID is registered during initialization of the Editor instance, therefore each web-component only sees/accesses its own annotation.</p>
 <h3>Host Editor Dynamics</h3>
