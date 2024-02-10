@@ -711,6 +711,37 @@ export default class PageView
 			let data = { name: 'EVENTNAME', level : 'warning', pos : { x:50, y:100 } };
 			window.postMessage(data);
 		});
+		$('#post_setSelection').on('click', async() =>
+		{
+			try {
+				let getMessageSource = ()=> 
+				{
+					// source: get parent frame if exists, otherwise null
+					let source = window.parent != window ? window.parent : null;
+					if (source == null) {
+						if ( null != window.webkit && null != window.webkit.messageHandlers && null != window.webkit.messageHandlers.postMessageListener ) {
+							source = window.webkit.messageHandlers.postMessageListener;
+							console.log('source = window.webkit.messageHandlers.postMessageListener;');
+						} else if ( null != window.chrome && null!=window.chrome.webview) {
+							source = window.chrome.webview;
+							console.log('source = window.chrome.webview;');
+						} else {
+							console.log(`source = ${source}`);
+						}
+					}
+					return source;
+				}
+				let source = getMessageSource();
+				let message = { name : 'setSelection' , value : [
+					{ id: '4mLnEdMDpjYk8n-3b1R3pnHSh', path : 'mLnEdMDpjYk8n/FutureAE/MIS2%2F106/products/c68101ee35f34e5b959b621d43294cfe/01_shrek.pdf' }
+					, { id: '4mLnEdMDpjYk8n-3b1R6eYcUy', path: '4mLnEdMDpjYk8n/FutureAE/MIS2%2F106/products/c68101ee35f34e5b959b621d43294cfe/02_shrek.pdf' }
+					, { id: '4mLnEdMDpjYk8n-3bJaqxhcgB', path : '4mLnEdMDpjYk8n/FutureAE/ReneArtois/jobs/job-4546547/All%20Types/can%20330ml.zae'}
+				] };
+				source.postMessage(message);
+			} catch (err) {
+				console.error(err);
+			}
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
