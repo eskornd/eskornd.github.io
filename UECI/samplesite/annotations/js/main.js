@@ -9,11 +9,11 @@ console.log('main.js loaded');
 console.log(`userAgent: ${window.navigator.userAgent}`);
 async function onInitialized()
 {
-	var appName = await ctx.editor.appName().catch(logErr);
-	var verStr = await ctx.editor.versionString().catch(logErr);
+	const appName = await ctx.editor.appName().catch(logErr);
+	const verStr = await ctx.editor.versionString().catch(logErr);
 	ctx.view.setHostAppText(appName + ' ' + verStr);
-	var appInfo = await ctx.editor.appInfo().catch(logErr);
-	if ( appInfo == null )
+	const appInfo = await ctx.editor.appInfo().catch(logErr);
+	if ( undefined != appInfo )
 	{
 		ctx.view.setLanguageText(appInfo.language);
 		ctx.view.setCustomerID(appInfo.customerID);
