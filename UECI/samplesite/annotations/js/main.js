@@ -6,14 +6,19 @@ import {ctx} from './ctx.js';
 import PageView from './PageView.js';
 
 console.log('main.js loaded');
+console.log(`userAgent: ${window.navigator.userAgent}`);
 async function onInitialized()
 {
 	var appName = await ctx.editor.appName().catch(logErr);
 	var verStr = await ctx.editor.versionString().catch(logErr);
 	ctx.view.setHostAppText(appName + ' ' + verStr);
 	var appInfo = await ctx.editor.appInfo().catch(logErr);
-	ctx.view.setLanguageText(appInfo.language);
-	ctx.view.setCustomerID(appInfo.customerID);
+	if ( appInfo == null )
+	{
+		ctx.view.setLanguageText(appInfo.language);
+		ctx.view.setCustomerID(appInfo.customerID);
+	}
+	ctx.view.setUserAgent();// auto fill
 }
 
 async function initEskoConnector()

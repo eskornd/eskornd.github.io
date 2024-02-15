@@ -175,6 +175,11 @@ export default class PageView
 		$('#hasAnnotation').text(hasAnnotationText);
 	}
 
+	setUserAgent() 
+	{
+		const userAgent = window.navigator.userAgent;
+		$('#userAgent').text(userAgent);
+	}
 	addAnnotation (annotation)
 	{
 		// add html
