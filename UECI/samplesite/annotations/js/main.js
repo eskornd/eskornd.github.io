@@ -7,6 +7,8 @@ import PageView from './PageView.js';
 
 console.log('main.js loaded');
 console.log(`userAgent: ${window.navigator.userAgent}`);
+// fill the userAgent field (vanilla js)
+$('#userAgent').text(window.navigator.userAgent);
 async function onInitialized()
 {
 	const appName = await ctx.editor.appName().catch(logErr);
@@ -18,7 +20,6 @@ async function onInitialized()
 		ctx.view.setLanguageText(appInfo.language);
 		ctx.view.setCustomerID(appInfo.customerID);
 	}
-	ctx.view.setUserAgent();// auto fill
 }
 
 async function initEskoConnector()
