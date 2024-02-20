@@ -171,7 +171,7 @@ async function InitEditor()
 		initializer = new ArtProPlusInitializer();
 	} else {
 		// Not supported
-		return Promise.reject('Initializer.js: Not in ArtPro+/EskoCloudClient or DeskPack');
+		return Promise.reject('UECI_SDK.js: Not in ArtPro+/EskoCloudClient or DeskPack');
 	}
 	
 	try {
