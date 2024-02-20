@@ -175,7 +175,7 @@ async function InitEditor()
 	
 	try {
 		await initializer.initEditor();
-		console.log('initEditor() succeeded!');
+		console.log('UECI_SDK.js initEditor() succeeded!');
 		return waitForEditor;
 	} catch (err) {
 		return Promise.reject(err);
