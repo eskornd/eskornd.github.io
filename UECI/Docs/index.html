@@ -57,6 +57,7 @@
     <section>
         <article class="readme"><h1>The Universal Editor Connector Interface (UECI)</h1>
 <p>UECI allows web application view to interact with native Editors e.g. DeskPack or ArtPro+ to do editor specific actions. Including getting editor version, document info, page boxes, and showing highlights on the current document.</p>
+<p><a href="#Change-History">Jump to: Change History</a></p>
 <h2>Getting started</h2>
 <p>Following are the important concept to start with.</p>
 <h3>Initialization</h3>
@@ -119,7 +120,15 @@ A typical example is when a document has been closed by the host application, th
 <li>Different editors might have slight different behavior</li>
 <li>API might evolve from release to release, new API could be simply not supported on old editors
 API could evolve from release to release, therefore the client code need to be aware of the capability of the host app</li>
-</ul></article>
+</ul>
+<h2>Change History</h2>
+<h3>Changes till now</h3>
+<ul>
+<li>The UECI SDK has combined 3 *Initializer.js into one file &quot;UECI_SDK.js&quot;. To simplify the usage of the UECI SDK in the web-UI development</li>
+<li>Editor.postMessage() API added</li>
+</ul>
+<h3>Changes since Release 1.0.x</h3>
+<p>Initial version of UECI SDK, and support all Esko Editor (ArtPro+ DeskPack) &lt;= 24.03</p></article>
     </section>
 
 

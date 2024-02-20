@@ -145,7 +145,6 @@ class ArtProPlusInitializer
 
 // Export global initializers
 window.AdobeCEPInitializer = AdobeCEPInitializer;
-
 window.ArtProPlusInitializer = ArtProPlusInitializer;
 
 async function InitEditor()
