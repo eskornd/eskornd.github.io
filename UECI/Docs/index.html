@@ -61,10 +61,8 @@
 <p>Following are the important concept to start with.</p>
 <h3>Initialization</h3>
 <p>UECI provides initializer to help web-component initialize the Editor, currently supported in Adobe CEP/DeskPack and ArtPro+.</p>
-<p>To initialize the connection with editor, include following .js in your html page, in Adobe CEP environment, include AdobeCEPInitializer.js in your html, these .js files are available in the UECI source package.</p>
-<pre class="prettyprint source lang-html"><code>	&lt;script type=&quot;text/javascript&quot; src=&quot;js/ArtProPlusInitializer.js&quot;> &lt;/script>
-	&lt;script type=&quot;text/javascript&quot; src=&quot;js/AdobeCEPInitializer.js&quot;> &lt;/script>
-	&lt;script type=&quot;text/javascript&quot; src=&quot;js/Initializer.js&quot;> &lt;/script>
+<p>To initialize the connection with editor, include following UECI_SDK.js in your html page, these .js files are available in the UECI source package. There used to be 3 separate .js files ('AdobeCEPInitializer.js, ArtProPlusInitializer.js, Initializer.js) in UECI SDK 1.0.x, now they're merge as single UECI_SDK.js for convenience of use.</p>
+<pre class="prettyprint source lang-html"><code>	&lt;script type=&quot;text/javascript&quot; src=&quot;js/UECI_SDK.js&quot;> &lt;/script>
 </code></pre>
 <p>Followed by Javascript call</p>
 <pre class="prettyprint source lang-js"><code>	try {
