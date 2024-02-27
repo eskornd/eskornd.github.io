@@ -1,0 +1,163 @@
+<html>
+<head>
+<head>
+	<meta charset="UTF-8">
+</head>
+<body style="background-color:#F7F7F7; font-family:'Courier';">
+<script src="js/jquery-3.7.1.min.js"> </script>
+<script type="text/javascript">
+var SUBJ='Fix for Esko Software 24.03'
+Date.prototype.yyyymmdd = function() {
+var mm = this.getMonth() + 1; // getMonth() is zero-based
+var dd = this.getDate();
+
+return [this.getFullYear(),
+	  (mm>9 ? '' : '0') + mm,
+	  (dd>9 ? '' : '0') + dd
+	 ].join('');
+};
+
+var date = new Date();
+date.yyyymmdd();
+strformat = function() {
+    // The string containing the format items (e.g. "{0}")
+    // will and always has to be the first argument.
+    var theString = arguments[0];
+    
+    // start with the second argument (i = 1)
+    for (var i = 1; i < arguments.length; i++) {
+        // "gm" = RegEx options for Global search (more than one instance)
+        // and for Multiline search
+        var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
+        theString = theString.replace(regEx, arguments[i]);
+    }
+    
+    return theString;
+}
+
+
+$(function(){
+	var template = $("#template").val();
+
+	function sendmail()
+	{
+		mailbody = render_mailbody();
+		//var link = "mailto:DLRDESSDVD@esko.com"
+		var link = "mailto:noreply@esko.com"
+		+ "?subject=" + escape(SUBJ)
+		+ "&body=" + escape(mailbody);
+
+		window.location.href = link;
+	}
+
+	function render_mailbody()
+	{
+		var fix_date = $("#fix_date").val();
+		var initial = $("#initial").val();
+		var log_num = $("#log_num").val();
+		var products = $("#products").val();		
+		var tech_desc = $("#tech_desc").val();
+		var cust_desc = $("#cust_desc").val();
+		var p4cl = $("#p4cl").val();
+		
+		mailbody = strformat(template, fix_date, initial, log_num, products, tech_desc, cust_desc, p4cl);
+		return mailbody;
+	}
+
+	function parse(){
+		mailbody = render_mailbody();
+		$("#fixmail").text(mailbody);		
+	}
+
+	let date_str = date.toDateString();
+	// remove (week) Day
+	date_str=date_str.substr(date_str.indexOf(' ') + 1)
+	$('#fix_date').val(`${date_str}`);
+	$("#fix_date").keyup(function(e){
+		parse();
+	});
+	$("#initial").keyup(function(e){
+		parse();
+	});
+	$("#log_num").keyup(function(e){
+		parse();
+	});
+	$("#products").keyup(function(e){
+		parse();
+	});	
+	$("#tech_desc").keyup(function(e){
+		parse();
+	});
+	$("#cust_desc").keyup(function(e){
+		parse();
+	});
+	$("#p4cl").keyup(function(e){
+		parse();
+	});
+	$("#mailit").click(function(){
+		sendmail();
+	});
+});
+</script>
+	<div class="maincontent">
+		<table>
+		<tr>
+			<td>Date</td>
+			<td><input id="fix_date" class="mono" type="text" value="{{ fix_date }}"></td>
+		</tr>
+		<tr>
+			<td>Initial</td>
+			<td><input id="initial" class="mono" type="text" placeholder="JAPA"></td>
+		</tr>		
+		<tr>
+			<td>Log Number</td>
+			<td><input id="log_num" class="mono" type="text" placeholder="DPI-007" ></td>
+		</tr>
+		<tr>
+			<td>Products</td>
+			<td><input id="products" class="mono" type="text" value="DeskPack"></td>
+		</tr>		
+		<tr>
+			<td>Technical Description</td>
+			<td><textarea id="tech_desc" class="mono" placeholder="Dereferenced NULL when listing tickets" cols="60" rows="4"></textarea>
+			</td>
+		</tr>		
+		<tr>
+			<td>Customer Description</td>
+			<td><textarea id="cust_desc" class="mono" placeholder="Fixed crash when launching PowerTrapper task" cols="60" rows="4"></textarea></td>
+		</tr>		
+		<tr>
+			<td>P4 changelist</td>
+			<td><textarea id="p4cl" class="mono" placeholder="123456" cols="60" rows="3"></textarea></td>
+		</tr>	
+
+		<tr>
+			<td><a id="mailit" href="#">Mail it</a></td>
+			<td><textarea readonly id="fixmail" class="mono" cols="60" rows="20"></textarea></td>
+		</tr>	
+		</table>
+<textarea id="template" class="mono" style="display:none;" cols="60" rows="20">
+## [ {0}  {1}]
+#
+# LogNumber:  {2}
+#      
+#
+# Products:
+#       {3}
+#
+# Technical description:
+#       {4}
+#  
+# Customer description:
+#       {5}
+#
+# Changelist:
+{6}
+</textarea>
+	<div id="container" style="min-width: 800px; height: 400px; margin: 0 auto">
+
+	</div>
+</div>
+
+</body>	
+</html>

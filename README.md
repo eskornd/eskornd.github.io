@@ -7,5 +7,6 @@
 ## NDLJS for online PDF Editing
 * [NDLJS Demo](https://eskornd.github.io/NDL/)
 
-## Shanghai Jenkins build
-* [http://miniarm01.esko-graphics.com/view/EnabledJobs/](http://miniarm01.esko-graphics.com/view/EnabledJobs/)
+## R&D Shortcuts
+* [Shanghai Jenkins build (miniarm01)](http://miniarm01.esko-graphics.com/view/EnabledJobs/)
+* [Fixmail](https://eskornd.github.io/fixmail/)
