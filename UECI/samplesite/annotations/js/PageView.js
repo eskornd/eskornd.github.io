@@ -749,15 +749,27 @@ export default class PageView
 		});
 		$('#list_cookies').on('click', async() =>
 		{
-			const x = document.cookie;
-			const parts = x.split(';');
-			let msg = 'Cookies:';
-			for ( let i=0; i<parts.length; ++i)
+			if ( 0 )
 			{
-				msg += '\n';
-				msg += parts[i].trimStart();
+				// Vanilla JS:
+				const x = document.cookie;
+				const parts = x.split(';');
+				let msg = 'Cookies:';
+				for ( let i=0; i<parts.length; ++i)
+				{
+					msg += '\n';
+					msg += parts[i].trimStart();
+				}
+			} else {
+				// CookieStore implementation
+				const cookies = await cookieStore.getAll();
+				if (cookies.length > 0) {
+					alert(JSON.stringify(cookies, null, 4));
+				} else {
+					alert("Cookie not found");
+				}
 			}
-			alert(msg);
+
 		});
 		$('#set_cookie').on('click', async() =>
 		{
@@ -770,12 +782,27 @@ export default class PageView
 				cname = parts[0];
 				cvalue = parts[1];
 			}
-
-			const secs = 8*60*60;
+			const expireMS = 8*60*60*1000; //ms
 			const d = new Date();
-			d.setTime(d.getTime() + (secs*1000));
-			let expires = "expires="+ d.toUTCString();
-			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+			d.setTime(d.getTime() + (expireMS));
+
+			if ( 0 )
+			{
+				// Vanilla implementation
+				let expires = "expires="+ d.toUTCString();
+				document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+			} else {
+				cookieStore.set(
+				  {
+					name: cname,
+					value: cvalue,
+					expires: d //Date.now() + one_day_ms,
+				  }).then(function() {
+					//alert('It worked!');
+				  }, function(reason) {
+					alert( 'set cookie failed, and this is why:' + reason);
+				  });
+			}
 		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
