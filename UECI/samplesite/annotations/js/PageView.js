@@ -747,6 +747,36 @@ export default class PageView
 				console.error(err);
 			}
 		});
+		$('#list_cookies').on('click', async() =>
+		{
+			const x = document.cookie;
+			const parts = x.split(';');
+			let msg = 'Cookies:';
+			for ( let i=0; i<parts.length; ++i)
+			{
+				msg += '\n';
+				msg += parts[i].trimStart();
+			}
+			alert(msg);
+		});
+		$('#set_cookie').on('click', async() =>
+		{
+			const str = prompt('Please enter KEY=VALUE', 'KEY_1=');
+			const parts = str.split('=');
+			let cname = 'KEY_1'
+			let cvalue = str;
+			if ( parts.length >=2 )
+			{
+				cname = parts[0];
+				cvalue = parts[1];
+			}
+
+			const secs = 8*60*60;
+			const d = new Date();
+			d.setTime(d.getTime() + (secs*1000));
+			let expires = "expires="+ d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		});
 		// use event delegate rather than direct bind, so that we can handle dynamic items
 		$('#highlight_section').on('click', '.rectAnnotation', async (e)=>{ 
 			log(".rectAnnotation clicked");
