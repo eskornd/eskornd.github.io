@@ -1,0 +1,36 @@
+/* tt commons */
+@font-face {
+    font-family: ttcommons;
+    src: url(ttcommons.woff2) format("woff2");
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+	font-family: 'Iosevka';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('Iosevka-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Delius';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('Delius-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'SyneMono';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('SyneMono-Regular.woff2') format('woff2');
+}
+
