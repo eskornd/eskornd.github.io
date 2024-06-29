@@ -18,19 +18,20 @@ function launch()
 
 function onSelected()
 {
-	let urlText = document.getElementById('landingPages').value;
+	let urlText = document.getElementById('dropdown').value;
 	let elem = document.getElementById('url');	
 	elem.value = urlText;
 }
 
-function httpGet(inURL, func)
+function httpGet(inURL)
 {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
     let xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange = function()
     {
         if (xmlhttp.readyState==4 && xmlhttp.status==200)
         {
-			func (xmlhttp.responseText);
+			alert('downloaded content: ' + xmlhttp.responseText);
             return xmlhttp.responseText;
         }
     }
@@ -38,13 +39,24 @@ function httpGet(inURL, func)
     xmlhttp.send();
 }
 
+	httpGet('https://eskornd.github.io/index.html');
+
+	const min = 12;
+	const max = 20;
+	var select = document.getElementById('landingPages');
+
+	for (let i = min; i<=max; i++){
+		let opt = document.createElement('option');
+		opt.value = i;
+		opt.innerHTML = i;
+		select.appendChild(opt);
+	}
 
 	</script>
 
 	<div>
 		<span><label>Presets:</label></span>
 		<span>
-			<!--
 			<select id='dropdown' onchange="onSelected()">
 				<option value="https://eskornd.github.io/UECI/samplesite/annotations/">https://eskornd.github.io/UECI/samplesite/annotations/</option>
 				<option value="http://localhost:8000/samplesite/annotations">http://localhost:8000/samplesite/annotations</option>	
@@ -69,7 +81,6 @@ function httpGet(inURL, func)
 				<option value="https://approve.eu.esko.cloud/">https://approve.eu.esko.cloud/</option>
 				<option value="https://www.whatarecookies.com/cookietest.asp">Cookie Test</option>
 			</select>
-			-->
 			<select id='landingPages' onchange="onSelected()">
 			</select>
 		</span>
@@ -79,25 +90,6 @@ function httpGet(inURL, func)
 		<span><input id="url" type="text" size="48" value="https://eskornd.github.io/UECI/samplesite/annotations/"/></span>
 		<span><button style="width:80px;" onClick="launch();">launch</button></span>
 	</div>
-	<script>
-
-	const configURL = 'https://eskornd.github.io/UECI/samplesite/boot/config.json.txt';
-	httpGet(configURL, (text)=>{
-		let obj = JSON.parse(text);
-		if ( obj.hasOwnProperty('landingPages'))
-		{
-			let sel = document.getElementById('landingPages');
-			for ( const landingPage of obj['landingPages'] )
-			{
-				let opt = document.createElement('option');
-				opt.value = landingPage;
-				opt.innerHTML = landingPage;
-				sel.appendChild(opt);
-			}
-		}
-	});
-
-	</script>
 	
 </body>	
 </html>
