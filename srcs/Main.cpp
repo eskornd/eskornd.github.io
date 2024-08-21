@@ -2,6 +2,7 @@
 #include "Robot.h"
 #include <string>
 #include <thread>
+#include <cassert>
 
 namespace {
     template <size_t N>
@@ -298,6 +299,23 @@ int main()
 		run9x9Game(v, "Today's hard sudoku");
 	}
     if (1)
+    {
+        // Patrick game
+        std::vector<Num> v={
+            0,0,0,9,4,0,0,0,0,
+            0,6,0,2,8,0,3,1,0,
+            0,1,0,3,0,0,0,0,0,
+            0,0,0,0,7,0,2,4,6,
+            4,2,0,1,0,3,0,7,9,
+            6,9,7,0,2,0,0,0,0,
+            0,0,0,0,0,4,0,2,0,
+            0,8,3,0,1,5,0,9,0,
+            0,0,0,0,9,2,0,0,0,
+        };
+        run9x9Game(v, "Summer game");
+    }
+    
+    if (0)
     {
         // Patrick game
         std::vector<Num> v={

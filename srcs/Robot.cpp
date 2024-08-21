@@ -1,6 +1,7 @@
 #include "Robot.h"
 #include <deque>
 #include <stack>
+#include <cassert>
 
 void Robot::setIndexOrder(IndexOrder order)
 {
