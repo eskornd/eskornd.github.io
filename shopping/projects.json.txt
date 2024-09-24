@@ -4,12 +4,32 @@
 		, "url" : "specs/AIPrebuiltSDK/Maintenance/24.11/AIPrebuiltSDK/spec.txt"
 	} 
 	, {
-		"name": "DeskPack AI Underline 24.11"
-		, "url" : "specs/AIPrebuiltSDK/Maintenance/24.11/AIPrebuiltSDK/spec.txt" 
+		"name": "DeskPack AI 25.03"
+		, "url" : "specs/AIPrebuiltSDK/Maintenance/25.03/AIPrebuiltSDK/spec.txt"
+	} 
+	, {
+		"name": "DeskPack AI Underline 25.03"
+		, "url" : "specs/AIPrebuiltSDK/Maintenance/25.03/AIPrebuiltSDK/underline_spec.txt" 
 	}
 	, {
 		"name" : "ArtPro+ 24.11"
 		, "url" : "specs/DocumentTypesettingShopping/Maintenance/24.11/DocumentTypesettingShopping/spec.txt"
+	}
+	, {
+		"name" : "ArtPro+ 25.03"
+		, "url" : "specs/DocumentTypesettingShopping/Maintenance/25.03/DocumentTypesettingShopping/spec.txt"
+	}
+	, {
+		"name" : "Underline 25.03"
+		, "url" : "specs/DocumentTypesettingShopping/Development/underline_25.03/DocumentTypesettingShopping/spec.txt"
+	}
+	, {
+		"name" : "DeskPack Photoshop 24.11"
+		, "url" : "specs/PsAllProduct/Maintenance/24.11/PsAllProduct/spec.txt"
+	}
+	, {
+		"name" : "AAXMP 24.07"
+		, "url" : "specs/AAProduct/Maintenance/24.07/ProductDefinitions/spec.txt"
 	}
 ]
 }
