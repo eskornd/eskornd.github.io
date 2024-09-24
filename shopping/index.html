@@ -15,13 +15,7 @@ $(function(){
 	template = '';
 	function reload_template()
 	{
-		var url = $("#project").val();
-		// $.get(url, function(data){
-		// 	template = data;
-		// 	//reset content
-		// 	$("#workspace").val('');
-		// 	$("#spec").text(data);
-		// });
+		const url = $("#project").val();
 		$.get(url)
 			.done( (data)=> {
 				template = data;
@@ -109,7 +103,6 @@ $(function(){
 			for ( let i=0; i<projs.length; ++i)
 			{
 				const proj = projs[i];
-				alert( proj.name + ', ' + proj.url);
 				let opt = document.createElement('option');
 				opt.value = proj.url;
 				opt.innerHTML = proj.name;

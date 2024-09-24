@@ -1,3 +1,9 @@
+========================
+SAMPLE P4 WORKSPACE SPEC
+
+workspace name: DEPOT
+========================
+
 //moduledev/Packages/CMakeBuildSystem/Maintenance/1.0.x/CMakeBuildSystem/... //DEPOT/CMakeBuildSystem/...
 //moduledev/Packages/CMakeBuildSystem/Maintenance/1.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/CMakeBuildSystem-1.0.x.xml
 //moduledev/Packages/DTPScript/Maintenance/11.0.x/DTPScript/... //DEPOT/DTPScript/...

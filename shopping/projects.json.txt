@@ -1,5 +1,15 @@
 {"projects" : [
-	{"name": "DeskPack AI 24.11", "url" : "http://miniarm01.esko-graphics.com/view/EnabledJobs/job/P4Specs/ws/depot/AIPrebuiltSDK/Maintenance/25.03/AIPrebuiltSDK/spec.txt" } 
-	, {"name": "DeskPack AI Underline 24.11", "url" : "http://miniarm01.esko-graphics.com/view/EnabledJobs/job/P4Specs/ws/depot/AIPrebuiltSDK/Maintenance/25.03/AIPrebuiltSDK/underline_spec.txt" }
+	{
+		"name": "DeskPack AI 24.11"
+		, "url" : "specs/AIPrebuiltSDK/Maintenance/24.11/AIPrebuiltSDK/spec.txt"
+	} 
+	, {
+		"name": "DeskPack AI Underline 24.11"
+		, "url" : "specs/AIPrebuiltSDK/Maintenance/24.11/AIPrebuiltSDK/spec.txt" 
+	}
+	, {
+		"name" : "ArtPro+ 24.11"
+		, "url" : "specs/DocumentTypesettingShopping/Maintenance/24.11/DocumentTypesettingShopping/spec.txt"
+	}
 ]
 }
