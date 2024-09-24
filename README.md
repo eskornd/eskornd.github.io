@@ -11,3 +11,4 @@
 * [Shanghai Jenkins build (miniarm01)](http://miniarm01.esko-graphics.com/view/EnabledJobs/)
 * [Fixmail](https://eskornd.github.io/fixmail/)
 * [eskoSSO](https://eskornd.github.io/eskoSSO/)
+* [Shopping](https://eskornd.github.io/shopping/)
