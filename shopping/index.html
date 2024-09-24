@@ -1,0 +1,151 @@
+<html>
+<head>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/styles/fontdefs.css"/>
+	<link rel="stylesheet" href="/styles/theme_devel.css"/>
+	<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body style="background-color:#F7F7F7; font-family:'Delius';">
+
+<script>
+
+$(function(){
+	template = '';
+	function reload_template()
+	{
+		var url = $("#project").val();
+		// $.get(url, function(data){
+		// 	template = data;
+		// 	//reset content
+		// 	$("#workspace").val('');
+		// 	$("#spec").text(data);
+		// });
+		$.get(url)
+			.done( (data)=> {
+				template = data;
+				//reset content
+				$("#workspace").val('');
+				$("#spec").text(data);
+			} )
+			.fail( (xhr, text, errorThrown)=>{
+				$("#workspace").val('');
+				$("#spec").text('Unable to download spec from url: ' + url + '. ' + JSON.stringify(xhr));
+			});
+		$.get(url, function(data){
+		});
+	}	
+
+	// first run
+	reload_template();
+
+	function render_spec()
+	{
+		var workspace = $("#workspace").val();
+		var template_spec = template;
+		var str = template_spec.replace(/DEPOT/g, workspace);
+
+		$("#spec").text(str);
+	}
+	function copy_to_clipboard()
+	{
+		var text = $("#spec").val();
+		alert(text);
+        
+            var clip = new ZeroClipboard.Client();
+            var myTextToCopy = "Hi, this is the text to copy!";
+            clip.setText( myTextToCopy );
+            clip.glue( 'd_clip_button' );
+        
+		alert('copied');
+	    //Copied = text.createTextRange();
+    	//Copied.execCommand("Copy");
+		
+	}
+	$("#project").change(function(){
+		reload_template();
+    });
+	$("#workspace").keyup(function(e){
+		render_spec();
+	});
+	$("#copy").click(function(){
+		// not implemented
+		//copy_to_clipboard();
+	});
+
+	async function httpGet( inURL )
+	{
+		return new Promise((resolve, reject) => {
+			let xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = () => {
+				if ( xmlhttp.readyState == 4 )
+				{
+					if ( xmlhttp.status==200 )
+					{
+						resolve(xmlhttp.responseText);
+					} else {
+						reject(xmlhttp.responseText);
+					}
+				}
+			};
+			xmlhttp.open("GET", inURL, false);
+			xmlhttp.send();
+		});
+	}
+
+	function getProjects()
+	{
+		
+		return projects;
+	}
+
+	const initProjects = async function(){
+		try {
+			let sel = document.getElementById('project');
+			let json = await httpGet('projects.json.txt');
+			let o = JSON.parse(json);
+			let projs = o["projects"];
+			for ( let i=0; i<projs.length; ++i)
+			{
+				const proj = projs[i];
+				alert( proj.name + ', ' + proj.url);
+				let opt = document.createElement('option');
+				opt.value = proj.url;
+				opt.innerHTML = proj.name;
+				sel.appendChild(opt);
+				
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	initProjects();
+});
+</script>
+	<div class="maincontent">
+		<table>	
+		<tr>
+			<td>Project</td>
+			<td>
+			<select id="project" class="mono">
+				<option value="sample_spec.txt">Please select project...</option>
+			</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Workspace</td>
+			<td><input id="workspace" class="mono" type="text" placeholder="nexu_l_ai14A6" value=""></td>
+		</tr>	
+
+		<tr>
+			<td><!--<a id="copy" href="#">Copy</a>--></td>
+			<td>
+			<textarea readonly id="spec" class="mono" cols="80" rows="30"></textarea></td>
+		</tr>	
+		</table>
+</div>
+
+</body>
+</html>
