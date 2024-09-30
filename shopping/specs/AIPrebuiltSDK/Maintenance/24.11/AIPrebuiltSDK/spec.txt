@@ -731,8 +731,8 @@
 //moduledev/Packages/InstallerUtilities/Maintenance/24.11.x/InstallerUtilities/... //DEPOT/InstallerUtilities/...
 //moduledev/Packages/InstallerUtilities/Maintenance/24.11.x/PackageDependencies.xml //DEPOT/Dependencies/InstallerUtilities-24.11.x.xml
 //moduledev/Packages/InstallerUtilities/Maintenance/24.11.x/Licenses.xml //DEPOT/LicenseInfoXMLs/InstallerUtilities-24.11.x.xml
-//packages/3rdParty/Intel/IntelTBB/Maintenance/2021.3.0_Source.x/PackageDependencies.xml //DEPOT/Dependencies/IntelTBB-2021.3.0_Source.x.xml
-//packages/3rdParty/Intel/IntelTBB/Maintenance/2021.3.0_Source.x/Licenses.xml //DEPOT/LicenseInfoXMLs/IntelTBB-2021.3.0_Source.x.xml
+//packages/3rdParty/Intel/IntelTBB/Maintenance/2021.13.0_Source.x/PackageDependencies.xml //DEPOT/Dependencies/IntelTBB-2021.13.0_Source.x.xml
+//packages/3rdParty/Intel/IntelTBB/Maintenance/2021.13.0_Source.x/Licenses.xml //DEPOT/LicenseInfoXMLs/IntelTBB-2021.13.0_Source.x.xml
 //moduledev/Packages/InteractIO/Maintenance/24.11.x/InteractIO/... //DEPOT/InteractIO/...
 //moduledev/Packages/InteractIO/Maintenance/24.11.x/PackageDependencies.xml //DEPOT/Dependencies/InteractIO-24.11.x.xml
 //moduledev/Packages/InteractIO/Maintenance/24.11.x/Licenses.xml //DEPOT/LicenseInfoXMLs/InteractIO-24.11.x.xml
@@ -845,9 +845,9 @@
 //moduledev/3rdParty/OpenCV/Maintenance/4.5.x/OpenCV/... //DEPOT/OpenCV/...
 //moduledev/3rdParty/OpenCV/Maintenance/4.5.x/PackageDependencies.xml //DEPOT/Dependencies/OpenCV-4.5.x.xml
 //moduledev/3rdParty/OpenCV/Maintenance/4.5.x/Licenses.xml //DEPOT/LicenseInfoXMLs/OpenCV-4.5.x.xml
-//moduledev/3rdParty/OpenImageDenoise/Maintenance/1.4.1.x/OpenImageDenoise/... //DEPOT/OpenImageDenoise/...
-//moduledev/3rdParty/OpenImageDenoise/Maintenance/1.4.1.x/PackageDependencies.xml //DEPOT/Dependencies/OpenImageDenoise-1.4.1.x.xml
-//moduledev/3rdParty/OpenImageDenoise/Maintenance/1.4.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/OpenImageDenoise-1.4.1.x.xml
+//moduledev/3rdParty/OpenImageDenoise/Maintenance/2.3.0.x/OpenImageDenoise/... //DEPOT/OpenImageDenoise/...
+//moduledev/3rdParty/OpenImageDenoise/Maintenance/2.3.0.x/PackageDependencies.xml //DEPOT/Dependencies/OpenImageDenoise-2.3.0.x.xml
+//moduledev/3rdParty/OpenImageDenoise/Maintenance/2.3.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/OpenImageDenoise-2.3.0.x.xml
 //moduledev/3rdParty/OpenImageIO/Maintenance/2.5.5.x/OpenImageIO/... //DEPOT/OpenImageIO/...
 //moduledev/3rdParty/OpenImageIO/Maintenance/2.5.5.x/PackageDependencies.xml //DEPOT/Dependencies/OpenImageIO-2.5.5.x.xml
 //moduledev/3rdParty/OpenImageIO/Maintenance/2.5.5.x/Licenses.xml //DEPOT/LicenseInfoXMLs/OpenImageIO-2.5.5.x.xml
