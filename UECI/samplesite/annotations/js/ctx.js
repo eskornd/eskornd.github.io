@@ -48,7 +48,7 @@ let ctx = {
 				ctx.currentPageRect = getPageBox(pagesInfo[0].pageBoxes, "MediaBox");
 				let pageNumber = await doc.pageNumber();
 				let hasAnnotation = await doc.hasPDFAnnotation();
-				ctx.view.setPageNumberText(pageNumber + 1);
+				ctx.view.setPageNumberText((parseInt(pageNumber) + 1));
 				ctx.view.setPageSizeText(pageSizeText);
 				ctx.view.setIsDirtyText(dirtyText);
 				ctx.view.setClusterNodeIDText(clusterNodeIDText);
