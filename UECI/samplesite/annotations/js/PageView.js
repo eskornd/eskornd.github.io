@@ -193,6 +193,10 @@ export default class PageView
 			$('#' + id).attr('data', JSON.stringify(obj.rect));
 		});
 	}
+	setLastNotification ( name )
+	{
+		$('#lastNotification').text(name);	
+	}
 
 	init()
 	{

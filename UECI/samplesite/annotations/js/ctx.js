@@ -60,6 +60,7 @@ let ctx = {
 				ctx.view.setIsDirtyText('');
 				ctx.currentDoc = undefined;
 			}
+			ctx.view.setLastNotification('onDocumentChanged');
 		} // on document changed
 
 		, onDocumentPageBoxesChanged : async () => {
@@ -70,12 +71,14 @@ let ctx = {
 			let pageSizeText = '' + w + ' x ' + h;
 			ctx.currentPageRect = getPageBox(pagesInfo[0].pageBoxes, "MediaBox");
 			ctx.view.setPageSizeText(pageSizeText);
+			ctx.view.setLastNotification('onDocumentPageBoxesChanged');
 		} // on document page boxes changed
 
 		, onDocumentPageNumberChanged : async () => {
 			let doc = await ctx.editor.currentDocument();
 			let pageNumber = await doc.pageNumber();
 			ctx.view.setPageNumberText(pageNumber + 1);
+			ctx.view.setLastNotification('onDocumentPageNumberChanged');
 		} // on document page number changed
 
 		, onAnnotationCreated2 : async (annotation, params) => {
@@ -96,10 +99,12 @@ let ctx = {
 				}
 			};
 			ctx.view.addAnnotation(annotationLocal);
+			ctx.view.setLastNotification('onAnnotationCreated2');
 		} // on annotation created
 
 		, onAnnotationSelected : async (annotationID) => {
 			alert('onAnnotationSelected: ' + annotationID);
+			ctx.view.setLastNotification('onAnnotationSelected');
 		}
 	}
 };
