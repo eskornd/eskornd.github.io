@@ -474,10 +474,10 @@ export default class PageView
 			// random width in 200 ... 500
 			let height = 100 * Math.floor((Math.random() * 3) + 2);
 			let title = 'DIALOG TITLE ' + width + 'x' + height;
-			ctx.editor.showModal( {url:'https://eskornd.github.io/samplesite/boot/', title : title, dialogSize: {width: width, height:height} });
+			ctx.editor.showModal( {url:'https://eskornd.github.io/UECI/samplesite/boot/', title : title, dialogSize: {width: width, height:height} });
 		});
 		$("#openInBrowser").on("click", ()=>{
-			ctx.editor.openInBrowser( 'https://eskornd.github.io/samplesite/boot/');
+			ctx.editor.openInBrowser( 'https://eskornd.github.io/UECI/samplesite/boot/');
 		});
 		$("#documents").on("click", async ()=>{
 			let docs = [];
