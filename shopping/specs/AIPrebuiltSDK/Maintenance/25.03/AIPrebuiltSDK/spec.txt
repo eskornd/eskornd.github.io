@@ -764,6 +764,9 @@
 //moduledev/Packages/MarksCore/Maintenance/2.2.x/MarksCore/... //DEPOT/MarksCore/...
 //moduledev/Packages/MarksCore/Maintenance/2.2.x/PackageDependencies.xml //DEPOT/Dependencies/MarksCore-2.2.x.xml
 //moduledev/Packages/MarksCore/Maintenance/2.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/MarksCore-2.2.x.xml
+//moduledev/3rdParty/MeshOptimizer/Maintenance/0.22.x/MeshOptimizer/... //DEPOT/MeshOptimizer/...
+//moduledev/3rdParty/MeshOptimizer/Maintenance/0.22.x/PackageDependencies.xml //DEPOT/Dependencies/MeshOptimizer-0.22.x.xml
+//moduledev/3rdParty/MeshOptimizer/Maintenance/0.22.x/Licenses.xml //DEPOT/LicenseInfoXMLs/MeshOptimizer-0.22.x.xml
 //moduledev/3rdParty/Microsoft.Web.WebView2/Maintenance/1.0.2151.40.x/Microsoft.Web.WebView2/... //DEPOT/Microsoft.Web.WebView2/...
 //moduledev/3rdParty/Microsoft.Web.WebView2/Maintenance/1.0.2151.40.x/PackageDependencies.xml //DEPOT/Dependencies/Microsoft.Web.WebView2-1.0.2151.40.x.xml
 //moduledev/3rdParty/Microsoft.Web.WebView2/Maintenance/1.0.2151.40.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Microsoft.Web.WebView2-1.0.2151.40.x.xml
