@@ -28,6 +28,10 @@
 		, "url" : "specs/PsAllProduct/Maintenance/24.11/PsAllProduct/spec.txt"
 	}
 	, {
+		"name" : "DeskPack Photoshop 25.03"
+		, "url" : "specs/PsAllProduct/Maintenance/25.03/PsAllProduct/spec.txt"
+	}
+	, {
 		"name" : "AAXMP 24.07"
 		, "url" : "specs/AAProduct/Maintenance/24.07/ProductDefinitions/spec.txt"
 	}
