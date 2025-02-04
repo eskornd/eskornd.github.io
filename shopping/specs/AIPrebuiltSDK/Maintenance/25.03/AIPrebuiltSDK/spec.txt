@@ -1144,6 +1144,9 @@
 //moduledev/3rdParty/appleseed/Maintenance/Esko_1.x/appleseed/... //DEPOT/appleseed/...
 //moduledev/3rdParty/appleseed/Maintenance/Esko_1.x/PackageDependencies.xml //DEPOT/Dependencies/appleseed-Esko_1.x.xml
 //moduledev/3rdParty/appleseed/Maintenance/Esko_1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/appleseed-Esko_1.x.xml
+//moduledev/3rdParty/assimp/Maintenance/5.4.3.x/assimp/... //DEPOT/assimp/...
+//moduledev/3rdParty/assimp/Maintenance/5.4.3.x/PackageDependencies.xml //DEPOT/Dependencies/assimp-5.4.3.x.xml
+//moduledev/3rdParty/assimp/Maintenance/5.4.3.x/Licenses.xml //DEPOT/LicenseInfoXMLs/assimp-5.4.3.x.xml
 //moduledev/3rdParty/aws-sdk-cpp/Maintenance/1.2.0.x/aws-sdk-cpp/... //DEPOT/aws-sdk-cpp/...
 //moduledev/3rdParty/aws-sdk-cpp/Maintenance/1.2.0.x/PackageDependencies.xml //DEPOT/Dependencies/aws-sdk-cpp-1.2.0.x.xml
 //moduledev/3rdParty/aws-sdk-cpp/Maintenance/1.2.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/aws-sdk-cpp-1.2.0.x.xml
