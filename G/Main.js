@@ -52,6 +52,8 @@ function FaceInfoToHTML(info)
 	str += rowText('Vendor URL: ', info.vendorURL);
 	str += rowText('License: ', info.license);
 	str += rowText('License URL: ', info.licenseURL);
+	str += rowText('Sample Text: ', info.sampleText);
+	str += rowText('Possible Main Language(experimental): ', info.possibleMainLanguage);
     str += '</table>';
     return str;
 }
@@ -139,6 +141,25 @@ function CmapsToHTML(cmaps)
 	return text;
 }
 
+function NameToHTML(name)
+{
+	let text = '';
+	text += `${name.nameIDName} (${name.languageCode}): ${name.string}`
+	text += '\n';
+	return text;
+}
+
+function NamesToHTML(names)
+{
+	let text = '';
+	for ( let i=0; i<names.size(); ++i )
+	{
+		const name = names.get(i);
+		text += NameToHTML(name);	
+	}
+	return text;
+}
+
 function MakeGIWrapper(fontFile, index)
 {
 	let gi = new gGlyphModule.GIWrapper();
@@ -161,7 +182,7 @@ function InitFontFace(fontFile, faceIndex)
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
-
+    $('#font_names').html(NamesToHTML(gi.names()));
 
 	//let loaded = render.loadGlyphs();
 	let elems = render.glyphElements();
