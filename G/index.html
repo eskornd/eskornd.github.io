@@ -56,14 +56,14 @@
 <div id="tabs" style="display: none;">
     <ul>
         <li><a href="#tabs-1">Glyphs</a></li>
-        <li><a href="#tabs-2">Font Info</a></li>
-        <li><a href="#tabs-3">Names</a></li>
-        <li><a href="#tabs-4">cmap</a></li>
+        <li><a href="#tabs-2">Preview</a></li>
+        <li><a href="#tabs-3">Font Info</a></li>
+        <li><a href="#tabs-4">Names</a></li>
+        <li><a href="#tabs-5">cmap</a></li>
          <!--
          <li><a href="#tabs-3">Ligatures</a></li>
          <li><a href="#tabs-4">Contextual Alternates</a></li>
-         <li><a href="#tabs-5">Preview</a></li>
-         -->
+		 -->
     </ul>
     <div id="tabs-1">
         <!-- All Glyphs -->
@@ -71,6 +71,15 @@
         </div>
     </div>
     <div id="tabs-2">
+		<div>
+			<input id="preview_size" min="1" max="128" type="number" value="24"/>
+			<input id="preview_source" type="text" size="100" value="The quick brown fox jumps over the lazy dog."/>
+		</div>
+        <div id="preview" style="font-family:Nova Mono;">
+			<div id='font_preview'></div>
+        </div>
+    </div>
+    <div id="tabs-3">
         <p>
 			<pre class="info" id="font_info" ></pre>
         </p>
@@ -81,19 +90,19 @@
 			<pre class="info" id="font_props" ></pre>
         </p>
     </div>
-    <div id="tabs-3">
+    <div id="tabs-4">
 		<pre class="info" id="font_names"></pre>
     </div>
-    <div id="tabs-4">
+    <div id="tabs-5">
 		<pre class="info" id="cmaps"></pre>
     </div>
     
-     <div id="tabs-5">
+     <div id="tabs-6">
          <div id="ligatures" style="font-family:Nova Mono; font-size:12;">
          </div>
      </div>
      
-     <div id="tabs-6">
+     <div id="tabs-7">
          <div id="calts" style="font-family:Nova Mono; font-size:12;">
          </div>
      </div>

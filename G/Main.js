@@ -2,6 +2,7 @@ import {GlyphRender} from './GlyphRender.js'
 
 var gGlyphModule;
 var gRender;
+var gWrapper;
 
 function ToLinkHtml(text, url)
 {
@@ -169,9 +170,27 @@ function MakeGIWrapper(fontFile, index)
 	return isLoaded ? gi : undefined;
 }
 
+function GeneratePreview()
+{
+	//const text = 'The quick brown fox jumps over the lazy dog.';
+	const fontSizeText = $('#preview_size').val();
+	const text = $('#preview_source').val();
+	//$('#font_preview').html(text);
+	let gi = gWrapper;
+	const fontSize = parseFloat(fontSizeText);
+	const mx = [fontSize, 0, 0, fontSize, 0, 0];
+	const svg_d = gWrapper.previewTextSVG_d(text, mx);
+	const prefix = `<svg width=1000 height=240>`;
+	const path = `<path d="${svg_d}"/>`;
+	const suffix = `</svg>`;
+	const elem = prefix + path + suffix;
+	$('#font_preview').html(elem);
+}
+
 function InitFontFace(fontFile, faceIndex)
 {
 	let gi = MakeGIWrapper(fontFile, faceIndex);
+	gWrapper = gi; 
 	let render = new GlyphRender(gi);
 	gRender = render;
 	render.setGridSize(128.0);
@@ -199,6 +218,14 @@ function InitFontFace(fontFile, faceIndex)
 		const elem = elems[i];
 		glyphs_div.append(elem);
 	}
+	
+	$('#preview_size').on('input',function(e){
+		GeneratePreview();
+	});
+	$('#preview_source').on('input',function(e){
+		GeneratePreview();
+	});
+	GeneratePreview();
 }
 
 function PickupFace(fontFile)
