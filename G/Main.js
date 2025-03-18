@@ -199,7 +199,8 @@ function InitFontFace(fontFile, faceIndex)
 	const short_info = `${gi.faceInfo().postscriptName} of ${fontFile}.`;
 	//$('#font_filename').html(fontFile);
 	$('#font_short_info').html(short_info);
-    $('#font_info').html(FaceInfoToHTML(gi.faceInfo()));
+	const faceInfo = gi.faceInfo()
+    $('#font_info').html(FaceInfoToHTML(faceInfo));
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
@@ -219,6 +220,13 @@ function InitFontFace(fontFile, faceIndex)
 		glyphs_div.append(elem);
 	}
 	
+	if ( faceInfo.sampleText === '' )
+	{
+		$('#preview_source').val('The quick brown fox jumps over the lazy dog.');
+	} else {
+		$('#preview_source').val(faceInfo.sampleText);
+	}
+
 	$('#preview_size').on('input',function(e){
 		GeneratePreview();
 	});
