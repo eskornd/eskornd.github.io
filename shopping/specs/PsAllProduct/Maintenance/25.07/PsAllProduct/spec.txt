@@ -43,6 +43,9 @@
 //moduledev/Packages/ExtraBoostFilesystem/Maintenance/4.1.x/ExtraBoostFilesystem/... //DEPOT/ExtraBoostFilesystem/...
 //moduledev/Packages/ExtraBoostFilesystem/Maintenance/4.1.x/PackageDependencies.xml //DEPOT/Dependencies/ExtraBoostFilesystem-4.1.x.xml
 //moduledev/Packages/ExtraBoostFilesystem/Maintenance/4.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/ExtraBoostFilesystem-4.1.x.xml
+//moduledev/Packages/ExtraQt/Maintenance/7.1.x/ExtraQt/... //DEPOT/ExtraQt/...
+//moduledev/Packages/ExtraQt/Maintenance/7.1.x/PackageDependencies.xml //DEPOT/Dependencies/ExtraQt-7.1.x.xml
+//moduledev/Packages/ExtraQt/Maintenance/7.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/ExtraQt-7.1.x.xml
 //moduledev/3rdParty/FlexLM/Released/11.19.7/FlexLM/... //DEPOT/FlexLM/...
 //moduledev/3rdParty/FlexLM/Released/11.19.7/PackageDependencies.xml //DEPOT/Dependencies/FlexLM-11.19.7.xml
 //moduledev/3rdParty/FlexLM/Released/11.19.7/Licenses.xml //DEPOT/LicenseInfoXMLs/FlexLM-11.19.7.xml
@@ -85,6 +88,9 @@
 //moduledev/Packages/Licensing/Maintenance/12.x/VerifyLicenseTest/... //DEPOT/VerifyLicenseTest/...
 //moduledev/Packages/Licensing/Maintenance/12.x/PackageDependencies.xml //DEPOT/Dependencies/Licensing-12.x.xml
 //moduledev/Packages/Licensing/Maintenance/12.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Licensing-12.x.xml
+//moduledev/Packages/Localization/Maintenance/1.4.x/Localization/... //DEPOT/Localization/...
+//moduledev/Packages/Localization/Maintenance/1.4.x/PackageDependencies.xml //DEPOT/Dependencies/Localization-1.4.x.xml
+//moduledev/Packages/Localization/Maintenance/1.4.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Localization-1.4.x.xml
 //moduledev/Packages/Logging/Maintenance/1.2.x/Logging/... //DEPOT/Logging/...
 //moduledev/Packages/Logging/Maintenance/1.2.x/PackageDependencies.xml //DEPOT/Dependencies/Logging-1.2.x.xml
 //moduledev/Packages/Logging/Maintenance/1.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Logging-1.2.x.xml
