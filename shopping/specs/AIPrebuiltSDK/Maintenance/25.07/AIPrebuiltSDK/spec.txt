@@ -1268,6 +1268,9 @@
 //moduledev/3rdParty/utf8-cpp/Maintenance/4.0.6.x/utf8/... //DEPOT/utf8/...
 //moduledev/3rdParty/utf8-cpp/Maintenance/4.0.6.x/PackageDependencies.xml //DEPOT/Dependencies/utf8-cpp-4.0.6.x.xml
 //moduledev/3rdParty/utf8-cpp/Maintenance/4.0.6.x/Licenses.xml //DEPOT/LicenseInfoXMLs/utf8-cpp-4.0.6.x.xml
+//moduledev/3rdParty/xatlas/Maintenance/master/xatlas/... //DEPOT/xatlas/...
+//moduledev/3rdParty/xatlas/Maintenance/master/PackageDependencies.xml //DEPOT/Dependencies/xatlas-master.xml
+//moduledev/3rdParty/xatlas/Maintenance/master/Licenses.xml //DEPOT/LicenseInfoXMLs/xatlas-master.xml
 //moduledev/3rdParty/xxHash/Maintenance/0.8.1.x/xxHash/... //DEPOT/xxHash/...
 //moduledev/3rdParty/xxHash/Maintenance/0.8.1.x/PackageDependencies.xml //DEPOT/Dependencies/xxHash-0.8.1.x.xml
 //moduledev/3rdParty/xxHash/Maintenance/0.8.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/xxHash-0.8.1.x.xml
