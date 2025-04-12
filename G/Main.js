@@ -163,6 +163,41 @@ function NamesToHTML(names)
 	return text;
 }
 
+function AddOpenTypeFeatureToggles(feats)
+{
+	let elems = '';
+	for ( let i=0;i<feats.size(); ++i)
+	{
+		let feat = feats.get(i);
+		const toggle_id = `toggle_${feat.code}`;
+		const checked = feat.isOn ? 'checked' : '';
+		const elem = `<input type="checkbox" class='opentype_toggle' id="${toggle_id}" name="name${feat.code}" value="${feat.code}" ${checked} /><label for="${toggle_id}">${feat.code}</label>`;
+		elems += elem;
+	}
+	$('#opentype_toggles').html(elems);
+}
+
+function GetOpenTypeFeatures_as_VectorString()
+{
+	let vstr = new gGlyphModule.VectorString();
+	let arr0 = $('.opentype_toggle:checked').map( (index) => {
+		return '+' + $('.opentype_toggle:checked').eq(index).val();
+	}).get();
+	for ( let i=0;i<arr0.length;++i)
+	{
+		vstr.push_back(arr0[i]);
+	}
+
+	let arr1 = $('.opentype_toggle:not(checked)').map( (index) => {
+		return '-' + $('.opentype_toggle:not(:checked)').eq(index).val();
+	}).get();
+	for ( let i=0;i<arr1.length;++i)
+	{
+		vstr.push_back(arr1[i]);
+	}
+	return vstr;
+}
+
 function MakeGIWrapper(fontFile, index)
 {
 	let gi = new gGlyphModule.GIWrapper();
@@ -172,14 +207,17 @@ function MakeGIWrapper(fontFile, index)
 
 function GeneratePreview()
 {
-	//const text = 'The quick brown fox jumps over the lazy dog.';
 	const fontSizeText = $('#preview_size').val();
 	const text = $('#preview_source').val();
-	//$('#font_preview').html(text);
+	
+	// get opentype features
+	let features = GetOpenTypeFeatures_as_VectorString();
+
 	let gi = gWrapper;
 	const fontSize = parseFloat(fontSizeText);
 	const mx = [fontSize, 0, 0, fontSize, 0, 0];
-	const svg_d = gWrapper.previewTextSVG_d(text, mx);
+
+	const svg_d = gWrapper.previewTextSVG_d(text, mx, features);
 	const prefix = `<svg width=1000 height=240>`;
 	const path = `<path d="${svg_d}"/>`;
 	const suffix = `</svg>`;
@@ -220,6 +258,17 @@ function InitFontFace(fontFile, faceIndex)
 		glyphs_div.append(elem);
 	}
 	
+	// opentype features
+	const feats = gi.getOpenTypeFeatures();
+	AddOpenTypeFeatureToggles(feats);
+	$('.opentype_toggle').change( function(){
+		if ( $(this).is(':checked') )
+		{
+		} else {
+		}
+		GeneratePreview();
+	});
+
 	if ( faceInfo.sampleText === '' )
 	{
 		$('#preview_source').val('The quick brown fox jumps over the lazy dog.');
