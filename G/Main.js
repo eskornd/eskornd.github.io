@@ -214,14 +214,28 @@ function GeneratePreview()
 	let features = GetOpenTypeFeatures_as_VectorString();
 
 	let gi = gWrapper;
-	const fontSize = parseFloat(fontSizeText);
-	const mx = [fontSize, 0, 0, fontSize, 0, 0];
+	const props = gi.faceProperties();
+	let asc = props.ascender / props.units_per_EM;
+	let dsc = props.descender / props.units_per_EM;
 
-	const svg_d = gWrapper.previewTextSVG_d(text, mx, features);
-	const prefix = `<svg width=1000 height=240>`;
+	const fontSize = parseFloat(fontSizeText);
+	// a/d, scale, ty:shift downward
+	const mx = [fontSize, 0, 0, fontSize, 0, -fontSize];
+
+	const svg_d = gi.previewTextSVG_d(text, mx, features);
+	const max_x = 1920;
+	const max_y = 1080;
+	const prefix = `<svg width=${max_x} height=${max_y}>`;
 	const path = `<path d="${svg_d}"/>`;
+	let asc_y = fontSize * (1.0 - asc);
+	let dsc_y = fontSize * (1.0 - dsc);
+	let base_y = fontSize;
+	let stroke_style = 'style="stroke:gray;stroke-width:0.5;" stroke-dasharray="4 1"';
+	const asc_line = `<line x1="0" y1="${asc_y}" x2="${max_x}" y2="${asc_y}" ${stroke_style} />`;
+	const dsc_line = `<line x1="0" y1="${dsc_y}" x2="${max_x}" y2="${dsc_y}" ${stroke_style} />`;
+	const base_line = `<line x1="0" y1="${base_y}" x2="${max_x}" y2="${base_y}" ${stroke_style} />`;
 	const suffix = `</svg>`;
-	const elem = prefix + path + suffix;
+	const elem = prefix + asc_line + dsc_line + base_line + path + suffix;
 	$('#font_preview').html(elem);
 }
 
