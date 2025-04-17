@@ -4,8 +4,9 @@
 ## UECI
 * [UECI SDK and API Reference](https://eskornd.github.io/UECI/)
 
-## NDLJS for online PDF Editing
+## WebAssembly Demos
 * [NDLJS Demo](https://eskornd.github.io/NDL/)
+* [Rainbow](https://eskornd.github.io/Rainbow/)
 
 ## R&D Shortcuts
 * [Shanghai Jenkins build (miniarm01)](http://miniarm01.esko-graphics.com/view/EnabledJobs/)
