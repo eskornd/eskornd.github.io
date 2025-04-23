@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous"></script>
+	<script type="text/javascript" src="./script/jquery.resize.js"></script>
+
+	<script type="text/javascript" src="tw.js"></script>
+	<script type="text/javascript" src="WebTextPrototype.js"></script>
+
+
+	<!-- include ui componenet -->
+	<link rel="stylesheet" type="text/css" href="./css/topcoat-desktop-dark.css">
+	<link rel="stylesheet" type="text/css" href="./css/topcoat-select.css">
+    <link rel="stylesheet" type="text/css" href="./css/topcoat-number.css">
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
+	<style> 
+	.container {
+		margin: 5px;
+		background-color: white;
+		border: 0px solid;
+		padding: 10px;
+		width: 422px;
+		height: 322px;
+		resize: both;
+		overflow: hidden;
+	}
+
+	.topcoat-label.small {
+		font-size: 10pt;
+	}
+
+	.font-loader-spin {
+		border: 3px solid #f3f3f3;
+		border-radius: 50%;
+		border-top: 3px solid #3498db;
+		width: 16px;
+		height: 16px;
+		-webkit-animation: spin 2s linear infinite; /* Safari */
+		animation: spin 2s linear infinite;
+	}
+
+	.topcoat-number-unit {
+		font-size: 8pt;
+		color: #c6c8c8;
+		margin-left: -20px;
+	}
+
+	/* Safari */
+	@-webkit-keyframes spin {
+		0% { -webkit-transform: rotate(0deg); }
+		100% { -webkit-transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
+	.dimmer
+    {
+        background:#000;
+        opacity:0.7;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+    }
+	</style>
+</head>
+<body>
+<div class="wrapper">
+	<h1 style="color: #c6c8c8;">Esko Web Typesetting Prototype</h1>
+	<header>
+	<span class="topcoat-label small">Input Texts:</span><span class="topcoat-label small" id="characters">0 characters</span>
+	<textarea id="textarea" class="topcoat-textarea--large header-text-area" placeholder="Please input text you want to render here" disabled="true"></textarea>
+	</header>
+	<nav>
+	<table style="border: 0;">
+	<tr>
+	<td><span class="topcoat-label" style="margin-top: 5px;">Font:</span></td>
+	<td><select class="topcoat-select" id="font" style="width: 80px;">
+	</select></td>
+	<td><div id="font-spin" class="font-loader-spin" title="Loading extra fonts..." style="display: none;"></div></td>
+    </tr>
+    <tr>
+    <td></td>
+    <td>
+        <div style="position: relative; overflow: hidden; display: inline-block;" >
+            <button class="topcoat-button--cta" style="width: 80px;">Upload...</button>
+            <input type="file" id="user_font" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0;" />
+        </div>
+    </td>
+    </tr>
+	<tr>
+	<td><span class="topcoat-label" style="margin-top: 5px;">Size:</span></td>
+	<td><input id="size" type="number" step="1" min="0" style="width: 80px; padding-right: 20px; text-align: right;" class="topcoat-text-input" value="24"/><span class="topcoat-number-unit">pt</span></td>
+	</tr>
+	<tr>
+	<td><span class="topcoat-label" style="margin-top: 5px;">Tracking:</span></td>
+	<td><input id="tracking" type="number" step="1" style="width: 80px;" class="topcoat-text-input" value="0"/></td>
+	</tr>
+	<tr>
+	<td><span class="topcoat-label">Kerning:</span></td>
+	<td><input id="kerning" type="checkbox" checked><div class="topcoat-checkbox__checkmark"></div></td>
+	</tr>		
+	<tr>
+	<td><span class="topcoat-label">Ligature:</span></td>
+	<td><input id="ligature" type="checkbox" checked><div class="topcoat-checkbox__checkmark"></div></td>
+	</tr>
+	<tr>
+	<td><span class="topcoat-label" style="margin-top: 5px;">Width:</span></td>
+	<td><input type="text" style="width: 80px; padding-right: 20px; text-align: right;" id="canvas_width" class="topcoat-text-input" value="400"/><span class="topcoat-number-unit">px</span></td>
+	</tr>
+	<tr>
+	<td><span class="topcoat-label" style="margin-top: 5px;">Height:</span></td>
+	<td><input type="text" style="width: 80px; padding-right: 20px; text-align: right;" id="canvas_height" class="topcoat-text-input" value="300"/><span class="topcoat-number-unit">px</span></td>
+    </tr>
+	</table>
+	</nav>
+	<section style="overflow: auto;">
+	<span class="topcoat-label small" id="fps">Characters: N/A, real time latency: N/A, FPS: N/A</span>
+	<span class="topcoat-label small">
+		<a id="download_link" >
+			<img id="download_pdf" src="image/download_pdf.png" alt="Download as PDF" height="32" width="32">
+		</a>
+	</span>
+	
+	<div id="svg_container" class="container">	
+	    <svg id="canvas" width="100%" height="100%" style="border: 1px dotted #0066ff; overflow: visible; ">
+		    <path id="svg_path" class="state-x-area" d="" style="fill:#000; stroke: #000; stroke-width:0" />
+	    </svg>
+	</div>
+	</section>
+</div>
+<div class="dimmer" id="dimmer">
+	<div style="font-size:24pt;color:red;text-align: center;padding: 70px 0;">Loading...</div>
+</div>
+
+<div id="hidden_form"></div>
+<script> 
+	function onDownloadPDFClicked()
+    {
+    	postURL="http://mbpbuild03.esko-graphics.com/cgi-bin/generate.py";
+    	var rawText = $("#textarea").val();
+		var fontSize = $("#size").val();
+		var psName = $("#font option:selected").text();
+		var width = $("#canvas_width").val();
+		var height = $("#canvas_height").val();
+    	var jsonObj = {"text": rawText, "fontSize": fontSize};
+    	var json = JSON.stringify(jsonObj);
+
+    	// fill the form
+    	$("#form_raw_text").val(rawText);
+    	$("#form_font_size").val(fontSize);
+    	$("#form_postscript_name").val(psName);
+    	$("#form_width").val(width);
+    	$("#form_height").val(height);
+
+    	// submit
+    	$("#form_download_pdf").attr('action', postURL);
+    	$("#form_download_pdf").submit();
+    }
+
+    $(function(){
+      	$("#hidden_form").load("hiddenform.html"); 
+		
+		// register event for download pdf
+		$("#download_pdf").on("click", onDownloadPDFClicked);
+    });
+</script> 
+
+<script>
+ 	function doTypesetting() {
+		var text = $("#textarea").val();
+		var fontSize = $("#size").val();
+		if (text.length == 0 || fontSize <= 0) {
+		    // empty svg
+			$("#svg_path").attr("d", "");
+			return;
+		}
+		var t0 = performance.now();
+		
+		var fontName = $("#font option:selected").text();
+		var face = TWFontLib.find(fontName);
+
+		var st = new TWTextStory(text);
+		var feats = new TWCharFeatures();
+		feats.setFont(face.key, fontSize);
+		feats.setLigature($("#ligature").is(':checked')); // TODO: get option from UI
+		feats.setAutoKerning($("#kerning").is(':checked'));
+		feats.setTracking($("#tracking").val());
+
+		st.setCharFeaturs(0, text.length, feats);
+		
+		var $canvas = $("#canvas");
+		var glyphs = st.compose($canvas.width(), $canvas.height());
+		var svg = glyphs.render_as_svg();
+
+		// show svg result
+		$("#svg_path").attr("d", svg);
+
+		glyphs.destroy();
+		feats.destroy();
+		st.destroy();
+
+		// calculate latency and fps
+		TWTrace.recordLatency(t0, performance.now());
+		$("#fps").text("Characters: " + $("#textarea").val().length + ", real time latency: " + TWTrace.lastLatency() + " ms, FPS: " + TWTrace.fps());
+	}
+
+	function isSafari() {
+		return navigator.vendor.indexOf("Apple") != -1;
+	}
+
+	function onTextInput() {
+		// update character count once input changed
+		$("#characters").text($("#textarea").val().length + " characters");
+
+		doTypesetting()
+	}
+
+	function onFontChange() {
+		doTypesetting()
+	}
+
+	function onSizeChange() {
+		doTypesetting()
+	}
+
+	// We are going to display the size of actual canvas not the canvas container.
+	// However, the container controls the size of canvas. So we do it indirectly.
+	function onEditCanvasWidth() {
+		var offset = $("#canvas_width").val() - $("#canvas").width();
+		var width = $("#svg_container").width();
+
+		// change width
+		$("#svg_container").width(width + offset);
+	}
+
+	function onEditCanvasHeight() {
+		var offset = $("#canvas_height").val() - $("#canvas").height();
+		var height = $("#svg_container").height();
+
+		// change height
+		$("#svg_container").height(height + offset);
+	}
+
+	function onTrackingChange() {
+		doTypesetting()
+	}
+
+	function onKerningChange() {
+		doTypesetting()
+	}
+
+	function onLigatureChange() {
+		doTypesetting()
+	}
+
+	function onSvgContainerResize() {
+		var $canvas = $("#canvas");
+
+		$("#canvas_width").val(Math.round($canvas.width()));
+		$("#canvas_height").val(Math.round($canvas.height()));
+		doTypesetting()
+    }
+
+    function refreshFontList() {
+		// remember selection
+		var selected = $("#font option:selected").val();
+        
+        // empty font list
+		$("#font").empty();
+
+        // init font list
+        TWFontLib.allFaces.forEach(function (face) {
+            $("#font").append($('<option>', {
+                value: face.postscriptName,
+                text: face.postscriptName
+            }));
+		});
+		
+		// restore selection if we have
+		if ( selected && selected.length > 0 )
+			$("#font").val( selected );
+    }
+    
+    function onUploadFont() {
+        var file = document.getElementById('user_font').files[0]
+
+        if (file)
+        {
+            TWFontLib.uploadFontFile( file ).then( function (path){
+				refreshFontList();
+
+				window.alert("New font uploaded!");
+			}, function (error){
+				window.alert("Upload font failed: " + error);
+			});
+		}
+		
+		document.getElementById('user_font').value = "";
+    }
+
+	(function () {
+		// register event for text input
+		$("#textarea").on("input propertychange", onTextInput);
+
+		// register event for font family change
+		$("#font").on("change", onFontChange);
+
+		// register event for font size change
+		$("#size").on("change", onSizeChange);
+
+		// register event for tracking & kerning & ligature
+		$("#tracking").on("change", onTrackingChange);
+		$("#kerning").on("change", onKerningChange);
+		$("#ligature").on("change", onLigatureChange);
+
+		TWFontLib.onFontFilesLoadBegin = function() {
+			console.log("Loading fonts...");
+			$('#font-spin').show();
+		};
+		TWFontLib.onFontFilesLoadEnd = function() {
+			console.log("Loading fonts... Done");
+			$('#font-spin').hide();
+		};
+		TWFontLib.onFontFileLoaded = function(url, path) {
+			 refreshFontList(); 
+		};
+		TWFontLib.onFontFileNotLoaded = function(url, path) {
+			console.error("Load font failed: " + url);
+		};
+
+		// initialize runtime library
+		TWLib.onRuntimeInitialized = function () {
+			$("#textarea").prop("disabled", false);
+
+			// regsiter event for svg container resize
+			$("#svg_container").resize(onSvgContainerResize);
+
+			// register event for editing canvas width/height
+			$("#canvas_width").on("change", onEditCanvasWidth);
+            $("#canvas_height").on("change", onEditCanvasHeight);
+            
+            $("#user_font").change(onUploadFont);
+
+			refreshFontList();
+			
+			if ( isSafari() ) {
+				document.styleSheets[0].insertRule('div.container:active { width: 0; height: 0; }', 0);
+				document.styleSheets[0].cssRules[0].style.width = 0;
+				document.styleSheets[0].cssRules[0].style.height = 0;
+			}
+
+			$("#dimmer").hide();
+		};
+	})();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+		<form id="form_download_pdf" style="display:none"  target="_blank" action = "https://www.esko.com" method = "post" accept-charset="UTF-8">
+			<textarea id="form_raw_text" name="rawText" form="form_download_pdf"></textarea>
+			<input id="form_font_size" type = "text" name = "fontSize" />
+			<input id="form_postscript_name" type = "text" name = "postscriptName" />
+			<input id="form_width" type = "text" name = "textBoxWidth" />
+			<input id="form_height" type = "text" name = "textBoxHeight" />
+			<input type="submit" value = "Submit" />
+		</form>
+<script>
+	function onDownloadPDFClicked()
+    {
+    	postURL="/cgi-bin/generate.py";
+    	
+    	var rawText = $("#textarea").val();
+		var fontSize = $("#size").val();
+		var psName = $("#font option:selected").text();
+		var width = $("#canvas_width").val();
+		var height = $("#canvas_height").val();
+    	var jsonObj = {"text": rawText, "fontSize": fontSize};
+    	var json = JSON.stringify(jsonObj);
+
+    	// fill the form
+    	$("#form_raw_text").val(rawText);
+    	$("#form_font_size").val(fontSize);
+    	$("#form_postscript_name").val(psName);
+    	$("#form_width").val(width);
+    	$("#form_height").val(height);
+
+    	// submit
+    	$("#form_download_pdf").submit();
+    }
+</script>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="script/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="tw.js"></script>
+    <script type="text/javascript">
+     $(function () {
+
+         TWLib.onRuntimeInitialized = function () {
+             $("#go").prop("disabled", false);
+             $("#go").html("Punch me!");
+             $("#benchmark").prop("disabled", false);
+         };
+
+         function doTypesetting(dump) {
+
+             var text = $("#text").val();
+
+             TWTrace.pushContext('doTypesetting');
+
+             TWTrace.pushContext('createFaceKey');
+             var faceKey = TWFontLib.createFaceKey("/MyriadPro-Regular.otf", 0);
+             TWTrace.popContext();
+
+             TWTrace.pushContext('create TWTextStory');
+             var st = new TWTextStory(text);
+             TWTrace.popContext();
+
+             TWTrace.pushContext('create TWCharFeatures'); {
+                 var feats = new TWCharFeatures();
+                 feats.setFont(faceKey, 12);
+                 feats.setLigature(false);
+                 st.setCharFeaturs(0, text.length, feats);
+                 feats.destroy();
+             }
+             TWTrace.popContext();
+
+             if (dump) st.dump();
+
+             TWTrace.pushContext('compose');
+             var glyphs = st.compose(100, 100);
+             TWTrace.popContext();
+
+             if (dump) glyphs.dump();
+
+             TWTrace.pushContext('render_as_svg');
+             var svg = glyphs.render_as_svg();
+             TWTrace.popContext();
+             glyphs.destroy();
+
+             if (dump) console.log("svg: " + svg);
+
+             st.destroy();
+
+             TWTrace.popContext();
+         };
+
+         $("#charCount").html($("#text").val().length + " characters");
+         var oldText = "";
+         $("#text").on("change keyup paste", function () {
+             var currentVal = $(this).val();
+             if (currentVal == oldText) {
+                 return;
+             }
+             oldText = currentVal;
+             $("#charCount").html(oldText.length + " characters");
+
+             console.log("typesetting...");
+             doTypesetting(false);
+         });
+
+
+         $("#go").click(function () {
+             doTypesetting(true);
+         });
+
+
+         $("#benchmark").click(function () {
+             var t0 = performance.now();
+             var loops = $("#loops").val();
+             for (var i = 0; i < loops; ++i) {
+                 TWTrace.frameStart();
+                 doTypesetting(false /*no dump*/ );
+                 TWTrace.frameEnd();
+             }
+             var t1 = performance.now();
+             alert(loops + " loops of typesetting tooks " + (t1 - t0) / 1000 + " seconds. " + (t1 -
+                                                                                               t0) / loops + " milliseconds per run.");
+         });
+
+         $("#upload_font").change(function () {
+             var file = document.getElementById("upload_font").files[0];
+             if (file) {
+                 TWFontLib.uploadFontFile(file).then(function (path) {
+                     alert("upload ok : " + path);
+                     var faceCount = TWFontLib.countFaces(path);
+                     var s = '';
+                     for (var index = 0; index < faceCount; ++index) {
+                         var face = new TWFontFace(path, index);
+                         console.log('face #' + index);
+                         console.log('  key = ' + face.key);
+                         console.log('  path = ' + face.path);
+                         console.log('  index = ' + face.index);
+                         console.log('  ps name = ' + face.postscriptName);
+                     }
+                 }, function (error) {
+                     alert("upload error: " + error);
+                 });
+             }
+         });
+
+
+     })
+    </script>
+</head>
+
+<body>
+    <textarea id="text" rows="4" cols="50">At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.</textarea>
+    <br>
+    <font color="gray" size="2">
+        <div id="charCount">100 characters</div>
+    </font>
+    <br>
+    <br>
+    <button id="go" type="button" disabled="true">Intializing Runtime...</button>
+    <button id="benchmark" disabled="true">Benchmark</button>
+    loops
+    <input type="number" id="loops" min="1" max="100000" value="100">
+    <br> Use local font
+    <input type=file id="upload_font">
+
+    <script type="text/javascript" src="WebTextPrototype.js"></script>
+
+</body>
+
+</html>

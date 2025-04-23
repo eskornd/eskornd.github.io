@@ -1,0 +1,75 @@
+/**************************************
+STATIC LAYOUT CSS
+**************************************/
+
+.wrapper {
+  width: 960px;
+  margin: 0 auto;
+}
+
+header {
+	width: 960px;
+}
+
+nav, section {
+  float: left;
+}
+
+nav {
+  width: 180px;
+  margin-right: 10px;
+}
+
+section {
+  width: 770px;
+}
+
+/*******
+Webfont
+*******/
+@font-face {
+    font-family: 'Chalkboard';
+    src: url('fonts/Chalkboard.ttc') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+html *
+{
+   font-family: 'Chalkboard';
+}
+
+/**************************************
+CSS TO MAKE THE EXAMPLE LOOK PRETTY
+**************************************/
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+header,
+nav,
+section {
+  border: 1px solid #333434;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+header {
+  padding: 10px 0;
+}
+
+nav, section {
+  padding: 10px 0;
+}
+
+nav,
+section {
+  height: 600px;
+}
+
+.header-text-area {
+	width: 98%;
+	margin: 1%;
+}
