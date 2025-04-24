@@ -189,13 +189,13 @@ function GetOpenTypeFeatures_as_VectorString()
 	}
 
 	// Add untoggled feature?
-	// let arrOff = $('.opentype_toggle:not(checked)').map( (index) => {
-	// 	return '-' + $('.opentype_toggle:not(:checked)').eq(index).val();
-	// }).get();
-	// for ( let i=0;i<arrOff.length;++i)
-	// {
-	// 	vstr.push_back(arrOff[i]);
-	// }
+	let arrOff = $('.opentype_toggle:not(checked)').map( (index) => {
+		return '-' + $('.opentype_toggle:not(:checked)').eq(index).val();
+	}).get();
+	for ( let i=0;i<arrOff.length;++i)
+	{
+		vstr.push_back(arrOff[i]);
+	}
 	return vstr;
 }
 
