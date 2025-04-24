@@ -180,21 +180,22 @@ function AddOpenTypeFeatureToggles(feats)
 function GetOpenTypeFeatures_as_VectorString()
 {
 	let vstr = new gGlyphModule.VectorString();
-	let arr0 = $('.opentype_toggle:checked').map( (index) => {
+	let arrOn = $('.opentype_toggle:checked').map( (index) => {
 		return '+' + $('.opentype_toggle:checked').eq(index).val();
 	}).get();
-	for ( let i=0;i<arr0.length;++i)
+	for ( let i=0;i<arrOn.length;++i)
 	{
-		vstr.push_back(arr0[i]);
+		vstr.push_back(arrOn[i]);
 	}
 
-	let arr1 = $('.opentype_toggle:not(checked)').map( (index) => {
-		return '-' + $('.opentype_toggle:not(:checked)').eq(index).val();
-	}).get();
-	for ( let i=0;i<arr1.length;++i)
-	{
-		vstr.push_back(arr1[i]);
-	}
+	// Add untoggled feature?
+	// let arrOff = $('.opentype_toggle:not(checked)').map( (index) => {
+	// 	return '-' + $('.opentype_toggle:not(:checked)').eq(index).val();
+	// }).get();
+	// for ( let i=0;i<arrOff.length;++i)
+	// {
+	// 	vstr.push_back(arrOff[i]);
+	// }
 	return vstr;
 }
 
