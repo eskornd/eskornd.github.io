@@ -48,6 +48,10 @@
 		, "url" : "specs/AAProduct/Maintenance/24.07/ProductDefinitions/spec.txt"
 	}
 	, {
+		"name" : "AAXMP 25.07"
+		, "url" : "specs/AAProduct/Maintenance/25.07/ProductDefinitions/spec.txt"
+	}
+	, {
 		"name" : "EmscriptenDemo"
 		, "url" : "specs/EmscriptenDemo/Maintenance/4.0.x/EmscriptenDemo/spec.txt"
 	}
