@@ -144,6 +144,55 @@ function CmapsToHTML(cmaps)
 	return text;
 }
 
+function AxisToHTML(axis)
+{
+	let text = '';
+	text += `${axis.name}, range: (${axis.min}, ${axis.def}, ${axis.max})`
+	text += '\n';
+	return text;
+}
+
+function VarAxesToHTML(axes)
+{
+	let text = 'Var Axes:\n';
+	for ( let i=0; i<axes.size(); ++i )
+	{
+		const axis = axes.get(i);
+		text += AxisToHTML(axis);	
+	}
+	return text;
+}
+
+function NamedStyleToHTML(namedStyle)
+{
+	let text = '';
+	text += `${namedStyle.name}`
+	text += ', coords:(';
+	for ( let i=0; i<namedStyle.coords.size(); ++i )
+	{
+		const coord = namedStyle.coords.get(i);
+		text += coord;
+		if ( i != (namedStyle.coords.size()-1) )
+		{
+			text += ', ';
+		}
+	}
+	text += ')';
+	text += '\n';
+	return text;
+}
+
+function VarNamedStylesToHTML(namedStyles)
+{
+	let text = 'Var NamedStyles:\n';
+	for ( let i=0; i<namedStyles.size(); ++i )
+	{
+		const namedStyle = namedStyles.get(i);
+		text += NamedStyleToHTML(namedStyle);	
+	}
+	return text;
+}
+
 function NameToHTML(name)
 {
 	let text = '';
@@ -258,6 +307,14 @@ function InitFontFace(fontFile, faceIndex)
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
     $('#font_names').html(NamesToHTML(gi.names()));
+	if ( gi.isVariableFont() )
+	{
+		$('#li_var_info').show();
+	} else {
+		$('#li_var_info').hide();
+	}
+    $('#font_var_axes').html(VarAxesToHTML(gi.getVarAxes()));
+    $('#font_var_namedstyles').html(VarNamedStylesToHTML(gi.getVarNamedStyles()));
 
 	//let loaded = render.loadGlyphs();
 	let elems = render.glyphElements();
