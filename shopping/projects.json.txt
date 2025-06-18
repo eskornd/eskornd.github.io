@@ -12,6 +12,10 @@
 		, "url" : "specs/AIPrebuiltSDK/Maintenance/25.07/AIPrebuiltSDK/spec.txt"
 	} 
 	, {
+		"name": "DeskPack AI 25.11"
+		, "url" : "specs/AIPrebuiltSDK/Maintenance/25.11/AIPrebuiltSDK/spec.txt"
+	} 
+	, {
 		"name": "DeskPack AI Underline 25.03"
 		, "url" : "specs/AIPrebuiltSDK/Maintenance/25.03/AIPrebuiltSDK/underline_spec.txt" 
 	}
@@ -26,6 +30,10 @@
 	, {
 		"name" : "ArtPro+ 25.07"
 		, "url" : "specs/DocumentTypesettingShopping/Maintenance/25.07/DocumentTypesettingShopping/spec.txt"
+	}
+	, {
+		"name" : "ArtPro+ 25.11"
+		, "url" : "specs/DocumentTypesettingShopping/Maintenance/25.11/DocumentTypesettingShopping/spec.txt"
 	}
 	, {
 		"name" : "Underline 25.03"
