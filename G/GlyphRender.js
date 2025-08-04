@@ -68,7 +68,7 @@ export class GlyphRender
 		const pen_y = 0.5 * grid_size + 0.5*((font_props.ascender + font_props.descender)/font_props.units_per_EM * glyph_size);
 		const ascender_y = pen_y - (font_props.ascender/font_props.units_per_EM * glyph_size);
 		const descender_y = pen_y - (font_props.descender/font_props.units_per_EM * glyph_size);
-		const mx = [glyph_size, 0, 0, glyph_size, pen_x, -pen_y];
+		const mx = [glyph_size, 0, 0, -glyph_size, pen_x, pen_y];
 		const path_d = gi.svg_d(gid, mx);
 		const class_name = `my_glyph${opts.is_clickable ? ' clickable' : ''}`;
 		const onclick = opts.is_clickable ? `onclick="onGlyphClicked(${gid});"` : '';

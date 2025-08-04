@@ -270,7 +270,7 @@ function GeneratePreview()
 
 	const fontSize = parseFloat(fontSizeText);
 	// a/d, scale, ty:shift downward
-	const mx = [fontSize, 0, 0, fontSize, 0, -fontSize];
+	const mx = [fontSize, 0, 0, -fontSize, 0, fontSize];
 
 	const svg_d = gi.previewTextSVG_d(text, mx, features);
 	const max_x = 1920;
