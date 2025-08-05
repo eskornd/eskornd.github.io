@@ -70,6 +70,7 @@ export class GlyphRender
 		const descender_y = pen_y - (font_props.descender/font_props.units_per_EM * glyph_size);
 		const mx = [glyph_size, 0, 0, -glyph_size, pen_x, pen_y];
 		const path_d = gi.svg_d(gid, mx);
+		const is_empty = path_d === ''; // TODO: we can hide empty glyphs
 		const class_name = `my_glyph${opts.is_clickable ? ' clickable' : ''}`;
 		const onclick = opts.is_clickable ? `onclick="onGlyphClicked(${gid});"` : '';
 		const prefix = `<svg ${onclick} class="${class_name}" gid=${gid} width=${grid_size} height=${grid_size}>`;

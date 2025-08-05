@@ -363,7 +363,7 @@ function PickupFace(fontFile)
 	let num_faces = 0;
 	let faces = [];
 	try {
-		faces = gGlyphModule.GIWrapper.faces(fontFile);
+		faces = gGlyphModule.GIWrapper.faceDescriptors(fontFile);
 		num_faces = faces.size();
 	} catch (err) {
 		alert('Unable to load font from: ' + fontFile + ' ' + JSON.stringify(err));
@@ -373,7 +373,8 @@ function PickupFace(fontFile)
 		let items = '';
 		for ( let i=0; i< num_faces; ++i)
 		{
-			items += `<div class="face_item" onclick="InitFontFace('${fontFile}', ${i});$('#choose_face_dialog').dialog('close');">${faces.get(i)}</div>`;
+			let faceDesc = faces.get(i);
+			items += `<div class="face_item" onclick="InitFontFace('${fontFile}', ${faceDesc.faceIndex});$('#choose_face_dialog').dialog('close');">${faceDesc.postscriptName}</div>`;
 		}
 		$('#face_list').html(items);
 		// no escape, no close button
