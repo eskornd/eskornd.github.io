@@ -582,6 +582,34 @@ export default class PageView
 			}
 			alert('Document saved: ' + isSaved + ', isDirty: ' + isDirty);
 		});
+		$('#checkInDocument').on('click', async ()=>
+		{
+			let ok = false;
+			try{
+				ok = await ctx.currentDoc.CHECKINDOCUMENT( { silent : false });
+		
+			} catch (err) {
+				alert('Unable to check-in document: ' + JSON.stringify(err));
+			}
+			let isDirty = true;
+			try {
+				isDirty = await ctx.currentDoc.isDirty();
+			} catch (err) {
+				alert('unable to get is dirty' + JSON.stringify(err));
+			}
+			alert('Document checked-in: ' + ok + ', isDirty: ' + isDirty);
+		});
+		$('#isCheckedIn').on('click', async ()=>
+		{
+			let isCheckedIn = false;
+			try{
+				isCheckedIn = await ctx.currentDoc.ISCHECKEDIN();
+		
+			} catch (err) {
+				alert('Unable to query check-in on document: ' + JSON.stringify(err));
+			}
+			alert('Document checked-in: ' + isCheckedIn);
+		});
 		$('#uploadFile').on('click', async ()=>
 		{
 			// For uploading, we'll now allow setting a cluster node ID for the temp exported file
