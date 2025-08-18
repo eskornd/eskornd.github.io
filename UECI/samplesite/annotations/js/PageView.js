@@ -586,7 +586,7 @@ export default class PageView
 		{
 			let ok = false;
 			try{
-				ok = await ctx.currentDoc.CHECKINDOCUMENT( { silent : false });
+				ok = await ctx.currentDoc.checkInDocument( { silent : false });
 		
 			} catch (err) {
 				alert('Unable to check-in document: ' + JSON.stringify(err));
@@ -603,7 +603,7 @@ export default class PageView
 		{
 			let isCheckedIn = false;
 			try{
-				isCheckedIn = await ctx.currentDoc.ISCHECKEDIN();
+				isCheckedIn = await ctx.currentDoc.isCheckedIn();
 		
 			} catch (err) {
 				alert('Unable to query check-in on document: ' + JSON.stringify(err));
