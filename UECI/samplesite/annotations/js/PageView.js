@@ -582,14 +582,14 @@ export default class PageView
 			}
 			alert('Document saved: ' + isSaved + ', isDirty: ' + isDirty);
 		});
-		$('#checkInDocument').on('click', async ()=>
+		$('#uploadDocument').on('click', async ()=>
 		{
 			let ok = false;
 			try{
-				ok = await ctx.currentDoc.checkInDocument( { silent : false });
+				ok = await ctx.currentDoc.uploadDocument( { silent : false });
 		
 			} catch (err) {
-				alert('Unable to check-in document: ' + JSON.stringify(err));
+				alert('Unable to upload document: ' + JSON.stringify(err));
 			}
 			let isDirty = true;
 			try {
@@ -597,18 +597,18 @@ export default class PageView
 			} catch (err) {
 				alert('unable to get is dirty' + JSON.stringify(err));
 			}
-			alert('Document checked-in: ' + ok + ', isDirty: ' + isDirty);
+			alert('Document is uploaded: ' + ok + ', isDirty: ' + isDirty);
 		});
-		$('#isCheckedIn').on('click', async ()=>
+		$('#isUploaded').on('click', async ()=>
 		{
-			let isCheckedIn = false;
+			let isUploaded = false;
 			try{
-				isCheckedIn = await ctx.currentDoc.isCheckedIn();
+				isUploaded = await ctx.currentDoc.isUploaded();
 		
 			} catch (err) {
 				alert('Unable to query check-in on document: ' + JSON.stringify(err));
 			}
-			alert('Document checked-in: ' + isCheckedIn);
+			alert('Document uploaded: ' + isUploaded);
 		});
 		$('#uploadFile').on('click', async ()=>
 		{
