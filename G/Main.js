@@ -62,6 +62,18 @@ function FaceInfoToHTML(info)
     return str;
 }
 
+function CurveTypeHTML(curveTypeName)
+{
+	let rowText = (label, text)=>{
+		let row = '<tr><td nowrap>' + label + '</td><td>' + text + '</td></tr>';
+		return row;
+	};
+    let str = '<table id="curve_type_table">';
+	str += rowText('Bezier Type:' , curveTypeName);
+    str += '</table>';
+    return str;
+}
+
 function FaceFlagsToHTML(named_flags)
 {
 	let rowText = (label, text)=>{
@@ -304,6 +316,7 @@ function InitFontFace(fontFile, faceIndex)
 	$('#font_short_info').html(short_info);
 	const faceInfo = gi.faceInfo()
     $('#font_info').html(FaceInfoToHTML(faceInfo));
+	$('#font_curve_type').html(CurveTypeHTML(gi.bezierCurveTypeName()));
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
