@@ -56,6 +56,7 @@ function FaceInfoToHTML(info)
 	str += rowText('Sample Text: ', info.sampleText);
 	str += rowText('Designed For Languages (raw): ', info.designedLanguagesRaw);
 	str += rowText('Supported Languages (raw): ', info.supportedLanguagesRaw);
+	str += rowText('Driver Clazz Name: ', info.driverClazzName);
 	str += rowText('Possible Main Language(experimental): ', info.possibleMainLanguage);
     str += '</table>';
     return str;
