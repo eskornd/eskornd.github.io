@@ -19,9 +19,6 @@
 //moduledev/Packages/CDL/Maintenance/6.1.x/CDL/... //DEPOT/CDL/...
 //moduledev/Packages/CDL/Maintenance/6.1.x/PackageDependencies.xml //DEPOT/Dependencies/CDL-6.1.x.xml
 //moduledev/Packages/CDL/Maintenance/6.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/CDL-6.1.x.xml
-//moduledev/Packages/CMSInkLimit/Maintenance/24.11.x/CMSInkLimit/... //DEPOT/CMSInkLimit/...
-//moduledev/Packages/CMSInkLimit/Maintenance/24.11.x/PackageDependencies.xml //DEPOT/Dependencies/CMSInkLimit-24.11.x.xml
-//moduledev/Packages/CMSInkLimit/Maintenance/24.11.x/Licenses.xml //DEPOT/LicenseInfoXMLs/CMSInkLimit-24.11.x.xml
 //moduledev/Packages/CMakeBuildSystem/Maintenance/1.0.x/CMakeBuildSystem/... //DEPOT/CMakeBuildSystem/...
 //moduledev/Packages/CMakeBuildSystem/Maintenance/1.0.x/PackageDependencies.xml //DEPOT/Dependencies/CMakeBuildSystem-1.0.x.xml
 //moduledev/Packages/CMakeBuildSystem/Maintenance/1.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/CMakeBuildSystem-1.0.x.xml
