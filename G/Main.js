@@ -109,6 +109,58 @@ function FacePropertiesToHTML(props)
     return str;
 }
 
+function OS2TableToHTML(os2)
+{
+	let rowText = (label, text)=>{
+		let row = '<tr><td nowrap>' + label + '</td><td>' + text + '</td></tr>';
+		return row;
+	};
+    let str = '<table id="os2_table_internal">';
+	str += rowText('OS/2:', '');
+	str += rowText('version', os2.version);
+	str += rowText('xAvgCharWidth', os2.xAvgCharWidth);
+	str += rowText('usWeightClass', os2.usWeightClass);
+	str += rowText('usWidthClass', os2.usWidthClass);
+	str += rowText('fsType', os2.fsType);
+	str += rowText('ySubscriptXSize', os2.ySubscriptXSize);
+	str += rowText('ySubscriptYSize', os2.ySubscriptYSize);
+	str += rowText('ySubscriptXOffset', os2.ySubscriptXOffset);
+	str += rowText('ySubscriptYOffset', os2.ySubscriptYOffset);
+	str += rowText('ySuperscriptXSize', os2.ySuperscriptXSize);
+	str += rowText('ySuperscriptYSize', os2.ySuperscriptYSize);
+	str += rowText('ySuperscriptXOffset', os2.ySuperscriptXOffset);
+	str += rowText('ySuperscriptYOffset', os2.ySuperscriptYOffset);
+	str += rowText('yStrikeoutSize', os2.yStrikeoutSize);
+	str += rowText('yStrikeoutPosition', os2.yStrikeoutPosition);
+	str += rowText('sFamilyClass', os2.sFamilyClass);
+	str += rowText('panose', os2.panose);
+	str += rowText('ulUnicodeRange1', os2.ulUnicodeRange1);
+	str += rowText('ulUnicodeRange2', os2.ulUnicodeRange2);
+	str += rowText('ulUnicodeRange3', os2.ulUnicodeRange3);
+	str += rowText('ulUnicodeRange4', os2.ulUnicodeRange4);
+	str += rowText('achVendID', os2.achVendID);
+	str += rowText('fsSelection', os2.fsSelection);
+	str += rowText('usFirstCharIndex', os2.usFirstCharIndex);
+	str += rowText('usLastCharIndex', os2.usLastCharIndex);
+	str += rowText('sTypoAscender', os2.sTypoAscender);
+	str += rowText('sTypoDescender', os2.sTypoDescender);
+	str += rowText('sTypoLineGap', os2.sTypoLineGap);
+	str += rowText('sTypoLineGap', os2.sTypoLineGap);
+	str += rowText('usWinAscent', os2.usWinAscent);
+	str += rowText('usWinDescent', os2.usWinDescent);
+	str += rowText('ulCodePageRange1', os2.ulCodePageRange1);
+	str += rowText('ulCodePageRange2', os2.ulCodePageRange2);
+	str += rowText('sxHeight', os2.sxHeight);
+	str += rowText('sCapHeight', os2.sCapHeight);
+	str += rowText('usDefaultChar', os2.usDefaultChar);
+	str += rowText('usBreakChar', os2.usBreakChar);
+	str += rowText('usMaxContext', os2.usMaxContext);
+	str += rowText('usLowerOpticalPointSize', os2.usLowerOpticalPointSize);
+	str += rowText('usUpperOpticalPointSize', os2.usUpperOpticalPointSize);
+    str += '</table>';
+    return str;
+}
+
 function CodePointToHex(codePoint)
 {
 	let hex = Number(codePoint).toString(16).toUpperCase();
@@ -319,6 +371,7 @@ function InitFontFace(fontFile, faceIndex)
 	$('#font_curve_type').html(CurveTypeHTML(gi.bezierCurveTypeName()));
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
+    $('#os2_table').html(OS2TableToHTML(gi.getOS2Table()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
     $('#font_names').html(NamesToHTML(gi.names()));
 	if ( gi.isVariableFont() )
