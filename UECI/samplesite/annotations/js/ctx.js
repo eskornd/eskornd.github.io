@@ -24,7 +24,7 @@ let ctx = {
 			let doc = await ctx.editor.currentDocument().catch(logErr);
 			if ( doc !== undefined )
 			{
-				ctx.view.setCurrentDocumentID( `${doc}` );
+				ctx.view.setCurrentDocumentID( doc.id.toString() );
 				ctx.view.setCurrentDocumentTitle( await doc.title() );
 				ctx.view.setCurrentDocumentFilePath( await doc.filePath());
 				let docID = doc.id;
