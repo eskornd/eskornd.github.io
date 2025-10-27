@@ -24,6 +24,7 @@ let ctx = {
 			let doc = await ctx.editor.currentDocument().catch(logErr);
 			if ( doc !== undefined )
 			{
+				ctx.view.setCurrentDocumentID( `${doc}` );
 				ctx.view.setCurrentDocumentTitle( await doc.title() );
 				ctx.view.setCurrentDocumentFilePath( await doc.filePath());
 				let docID = doc.id;
@@ -54,6 +55,7 @@ let ctx = {
 				ctx.view.setClusterNodeIDText(clusterNodeIDText);
 				ctx.view.setHasAnnotationText(hasAnnotation);
 			} else {
+				ctx.view.setCurrentDocumentID('N/A');
 				ctx.view.setCurrentDocumentTitle('NO DOCUMENT OPENED');
 				ctx.view.setCurrentDocumentFilePath('');
 				ctx.view.setPageSizeText('');

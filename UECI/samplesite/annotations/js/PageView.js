@@ -140,9 +140,14 @@ export default class PageView
 		$("#showModalDialog").text(str + ' (disabled)');
 	}
 	
+	setCurrentDocumentID(idText)
+	{
+		$('#currentDocumentID').text(idText);
+	}
+
 	setCurrentDocumentTitle(docText)
 	{
-		$('#currentDocument').text(docText);
+		$('#currentDocumentTitle').text(docText);
 	}
 
 	setCurrentDocumentFilePath(text)
