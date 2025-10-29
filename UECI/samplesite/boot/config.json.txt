@@ -12,6 +12,8 @@
 		"https://shapes.future.dev.cloudi.city/index",
 		"https://demo.filebrowser.org/",
 		"https://ae.future.dev.cloudi.city/appconnector/open?theme=dark&language=en",
-		"https://www.whatarecookies.com/cookietest.asp"
+		"https://www.whatarecookies.com/cookietest.asp",
+		"https://tosche.net/fonts",
+		"https://setcookie.net/"
 	]
 }
