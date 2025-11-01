@@ -4,6 +4,16 @@ var gGlyphModule;
 var gRender;
 var gWrapper;
 
+function tagToNumber(char1, char2, char3, char4) 
+{
+    const b1 = char1.charCodeAt(0);
+    const b2 = char2.charCodeAt(0);
+    const b3 = char3.charCodeAt(0);
+    const b4 = char4.charCodeAt(0);
+
+    return (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+}
+
 function ToLinkHtml(text, url)
 {
     str = '<a href="' + url + '">'
@@ -58,6 +68,53 @@ function FaceInfoToHTML(info)
 	str += rowText('Supported Languages (raw): ', info.supportedLanguagesRaw);
 	str += rowText('Driver Clazz Name: ', info.driverClazzName);
 	str += rowText('Possible Main Language(experimental): ', info.possibleMainLanguage);
+    str += '</table>';
+    return str;
+}
+
+
+function SfntTablesHTML(gi)
+{
+	let rowText = (label, text)=>{
+		let row = '<tr><td nowrap>' + label + '</td><td>' + text + '</td></tr>';
+		return row;
+	};
+    let str = '<table id="sfnt_table_list">';
+	str += rowText('Required Tables:' , '');
+	str += rowText('cmap' , gi.hasSfntTable(tagToNumber('c', 'm', 'a', 'p')));
+	str += rowText('glyf' , gi.hasSfntTable(tagToNumber('g', 'l', 'y', 'f')));
+	str += rowText('head' , gi.hasSfntTable(tagToNumber('h', 'e', 'a', 'd')));
+	str += rowText('hhea' , gi.hasSfntTable(tagToNumber('h', 'h', 'e', 'a')));
+	str += rowText('hmtx' , gi.hasSfntTable(tagToNumber('h', 'm', 't', 'x')));
+	str += rowText('loca' , gi.hasSfntTable(tagToNumber('l', 'o', 'c', 'a')));
+	str += rowText('maxp' , gi.hasSfntTable(tagToNumber('m', 'a', 'x', 'p')));
+	str += rowText('name' , gi.hasSfntTable(tagToNumber('n', 'a', 'm', 'e')));
+	str += rowText('post' , gi.hasSfntTable(tagToNumber('p', 'o', 's', 't')));
+	str += rowText('Optional Tables:' , '');
+	str += rowText('kern' , gi.hasSfntTable(tagToNumber('k', 'e', 'r', 'n')));
+	str += rowText('GPOS' , gi.hasSfntTable(tagToNumber('G', 'P', 'O', 'S')));
+	str += rowText('GSUB' , gi.hasSfntTable(tagToNumber('G', 'S', 'U', 'B')));
+	str += rowText('FOND' , gi.hasSfntTable(tagToNumber('F', 'O', 'N', 'D')));
+	str += rowText('sbix' , gi.hasSfntTable(tagToNumber('s', 'b', 'i', 'x')));
+	str += rowText('CBLC' , gi.hasSfntTable(tagToNumber('C', 'B', 'L', 'C')));
+	str += rowText('CBDT' , gi.hasSfntTable(tagToNumber('C', 'B', 'D', 'T')));
+	str += rowText('CPAL' , gi.hasSfntTable(tagToNumber('C', 'P', 'A', 'L')));
+	str += rowText('SVG ' , gi.hasSfntTable(tagToNumber('S', 'V', 'G', ' ')));
+	str += rowText('COLR' , gi.hasSfntTable(tagToNumber('C', 'O', 'L', 'R')));
+	str += rowText('meta' , gi.hasSfntTable(tagToNumber('m', 'e', 't', 'a')));
+	str += rowText('PCLT' , gi.hasSfntTable(tagToNumber('P', 'C', 'L', 'T')));
+	str += rowText('OS/2' , gi.hasSfntTable(tagToNumber('O', 'S', '/', '2')));
+	str += rowText('Hinting Tables:' , '');
+	str += rowText('glyf' , gi.hasSfntTable(tagToNumber('g', 'l', 'y', 'f')));
+	str += rowText('fpgm' , gi.hasSfntTable(tagToNumber('f', 'p', 'g', 'm')));
+	str += rowText('prep' , gi.hasSfntTable(tagToNumber('p', 'r', 'e', 'p')));
+	str += rowText('cvt ' , gi.hasSfntTable(tagToNumber('c', 'v', 't', ' ')));
+	str += rowText('Variable Tables:' , '');
+	str += rowText('gvar' , gi.hasSfntTable(tagToNumber('g', 'v', 'a', 'r')));
+	str += rowText('CFF ' , gi.hasSfntTable(tagToNumber('C', 'F', 'F', ' ')));
+	str += rowText('CFF2' , gi.hasSfntTable(tagToNumber('C', 'F', 'F', '2')));
+	str += rowText('MMFX' , gi.hasSfntTable(tagToNumber('M', 'M', 'F', 'X')));
+	str += rowText('MMSD' , gi.hasSfntTable(tagToNumber('M', 'M', 'S', 'D')));
     str += '</table>';
     return str;
 }
@@ -368,6 +425,7 @@ function InitFontFace(fontFile, faceIndex)
 	$('#font_short_info').html(short_info);
 	const faceInfo = gi.faceInfo()
     $('#font_info').html(FaceInfoToHTML(faceInfo));
+    $('#sfnt_tables').html(SfntTablesHTML(gi));
 	$('#font_curve_type').html(CurveTypeHTML(gi.bezierCurveTypeName()));
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
