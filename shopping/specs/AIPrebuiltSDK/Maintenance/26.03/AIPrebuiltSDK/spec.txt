@@ -357,6 +357,9 @@
 //moduledev/Packages/BGADM3D/Maintenance/26.03.x/BGADM3D/... //DEPOT/BGADM3D/...
 //moduledev/Packages/BGADM3D/Maintenance/26.03.x/PackageDependencies.xml //DEPOT/Dependencies/BGADM3D-26.03.x.xml
 //moduledev/Packages/BGADM3D/Maintenance/26.03.x/Licenses.xml //DEPOT/LicenseInfoXMLs/BGADM3D-26.03.x.xml
+//moduledev/Packages/BGADMWeb/Maintenance/1.0.x/BGADMWeb/... //DEPOT/BGADMWeb/...
+//moduledev/Packages/BGADMWeb/Maintenance/1.0.x/PackageDependencies.xml //DEPOT/Dependencies/BGADMWeb-1.0.x.xml
+//moduledev/Packages/BGADMWeb/Maintenance/1.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/BGADMWeb-1.0.x.xml
 //moduledev/Packages/BGCMS/Maintenance/26.03.x/BGCMS/... //DEPOT/BGCMS/...
 //moduledev/Packages/BGCMS/Maintenance/26.03.x/PackageDependencies.xml //DEPOT/Dependencies/BGCMS-26.03.x.xml
 //moduledev/Packages/BGCMS/Maintenance/26.03.x/Licenses.xml //DEPOT/LicenseInfoXMLs/BGCMS-26.03.x.xml
