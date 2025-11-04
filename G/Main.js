@@ -238,6 +238,20 @@ function PaddedGID(gid)
 	return dec;
 }
 
+function OpenTypeFeaturesToHTML(feats)
+{
+	let str = 'Supported OpenType features: ';
+	for ( let i=0; i<feats.size(); ++i )
+	{
+		if ( i % 8 == 0 )
+		{
+			str += '\n    ';	
+		}
+		str += `${feats.get(i).code}, `;
+	}
+	return str;
+}
+
 function CmapToHTML(cmap)
 {
 	let text = `Charmap ${cmap.platformID}, ${cmap.encodingID} \nplatform: ${cmap.platformName}\nencoding: ${cmap.encodingName}`;
@@ -430,6 +444,7 @@ function InitFontFace(fontFile, faceIndex)
     $('#font_flags').html(FaceFlagsToHTML(gi.faceFlags()));
     $('#font_props').html(FacePropertiesToHTML(gi.faceProperties()));
     $('#os2_table').html(OS2TableToHTML(gi.getOS2Table()));
+    $('#opentype_features').html(OpenTypeFeaturesToHTML(gi.getOpenTypeFeatures()));
     $('#cmaps').html(CmapsToHTML(gi.charmaps()));
     $('#font_names').html(NamesToHTML(gi.names()));
 	if ( gi.isVariableFont() )
