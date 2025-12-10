@@ -260,10 +260,16 @@ export default class PageView
 		});
 		$("#highlight_arrow").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
-			let rect = makeRandomRect2(box);
+			const offset = 20;
+			let rect0 = makeRandomRect2(box);
+			let rect1 = 
+				{ x0 : ( offset + rect0.x1 ), y0 : (offset + rect0.y1), x1: (offset + rect0.x0) , y1 : (offset + rect0.y0) };
+
 			let color = getRandomColor();
 			let stroke = getRandomStroke();
-			highlight([{id: `${makeID()}`, title: "hello arrow", longTitle: "This is an arrow annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Arrow", rect: rect}]);
+			highlight([
+				{id: `${makeID()}`, title: "hello arrow A", longTitle: "This is an arrow annotation. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Arrow", rect: rect0}
+				, {id: `${makeID()}`, title: "hello arrow B", longTitle: "This is an arrow annotation invert direction. Author: noreply@esko.com", highlightColor : color, highlightWeight: stroke, type: "Arrow", rect: rect1}]);
 		});
 		$("#highlight_freehand").on("click", async ()=> {
 			let box = await getCurrentDocumentPageBox('MediaBox');
