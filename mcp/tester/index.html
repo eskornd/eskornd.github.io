@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Server Testing Tool</title>
+    <link rel="stylesheet" href="mcp-tester.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MCP Server Testing Tool</h1>
+            <div>
+                <span class="status-indicator status-disconnected" id="statusIndicator"></span>
+                <span id="statusText">Disconnected</span>
+            </div>
+        </div>
+        
+        <div class="server-info">
+            <p><strong>Server Information:</strong> This tool tests local MCP Server running on port 8080 with streamable HTTP protocol.</p>
+        </div>
+        
+        <div class="controls">
+            <button id="runTestBtn">Run Full Test</button>
+            <button id="initBtn">Initialize Only</button>
+            <button id="toolsBtn">List Tools</button>
+        </div>
+        
+        <div>
+            <label for="serverUrl">Server URL:</label>
+            <input type="text" id="serverUrl" value="http://127.0.0.1:8080/mcp">
+        </div>
+        
+        <div id="output" class="output">
+            Output will appear here...
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> This tool is designed to test local MCP Server supporting streamable HTTP protocol. Make sure your MCP Server is running on port 8080 before testing.</p>
+            <p>You can also run tests from browser console: <code>await window.runMCPTest()</code></p>
+        </div>
+    </div>
+
+    <script src="mcp-tester.js"></script>
+</body>
+</html>

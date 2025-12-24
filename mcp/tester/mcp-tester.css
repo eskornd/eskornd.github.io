@@ -1,0 +1,140 @@
+/* mcp-tester.css - Styles for MCP Testing Tool */
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #444B53;
+    text-align: center;
+}
+
+button {
+    background-color: #A6C044;
+    color: #444B53;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+    width: 100%;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #9AB03C;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    color: #888888;
+    cursor: not-allowed;
+}
+
+.output {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 20px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.log {
+    margin: 5px 0;
+    padding: 5px;
+    border-left: 3px solid #A6C044;
+}
+
+.error {
+    color: #d32f2f;
+    border-left-color: #d32f2f;
+}
+
+.success {
+    color: #388e3c;
+    border-left-color: #388e3c;
+}
+
+.info {
+    color: #1976d2;
+    border-left-color: #1976d2;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.controls button {
+    flex: 1;
+}
+
+label {
+    color: #444B53;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.note {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-connected {
+    background-color: #A6C044;
+}
+
+.status-disconnected {
+    background-color: #d32f2f;
+}
+
+.server-info {
+    background-color: #f0f5e6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border-left: 4px solid #A6C044;
+}
