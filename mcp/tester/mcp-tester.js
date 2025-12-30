@@ -428,6 +428,32 @@ window.quickTest = async function() {
     }
 };
 
+function getMcpParam() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const mcpParam = urlParams.get('mcp');
+
+    if (mcpParam) {
+        return decodeURIComponent(mcpParam);
+    }
+    return null;
+}
+
+function initMCPURL()
+{
+	let mcpUrl = getMcpParam();
+	mcpUrl = decodeURIComponent(mcpUrl);
+	if (mcpUrl) {
+		console.log('MCP URL:', mcpUrl);
+	} else {
+		mcpUrl = 'https://127.0.0.1:14330/mcp';
+		console.log('NO MCP URL, using default: ', mcpUrl);
+	}
+
+	let elem = document.getElementById('serverUrl')
+	console.log( 'elem serverUrl' + elem);
+	elem.value = mcpUrl;
+}
+
 /**
  * Test with custom server URL
  * @param {string} url - Server URL to test
@@ -440,7 +466,9 @@ window.testServer = async function(url) {
 
 // Initialize when DOM is loaded
 if (document.readyState === 'loading') {
+	initMCPURL();
     document.addEventListener('DOMContentLoaded', initializeMCPTester);
 } else {
+	initMCPURL();
     initializeMCPTester();
 }
