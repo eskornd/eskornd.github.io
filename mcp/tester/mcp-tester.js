@@ -441,8 +441,8 @@ function getMcpParam() {
 function initMCPURL()
 {
 	let mcpUrl = getMcpParam();
-	mcpUrl = decodeURIComponent(mcpUrl);
 	if (mcpUrl) {
+		mcpUrl = decodeURIComponent(mcpUrl);
 		console.log('MCP URL:', mcpUrl);
 	} else {
 		mcpUrl = 'https://127.0.0.1:14330/mcp';
