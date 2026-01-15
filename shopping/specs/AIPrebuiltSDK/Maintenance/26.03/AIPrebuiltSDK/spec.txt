@@ -791,6 +791,9 @@
 //moduledev/Packages/MCPSandbox/Maintenance/0.1.x/MCPSandbox/... //DEPOT/MCPSandbox/...
 //moduledev/Packages/MCPSandbox/Maintenance/0.1.x/PackageDependencies.xml //DEPOT/Dependencies/MCPSandbox-0.1.x.xml
 //moduledev/Packages/MCPSandbox/Maintenance/0.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/MCPSandbox-0.1.x.xml
+//moduledev/Packages/MCPServerSDK/Maintenance/0.8.x/MCPServerSDK/... //DEPOT/MCPServerSDK/...
+//moduledev/Packages/MCPServerSDK/Maintenance/0.8.x/PackageDependencies.xml //DEPOT/Dependencies/MCPServerSDK-0.8.x.xml
+//moduledev/Packages/MCPServerSDK/Maintenance/0.8.x/Licenses.xml //DEPOT/LicenseInfoXMLs/MCPServerSDK-0.8.x.xml
 //moduledev/3rdParty/MD5Lib/Released/1.0/MD5Lib/... //DEPOT/MD5Lib/...
 //moduledev/3rdParty/MD5Lib/Released/1.0/PackageDependencies.xml //DEPOT/Dependencies/MD5Lib-1.0.xml
 //moduledev/3rdParty/MD5Lib/Released/1.0/Licenses.xml //DEPOT/LicenseInfoXMLs/MD5Lib-1.0.xml
