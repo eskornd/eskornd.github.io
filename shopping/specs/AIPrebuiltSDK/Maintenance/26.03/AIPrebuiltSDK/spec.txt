@@ -16,6 +16,9 @@
 //moduledev/Packages/AIAnnotation/Maintenance/1.8.x/AIAnnotation/... //DEPOT/AIAnnotation/...
 //moduledev/Packages/AIAnnotation/Maintenance/1.8.x/PackageDependencies.xml //DEPOT/Dependencies/AIAnnotation-1.8.x.xml
 //moduledev/Packages/AIAnnotation/Maintenance/1.8.x/Licenses.xml //DEPOT/LicenseInfoXMLs/AIAnnotation-1.8.x.xml
+//moduledev/Packages/AIArtAssist/Maintenance/1.0.x/AIArtAssist/... //DEPOT/AIArtAssist/...
+//moduledev/Packages/AIArtAssist/Maintenance/1.0.x/PackageDependencies.xml //DEPOT/Dependencies/AIArtAssist-1.0.x.xml
+//moduledev/Packages/AIArtAssist/Maintenance/1.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/AIArtAssist-1.0.x.xml
 //moduledev/Packages/AIArtBrowser/Maintenance/8.2.x/AIArtBrowser/... //DEPOT/AIArtBrowser/...
 //moduledev/Packages/AIArtBrowser/Maintenance/8.2.x/PackageDependencies.xml //DEPOT/Dependencies/AIArtBrowser-8.2.x.xml
 //moduledev/Packages/AIArtBrowser/Maintenance/8.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/AIArtBrowser-8.2.x.xml
