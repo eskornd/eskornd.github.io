@@ -97,9 +97,6 @@
 //moduledev/3rdParty/MD5Lib/Released/1.0/MD5Lib/... //DEPOT/MD5Lib/...
 //moduledev/3rdParty/MD5Lib/Released/1.0/PackageDependencies.xml //DEPOT/Dependencies/MD5Lib-1.0.xml
 //moduledev/3rdParty/MD5Lib/Released/1.0/Licenses.xml //DEPOT/LicenseInfoXMLs/MD5Lib-1.0.xml
-//moduledev/Packages/MacSupport/Maintenance/2.2.x/MacSupport/... //DEPOT/MacSupport/...
-//moduledev/Packages/MacSupport/Maintenance/2.2.x/PackageDependencies.xml //DEPOT/Dependencies/MacSupport-2.2.x.xml
-//moduledev/Packages/MacSupport/Maintenance/2.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/MacSupport-2.2.x.xml
 //moduledev/3rdParty/OpenCV/Maintenance/4.10.x/OpenCV/... //DEPOT/OpenCV/...
 //moduledev/3rdParty/OpenCV/Maintenance/4.10.x/PackageDependencies.xml //DEPOT/Dependencies/OpenCV-4.10.x.xml
 //moduledev/3rdParty/OpenCV/Maintenance/4.10.x/Licenses.xml //DEPOT/LicenseInfoXMLs/OpenCV-4.10.x.xml
@@ -112,9 +109,6 @@
 //moduledev/Packages/PCCSystem/Maintenance/4.0.x/TestingTools/... //DEPOT/TestingTools/...
 //moduledev/Packages/PCCSystem/Maintenance/4.0.x/PackageDependencies.xml //DEPOT/Dependencies/PCCSystem-4.0.x.xml
 //moduledev/Packages/PCCSystem/Maintenance/4.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/PCCSystem-4.0.x.xml
-//moduledev/Packages/PFS/Maintenance/3.6.x/PFS/... //DEPOT/PFS/...
-//moduledev/Packages/PFS/Maintenance/3.6.x/PackageDependencies.xml //DEPOT/Dependencies/PFS-3.6.x.xml
-//moduledev/Packages/PFS/Maintenance/3.6.x/Licenses.xml //DEPOT/LicenseInfoXMLs/PFS-3.6.x.xml
 //moduledev/Packages/Parallel/Maintenance/4.4.x/Parallel/... //DEPOT/Parallel/...
 //moduledev/Packages/Parallel/Maintenance/4.4.x/PackageDependencies.xml //DEPOT/Dependencies/Parallel-4.4.x.xml
 //moduledev/Packages/Parallel/Maintenance/4.4.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Parallel-4.4.x.xml
