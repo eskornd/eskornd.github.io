@@ -425,6 +425,22 @@ function GeneratePreview()
 	$('#font_preview').html(elem);
 }
 
+function ReRenderGlyphs()
+{
+	let tagString = $('#glyph_category').val();
+	let elems = gRender.glyphElements(tagString);
+	// fill GLyphs
+    let glyphs_div = $('#all_glyphs');
+    glyphs_div.html('');
+	let html = '';
+	for ( let i=0; i<elems.length; ++i)
+	{
+		html += elems[i];
+		const elem = elems[i];
+		glyphs_div.append(elem);
+	}
+}
+
 function InitFontFace(fontFile, faceIndex)
 {
 	let gi = MakeGIWrapper(fontFile, faceIndex);
@@ -457,18 +473,7 @@ function InitFontFace(fontFile, faceIndex)
     $('#font_var_namedstyles').html(VarNamedStylesToHTML(gi.getVarNamedStyles()));
 
 	//let loaded = render.loadGlyphs();
-	let elems = render.glyphElements();
-	console.log('render loaded: ' + elems.length);
-	// fill GLyphs
-    let glyphs_div = $('#all_glyphs');
-    glyphs_div.html('');
-	let html = '';
-	for ( let i=0; i<elems.length; ++i)
-	{
-		html += elems[i];
-		const elem = elems[i];
-		glyphs_div.append(elem);
-	}
+	ReRenderGlyphs();
 	
 	// opentype features
 	const feats = gi.getOpenTypeFeatures();
@@ -481,6 +486,12 @@ function InitFontFace(fontFile, faceIndex)
 		GeneratePreview();
 	});
 
+	$( "#glyph_category" ).selectmenu({
+		change: function( event, ui ) {
+			console.log( "Selected glyph category: " + ui.item.value );
+			ReRenderGlyphs();
+		}
+	});
 	if ( faceInfo.sampleText === '' )
 	{
 		$('#preview_source').val('The quick brown fox jumps over the lazy dog.');

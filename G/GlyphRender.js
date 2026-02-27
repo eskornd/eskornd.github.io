@@ -148,8 +148,8 @@ export class GlyphRender
 		this._num_loaded = 0;
 		this._path_ds = new Array(num_glyphs);
 		this._glyph_infos = new Array(num_glyphs);
-		console.log('### grid size: ' + this._grid_size);
-		console.log('### glyph size: ' + this._glyph_size);
+		// console.log('### grid size: ' + this._grid_size);
+		// console.log('### glyph size: ' + this._glyph_size);
 		for ( let gid=0; gid<num_glyphs; ++gid)
 		{
 			const glyph_info = gi.glyphInfo(gid);
@@ -164,7 +164,7 @@ export class GlyphRender
 		return this._loaded;
 	}
 
-	glyphElements()
+	glyphElements(tagStr)
 	{
 		this.loadGlyphs();
 		if ( this._html_elements == null )
@@ -177,7 +177,28 @@ export class GlyphRender
 				this._html_elements[gid] = this.toElement(gid, this._grid_size, path_d);
 			}
 		}
-		return this._html_elements;
+
+		// Now 
+		let gids=[];
+		if ( !tagStr )
+		{
+			// return full glyphs
+			return this._html_elements;
+		}
+		console.log('### creating ' + gids.length + ' glyphs with tag ' + tagStr);
+		const gi = this._gi;
+		const gid_vector = gi.getGlyphsByOpenTypeFeature(tagStr);
+		for ( let i=0; i<gid_vector.size(); ++i )
+		{
+			gids.push(gid_vector.get(i));
+		}
+
+		let elems = [];
+		for ( const gid of gids )
+		{
+			elems.push(this._html_elements[gid]);
+		}
+		return elems;
 	}
 
 	glyphSVG(gid, fontSize)
