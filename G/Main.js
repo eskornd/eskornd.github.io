@@ -442,12 +442,11 @@ function ReRenderGlyphs()
 }
 
 // The OpenTypeFeature ( member: string code, bool isOn) 
-function feats_contains(inFeats, inVal)
+function feats_contains(inCodes, inVal)
 {
-	for ( let i=0; i<inFeats.size(); ++i)
+	for ( const code of inCodes )
 	{
-		const feat_code = inFeats.get(i).code;
-		if ( inVal === feat_code )
+		if ( inVal === code )
 		{
 			return true;
 		}
@@ -501,19 +500,18 @@ function InitFontFace(fontFile, faceIndex)
 		}
 		GeneratePreview();
 	});
-	//
-	// glyph category dropdown
-    $('#glyph_category option').each(function() {
-        let $option = $(this);
-        let val = $option.val();  
-        $option.prop('disabled', (val=='' || !feats_contains(feats, val)) );
-    });
-	// on change 
-	$( "#glyph_category" ).selectmenu({
-		change: function( event, ui ) {
-			console.log( "Selected glyph category: " + ui.item.value );
-			ReRenderGlyphs();
-		}
+
+	let feat_codes = [];
+	for ( let i=0; i<feats.size(); ++i)
+	{
+		feat_codes.push(feats.get(i).code);
+	}
+
+	$('#glyph_category option').each(function() {
+		let $option = $(this);
+		let val = $option.val();  
+		const is_available = (!val) ? true : feats_contains(feat_codes, val);
+		$option.prop('disabled', !is_available );
 	});
 	if ( faceInfo.sampleText === '' )
 	{
@@ -594,7 +592,7 @@ function mountFile(fileObject, onFileMounted)
 }
 
 
-function InitDropZoneEvents()
+function InitEvents()
 {
     $("#drop_zone").on('dragenter', function(e)
 		{
@@ -632,6 +630,12 @@ function InitDropZoneEvents()
 			}
 			$(this).css("background", "#FFFFFF");
 		});
+	
+	$('#glyph_category').on('change', function() {
+		let selectedValue = $(this).val();
+		console.log( "Selected glyph category: " + selectedValue );
+		ReRenderGlyphs();
+	});
 }
 
 async function main()
@@ -641,7 +645,7 @@ async function main()
 	LoadFont('MacondoSwashCaps-Regular.ttf');
 	
 	//events
-	InitDropZoneEvents();
+	InitEvents();
 
 	// export as global function
 	window.onGlyphClicked = onGlyphClicked;
