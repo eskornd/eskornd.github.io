@@ -164,6 +164,7 @@ export class GlyphRender
 		return this._loaded;
 	}
 
+	// tagStr opentype tag string but optional, e.g. "liga"
 	glyphElements(tagStr)
 	{
 		this.loadGlyphs();
@@ -178,7 +179,7 @@ export class GlyphRender
 			}
 		}
 
-		// Now 
+		// Now assemble result html elements based on required glyphs
 		let gids=[];
 		if ( !tagStr )
 		{

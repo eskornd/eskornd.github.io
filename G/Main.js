@@ -430,8 +430,8 @@ function ReRenderGlyphs()
 	let tagString = $('#glyph_category').val();
 	let elems = gRender.glyphElements(tagString);
 	// fill GLyphs
-    let glyphs_div = $('#all_glyphs');
-    glyphs_div.html('');
+	let glyphs_div = $('#all_glyphs');
+	glyphs_div.html('');
 	let html = '';
 	for ( let i=0; i<elems.length; ++i)
 	{
@@ -439,6 +439,20 @@ function ReRenderGlyphs()
 		const elem = elems[i];
 		glyphs_div.append(elem);
 	}
+}
+
+// The OpenTypeFeature ( member: string code, bool isOn) 
+function feats_contains(inFeats, inVal)
+{
+	for ( let i=0; i<inFeats.size(); ++i)
+	{
+		const feat_code = inFeats.get(i).code;
+		if ( inVal === feat_code )
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 function InitFontFace(fontFile, faceIndex)
@@ -472,6 +486,8 @@ function InitFontFace(fontFile, faceIndex)
     $('#font_var_axes').html(VarAxesToHTML(gi.getVarAxes()));
     $('#font_var_namedstyles').html(VarNamedStylesToHTML(gi.getVarNamedStyles()));
 
+	// 
+
 	//let loaded = render.loadGlyphs();
 	ReRenderGlyphs();
 	
@@ -485,7 +501,14 @@ function InitFontFace(fontFile, faceIndex)
 		}
 		GeneratePreview();
 	});
-
+	//
+	// glyph category dropdown
+    $('#glyph_category option').each(function() {
+        let $option = $(this);
+        let val = $option.val();  
+        $option.prop('disabled', (val=='' || !feats_contains(feats, val)) );
+    });
+	// on change 
 	$( "#glyph_category" ).selectmenu({
 		change: function( event, ui ) {
 			console.log( "Selected glyph category: " + ui.item.value );
