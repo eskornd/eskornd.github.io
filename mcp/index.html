@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<!-- CSP: Allows connections to local addresses and arbitrary ports -->
+		<meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://127.0.0.1:* https://127.0.0.1:* http://localhost:* https://localhost:*;">
+		<title>MCP Tool Explorer</title>
+		<style>
+body { font-family: -apple-system, sans-serif; padding: 20px; background: #fafafa; color: #333; }
+.container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.input-group { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+input[type="text"] { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; font-weight: bold; }
+button:hover { background: #0056b3; }
+#status { margin-top: 20px; padding: 10px; border-radius: 4px; display: none; }
+.success { background: #e8f5e9; color: #2e7d32; display: block !important; }
+.error { background: #ffebee; color: #c62828; display: block !important; }
+ul { margin-top: 15px; padding-left: 20px; }
+li { margin-bottom: 5px; font-family: monospace; background: #f8f9fa; padding: 4px; border-radius: 3px; list-style: none; border-left: 3px solid #007bff; }
+		</style>
+	</head>
+	<body>
+
+		<div class="container">
+			<h1>MCP Tool Lister</h1>
+
+			<div class="input-group">
+				<label for="mcp-url"><strong>MCP URL:</strong></label>
+				<input type="text" id="mcp-url" placeholder="https://127.0.0.1:23043/mcp">
+				<button id="go-btn">Connect & List Tools</button>
+			</div>
+
+			<div id="status"></div>
+			<ul id="tool-list"></ul>
+		</div>
+
+		<script>
+			const urlInput = document.getElementById('mcp-url');
+			const goBtn = document.getElementById('go-btn');
+			const statusEl = document.getElementById('status');
+			const listEl = document.getElementById('tool-list');
+
+			// Default URL and URL Parameter logic
+			const defaultUrl = "https://127.0.0.1:23043/mcp";
+			const params = new URLSearchParams(window.location.search);
+			urlInput.value = params.get('mcp') || defaultUrl;
+
+			async function fetchTools() {
+				const targetUrl = urlInput.value.trim();
+				statusEl.textContent = "Connecting...";
+				statusEl.className = "";
+				listEl.innerHTML = "";
+
+				try {
+					// 1. Initialize
+					await fetch(targetUrl, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+											 jsonrpc: "2.0",
+											 id: 1,
+											 method: "initialize",
+											 params: {
+												 protocolVersion: "2024-11-05",
+												 capabilities: {},
+												 clientInfo: { name: "web-explorer", version: "1.0" }
+											 }
+						})
+					});
+
+					// 2. List Tools
+					const response = await fetch(targetUrl, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+											 jsonrpc: "2.0",
+											 id: 2,
+											 method: "tools/list",
+											 params: {}
+						})
+					});
+
+					const data = await response.json();
+
+					if (data.result && data.result.tools) {
+						statusEl.textContent = `Success! Found ${data.result.tools.length} tool(s).`;
+						statusEl.className = "success";
+						data.result.tools.forEach(tool => {
+							const li = document.createElement('li');
+							li.textContent = tool.name;
+							listEl.appendChild(li);
+						});
+					} else {
+						throw new Error(data.error?.message || "Invalid MCP response format.");
+					}
+				} catch (err) {
+					statusEl.className = "error";
+					statusEl.innerHTML = `<strong>Connection Failed:</strong><br>${err.message}<br><small>Check CORS settings or browser Mixed Content blocking.</small>`;
+				}
+			}
+
+			goBtn.addEventListener('click', fetchTools);
+		</script>
+
+	</body>
+</html>
