@@ -16,4 +16,4 @@
 * [Fixmail](https://eskornd.github.io/fixmail/)
 * [eskoSSO](https://eskornd.github.io/eskoSSO/)
 * [Shopping](https://eskornd.github.io/shopping/)
-* [mcp-tester](https://eskornd.github.io/mcp/tester)
+* [mcptester](https://eskornd.github.io/mcp?mcp=https://127.0.0.1:23043/mcp)
