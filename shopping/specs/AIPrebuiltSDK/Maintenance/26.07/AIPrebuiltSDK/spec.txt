@@ -1335,7 +1335,7 @@
 //moduledev/3rdParty/zlib/Maintenance/2.3.2.x/zlib/... //DEPOT/zlib/...
 //moduledev/3rdParty/zlib/Maintenance/2.3.2.x/PackageDependencies.xml //DEPOT/Dependencies/zlib-2.3.2.x.xml
 //moduledev/3rdParty/zlib/Maintenance/2.3.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/zlib-2.3.2.x.xml
-//moduledev/3rdParty/zxing-cpp-nu-book/Maintenance/2.3.0.x/zxing-cpp-nu-book/... //DEPOT/zxing-cpp-nu-book/...
-//moduledev/3rdParty/zxing-cpp-nu-book/Maintenance/2.3.0.x/PackageDependencies.xml //DEPOT/Dependencies/zxing-cpp-nu-book-2.3.0.x.xml
-//moduledev/3rdParty/zxing-cpp-nu-book/Maintenance/2.3.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/zxing-cpp-nu-book-2.3.0.x.xml
+//moduledev/3rdParty/zxing-cpp-nu-book/Maintenance/3.0.2.x/zxing-cpp-nu-book/... //DEPOT/zxing-cpp-nu-book/...
+//moduledev/3rdParty/zxing-cpp-nu-book/Maintenance/3.0.2.x/PackageDependencies.xml //DEPOT/Dependencies/zxing-cpp-nu-book-3.0.2.x.xml
+//moduledev/3rdParty/zxing-cpp-nu-book/Maintenance/3.0.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/zxing-cpp-nu-book-3.0.2.x.xml
 
