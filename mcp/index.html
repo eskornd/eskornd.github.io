@@ -26,7 +26,11 @@ li { margin-bottom: 5px; font-family: monospace; background: #f8f9fa; padding: 4
 
 			<div class="input-group">
 				<label for="mcp-url"><strong>MCP URL:</strong></label>
-				<input type="text" id="mcp-url" placeholder="https://127.0.0.1:23043/mcp">
+				<input type="text" id="mcp-url" placeholder="https://127.0.0">
+
+				<label for="mcp-auth"><strong>Auth Token (Base64):</strong></label>
+				<input type="text" id="mcp-auth" placeholder="e.g. dXNlcjpwYXNzd29yZA==">
+
 				<button id="go-btn">Connect & List Tools</button>
 			</div>
 
@@ -36,26 +40,40 @@ li { margin-bottom: 5px; font-family: monospace; background: #f8f9fa; padding: 4
 
 		<script>
 			const urlInput = document.getElementById('mcp-url');
+			const authInput = document.getElementById('mcp-auth');
 			const goBtn = document.getElementById('go-btn');
 			const statusEl = document.getElementById('status');
 			const listEl = document.getElementById('tool-list');
 
 			// Default URL and URL Parameter logic
-			const defaultUrl = "https://127.0.0.1:23043/mcp";
+			const defaultUrl = "https://127.0.0";
 			const params = new URLSearchParams(window.location.search);
+
+			// Load values from URL if present
 			urlInput.value = params.get('mcp') || defaultUrl;
+			authInput.value = params.get('auth') || "";
 
 			async function fetchTools() {
 				const targetUrl = urlInput.value.trim();
+				const authToken = authInput.value.trim();
+
 				statusEl.textContent = "Connecting...";
 				statusEl.className = "";
 				listEl.innerHTML = "";
+
+				const headers = {
+					'Content-Type': 'application/json'
+				};
+
+				if (authToken) {
+					headers['Authorization'] = `Basic ${authToken}`;
+				}
 
 				try {
 					// 1. Initialize
 					await fetch(targetUrl, {
 						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
+						headers: headers,
 						body: JSON.stringify({
 											 jsonrpc: "2.0",
 											 id: 1,
@@ -71,7 +89,7 @@ li { margin-bottom: 5px; font-family: monospace; background: #f8f9fa; padding: 4
 					// 2. List Tools
 					const response = await fetch(targetUrl, {
 						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
+						headers: headers,
 						body: JSON.stringify({
 											 jsonrpc: "2.0",
 											 id: 2,
@@ -95,7 +113,7 @@ li { margin-bottom: 5px; font-family: monospace; background: #f8f9fa; padding: 4
 					}
 				} catch (err) {
 					statusEl.className = "error";
-					statusEl.innerHTML = `<strong>Connection Failed:</strong><br>${err.message}<br><small>Check CORS settings or browser Mixed Content blocking.</small>`;
+					statusEl.innerHTML = `<strong>Connection Failed:</strong><br>${err.message}<br><small>Check CORS settings, Auth Token, or browser Mixed Content blocking.</small>`;
 				}
 			}
 
