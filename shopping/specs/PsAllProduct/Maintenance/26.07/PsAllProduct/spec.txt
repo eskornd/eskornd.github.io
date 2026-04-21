@@ -223,9 +223,6 @@
 //moduledev/3rdParty/gtest/Main/googletest/... //DEPOT/googletest/...
 //moduledev/3rdParty/gtest/Main/PackageDependencies.xml //DEPOT/Dependencies/gtest-Main.xml
 //moduledev/3rdParty/gtest/Main/Licenses.xml //DEPOT/LicenseInfoXMLs/gtest-Main.xml
-//moduledev/3rdParty/icu/Released/78.1/icu/... //DEPOT/icu/...
-//moduledev/3rdParty/icu/Released/78.1/PackageDependencies.xml //DEPOT/Dependencies/icu-78.1.xml
-//moduledev/3rdParty/icu/Released/78.1/Licenses.xml //DEPOT/LicenseInfoXMLs/icu-78.1.xml
 //moduledev/3rdParty/libpng/Maintenance/1.6.55.x/libpng/... //DEPOT/libpng/...
 //moduledev/3rdParty/libpng/Maintenance/1.6.55.x/PackageDependencies.xml //DEPOT/Dependencies/libpng-1.6.55.x.xml
 //moduledev/3rdParty/libpng/Maintenance/1.6.55.x/Licenses.xml //DEPOT/LicenseInfoXMLs/libpng-1.6.55.x.xml
