@@ -103,5 +103,9 @@
 		"name" : "GlyphJS"
 		, "url" : "specs/GlyphJS/Maintenance/1.2.x/GlyphJS/spec.txt"
 	}
+	, {
+		"name" : "eskoSSO"
+		, "url" : "specs/eskoSSO/Maintenance/1.4.x/eskoSSO/spec.txt"
+	}
 ]
 }
