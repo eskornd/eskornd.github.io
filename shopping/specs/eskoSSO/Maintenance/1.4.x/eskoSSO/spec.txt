@@ -16,6 +16,9 @@
 //moduledev/Packages/LicensesXMLTools/Maintenance/2.x/LicensesXMLTools/... //DEPOT/LicensesXMLTools/...
 //moduledev/Packages/LicensesXMLTools/Maintenance/2.x/PackageDependencies.xml //DEPOT/Dependencies/LicensesXMLTools-2.x.xml
 //moduledev/Packages/LicensesXMLTools/Maintenance/2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/LicensesXMLTools-2.x.xml
+//moduledev/Packages/Logging/Maintenance/1.2.x/Logging/... //DEPOT/Logging/...
+//moduledev/Packages/Logging/Maintenance/1.2.x/PackageDependencies.xml //DEPOT/Dependencies/Logging-1.2.x.xml
+//moduledev/Packages/Logging/Maintenance/1.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Logging-1.2.x.xml
 //moduledev/3rdParty/Microsoft.Web.WebView2/Maintenance/1.0.2903.40.x/Microsoft.Web.WebView2/... //DEPOT/Microsoft.Web.WebView2/...
 //moduledev/3rdParty/Microsoft.Web.WebView2/Maintenance/1.0.2903.40.x/PackageDependencies.xml //DEPOT/Dependencies/Microsoft.Web.WebView2-1.0.2903.40.x.xml
 //moduledev/3rdParty/Microsoft.Web.WebView2/Maintenance/1.0.2903.40.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Microsoft.Web.WebView2-1.0.2903.40.x.xml
