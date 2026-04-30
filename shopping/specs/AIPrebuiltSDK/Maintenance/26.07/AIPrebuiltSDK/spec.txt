@@ -1046,6 +1046,9 @@
 //moduledev/Packages/StudioRendererLib3d/Maintenance/26.07.x/StudioRendererLib3d/... //DEPOT/StudioRendererLib3d/...
 //moduledev/Packages/StudioRendererLib3d/Maintenance/26.07.x/PackageDependencies.xml //DEPOT/Dependencies/StudioRendererLib3d-26.07.x.xml
 //moduledev/Packages/StudioRendererLib3d/Maintenance/26.07.x/Licenses.xml //DEPOT/LicenseInfoXMLs/StudioRendererLib3d-26.07.x.xml
+//moduledev/Packages/StudioSharedResources/Maintenance/26.07.x/StudioSharedResources/... //DEPOT/StudioSharedResources/...
+//moduledev/Packages/StudioSharedResources/Maintenance/26.07.x/PackageDependencies.xml //DEPOT/Dependencies/StudioSharedResources-26.07.x.xml
+//moduledev/Packages/StudioSharedResources/Maintenance/26.07.x/Licenses.xml //DEPOT/LicenseInfoXMLs/StudioSharedResources-26.07.x.xml
 //moduledev/Packages/StudioSharedTestResources/Maintenance/26.07.x/StudioSharedTestResources/... //DEPOT/StudioSharedTestResources/...
 //moduledev/Packages/StudioSharedTestResources/Maintenance/26.07.x/PackageDependencies.xml //DEPOT/Dependencies/StudioSharedTestResources-26.07.x.xml
 //moduledev/Packages/StudioSharedTestResources/Maintenance/26.07.x/Licenses.xml //DEPOT/LicenseInfoXMLs/StudioSharedTestResources-26.07.x.xml
