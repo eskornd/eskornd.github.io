@@ -112,7 +112,6 @@
 //moduledev/Packages/ProductDefinitions/InProductPackage/Licenses.xml //DEPOT/LicenseInfoXMLs/ProductDefinitions-InProductPackage.xml
 //moduledev/Packages/PsAllPlugins/Maintenance/26.07/PackageDependencies.xml //DEPOT/Dependencies/PsAllPlugins-26.07.xml
 //moduledev/Packages/PsAllPlugins/Maintenance/26.07/Licenses.xml //DEPOT/LicenseInfoXMLs/PsAllPlugins-26.07.xml
-//moduledev/Packages/PsAllProduct/Maintenance/26.07/ProductDefinitions/... //DEPOT/ProductDefinitions/...
 //moduledev/Packages/PsAllProduct/Maintenance/26.07/PsAllProduct/... //DEPOT/PsAllProduct/...
 //moduledev/Packages/PsAllProduct/Maintenance/26.07/PackageDependencies.xml //DEPOT/Dependencies/PsAllProduct-26.07.xml
 //moduledev/Packages/PsAllProduct/Maintenance/26.07/Licenses.xml //DEPOT/LicenseInfoXMLs/PsAllProduct-26.07.xml
