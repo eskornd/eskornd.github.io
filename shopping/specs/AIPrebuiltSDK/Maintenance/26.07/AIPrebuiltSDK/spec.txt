@@ -724,8 +724,8 @@
 //moduledev/3rdParty/Imath/Maintenance/3.2.1.x/Imath/... //DEPOT/Imath/...
 //moduledev/3rdParty/Imath/Maintenance/3.2.1.x/PackageDependencies.xml //DEPOT/Dependencies/Imath-3.2.1.x.xml
 //moduledev/3rdParty/Imath/Maintenance/3.2.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Imath-3.2.1.x.xml
-//packages/3rdParty/Intel/IntelTBB/Maintenance/2021.13.0_Source.x/PackageDependencies.xml //DEPOT/Dependencies/IntelTBB-2021.13.0_Source.x.xml
-//packages/3rdParty/Intel/IntelTBB/Maintenance/2021.13.0_Source.x/Licenses.xml //DEPOT/LicenseInfoXMLs/IntelTBB-2021.13.0_Source.x.xml
+//packages/3rdParty/Intel/IntelTBB/Maintenance/2023.0.0_Source.x/PackageDependencies.xml //DEPOT/Dependencies/IntelTBB-2023.0.0_Source.x.xml
+//packages/3rdParty/Intel/IntelTBB/Maintenance/2023.0.0_Source.x/Licenses.xml //DEPOT/LicenseInfoXMLs/IntelTBB-2023.0.0_Source.x.xml
 //moduledev/Packages/InteractIO/Maintenance/26.07.x/InteractIO/... //DEPOT/InteractIO/...
 //moduledev/Packages/InteractIO/Maintenance/26.07.x/PackageDependencies.xml //DEPOT/Dependencies/InteractIO-26.07.x.xml
 //moduledev/Packages/InteractIO/Maintenance/26.07.x/Licenses.xml //DEPOT/LicenseInfoXMLs/InteractIO-26.07.x.xml
