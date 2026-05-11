@@ -827,6 +827,9 @@
 //moduledev/Packages/ODLPAI/Maintenance/5.8.x/ODLPAI/... //DEPOT/ODLPAI/...
 //moduledev/Packages/ODLPAI/Maintenance/5.8.x/PackageDependencies.xml //DEPOT/Dependencies/ODLPAI-5.8.x.xml
 //moduledev/Packages/ODLPAI/Maintenance/5.8.x/Licenses.xml //DEPOT/LicenseInfoXMLs/ODLPAI-5.8.x.xml
+//moduledev/3rdParty/OSMesa/Released/24.2.4/OSMesa/... //DEPOT/OSMesa/...
+//moduledev/3rdParty/OSMesa/Released/24.2.4/PackageDependencies.xml //DEPOT/Dependencies/OSMesa-24.2.4.xml
+//moduledev/3rdParty/OSMesa/Released/24.2.4/Licenses.xml //DEPOT/LicenseInfoXMLs/OSMesa-24.2.4.xml
 //moduledev/Packages/Offset/Maintenance/5.8.x/Offset/... //DEPOT/Offset/...
 //moduledev/Packages/Offset/Maintenance/5.8.x/PackageDependencies.xml //DEPOT/Dependencies/Offset-5.8.x.xml
 //moduledev/Packages/Offset/Maintenance/5.8.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Offset-5.8.x.xml
