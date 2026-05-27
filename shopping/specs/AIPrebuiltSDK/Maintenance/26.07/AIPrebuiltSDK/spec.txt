@@ -541,6 +541,9 @@
 //moduledev/Packages/DocumentPlacedArtModule/Maintenance/6.1.x/DocumentPlacedArt/... //DEPOT/DocumentPlacedArt/...
 //moduledev/Packages/DocumentPlacedArtModule/Maintenance/6.1.x/PackageDependencies.xml //DEPOT/Dependencies/DocumentPlacedArtModule-6.1.x.xml
 //moduledev/Packages/DocumentPlacedArtModule/Maintenance/6.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/DocumentPlacedArtModule-6.1.x.xml
+//moduledev/Packages/DocumentReplacedArtModule/Maintenance/1.1.x/DocumentReplacedArt/... //DEPOT/DocumentReplacedArt/...
+//moduledev/Packages/DocumentReplacedArtModule/Maintenance/1.1.x/PackageDependencies.xml //DEPOT/Dependencies/DocumentReplacedArtModule-1.1.x.xml
+//moduledev/Packages/DocumentReplacedArtModule/Maintenance/1.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/DocumentReplacedArtModule-1.1.x.xml
 //moduledev/Packages/DocumentSamplePickerModule/Maintenance/11.1.x/DocumentSamplePicker/... //DEPOT/DocumentSamplePicker/...
 //moduledev/Packages/DocumentSamplePickerModule/Maintenance/11.1.x/PackageDependencies.xml //DEPOT/Dependencies/DocumentSamplePickerModule-11.1.x.xml
 //moduledev/Packages/DocumentSamplePickerModule/Maintenance/11.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/DocumentSamplePickerModule-11.1.x.xml
