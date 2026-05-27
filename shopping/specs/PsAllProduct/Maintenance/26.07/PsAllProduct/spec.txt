@@ -49,6 +49,9 @@
 //moduledev/Packages/Helper/Maintenance/6.0.x/Helper/... //DEPOT/Helper/...
 //moduledev/Packages/Helper/Maintenance/6.0.x/PackageDependencies.xml //DEPOT/Dependencies/Helper-6.0.x.xml
 //moduledev/Packages/Helper/Maintenance/6.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/Helper-6.0.x.xml
+//moduledev/3rdParty/JPEGLib/Maintenance/9e.1.x/JPEGLib/... //DEPOT/JPEGLib/...
+//moduledev/3rdParty/JPEGLib/Maintenance/9e.1.x/PackageDependencies.xml //DEPOT/Dependencies/JPEGLib-9e.1.x.xml
+//moduledev/3rdParty/JPEGLib/Maintenance/9e.1.x/Licenses.xml //DEPOT/LicenseInfoXMLs/JPEGLib-9e.1.x.xml
 //moduledev/Packages/LicenseManagerBinariesEsko/Maintenance/26.07/LicenseManagerBinariesEsko/... //DEPOT/LicenseManagerBinariesEsko/...
 //moduledev/Packages/LicenseManagerBinariesEsko/Maintenance/26.07/PackageDependencies.xml //DEPOT/Dependencies/LicenseManagerBinariesEsko-26.07.xml
 //moduledev/Packages/LicenseManagerBinariesEsko/Maintenance/26.07/Licenses.xml //DEPOT/LicenseInfoXMLs/LicenseManagerBinariesEsko-26.07.xml
@@ -185,6 +188,9 @@
 //moduledev/Packages/SystemSupport/Maintenance/3.x/SystemSettingsLayer/... //DEPOT/SystemSettingsLayer/...
 //moduledev/Packages/SystemSupport/Maintenance/3.x/PackageDependencies.xml //DEPOT/Dependencies/SystemSupport-3.x.xml
 //moduledev/Packages/SystemSupport/Maintenance/3.x/Licenses.xml //DEPOT/LicenseInfoXMLs/SystemSupport-3.x.xml
+//moduledev/3rdParty/TiffLib/Maintenance/4.7.0.x/TiffLib/... //DEPOT/TiffLib/...
+//moduledev/3rdParty/TiffLib/Maintenance/4.7.0.x/PackageDependencies.xml //DEPOT/Dependencies/TiffLib-4.7.0.x.xml
+//moduledev/3rdParty/TiffLib/Maintenance/4.7.0.x/Licenses.xml //DEPOT/LicenseInfoXMLs/TiffLib-4.7.0.x.xml
 //moduledev/Packages/UTF8FS/Maintenance/2.2.x/UTF8FS/... //DEPOT/UTF8FS/...
 //moduledev/Packages/UTF8FS/Maintenance/2.2.x/PackageDependencies.xml //DEPOT/Dependencies/UTF8FS-2.2.x.xml
 //moduledev/Packages/UTF8FS/Maintenance/2.2.x/Licenses.xml //DEPOT/LicenseInfoXMLs/UTF8FS-2.2.x.xml
