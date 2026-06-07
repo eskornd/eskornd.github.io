@@ -32,7 +32,14 @@ async function LoadModule()
 	console.log('LoadModule: initializing...');
 	try
 	{
-		let module = await GlyphModule();
+		let opts = {};
+		// instantiateWasm is an official Emscripten hook — when provided,
+		// Emscripten defers .wasm fetching/instantiation to our function
+		// instead of doing its own. See WasmProgress.js for details.
+		if (typeof createWasmProgressLoader === 'function') {
+			opts.instantiateWasm = createWasmProgressLoader();
+		}
+		let module = await GlyphModule(opts);
 		console.log('GlyphModule initialized');
 		return module;
 	} catch ( err ) {
