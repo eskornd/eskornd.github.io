@@ -1,2 +1,3 @@
 publish.sh
 *.swp
+.DS_Store
