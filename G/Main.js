@@ -496,6 +496,37 @@ function InitFontFace(fontFile, faceIndex)
 
 	//let loaded = render.loadGlyphs();
 	ReRenderGlyphs();
+
+	// FontMetadata tab
+	try {
+		const metadataJson = gGlyphModule.scanFontMetadataJson(fontFile);
+		$('#metadata_json').text(metadataJson);
+
+		// SVG preview for current face
+		const svgStr = gGlyphModule.renderPreviewSVG(fontFile, faceIndex, "");
+		$('#metadata_svg_preview').html(svgStr);
+
+		// PNG preview for current face
+		const pngPath = '/tmp/_preview.png';
+		if (gGlyphModule.renderPreviewPNG(fontFile, faceIndex, "", pngPath)) {
+			const pngData = gGlyphModule.FS.readFile(pngPath);
+			const blob = new Blob([pngData], { type: 'image/png' });
+			const url = URL.createObjectURL(blob);
+			const img = $('#metadata_png_img');
+			img.attr('src', url);
+			// Display at 0.5x for retina sharpness
+			img.on('load', function() {
+				$(this).css({ width: this.naturalWidth / 2, height: this.naturalHeight / 2 });
+			});
+			gGlyphModule.FS.unlink(pngPath);
+		} else {
+			$('#metadata_png_img').attr('src', '');
+		}
+	} catch (err) {
+		$('#metadata_json').text('Error: ' + err.message);
+		$('#metadata_svg_preview').html('');
+		$('#metadata_png_img').attr('src', '');
+	}
 	
 	// opentype features
 	const feats = gi.getOpenTypeFeatures();
