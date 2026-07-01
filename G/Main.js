@@ -448,6 +448,53 @@ function ReRenderGlyphs()
 	}
 }
 
+// Populate the Metadata tab: JSON output + per-face SVG/PNG previews
+function ReRenderMetadataTab(fontFile)
+{
+	try {
+		const metadataJson = gGlyphModule.scanFontMetadataJson(fontFile);
+		$('#metadata_json').text(metadataJson);
+
+		const faces = JSON.parse(metadataJson);
+		let previewsHtml = '';
+		for (const face of faces) {
+			const fi = face.faceIndex;
+			const label = face.postScriptName || `Face ${fi}`;
+
+			// SVG preview
+			const svgStr = gGlyphModule.renderPreviewSVG(fontFile, fi, "");
+
+			// PNG preview
+			let pngImgHtml = '';
+			const pngPath = '/tmp/_preview_' + fi + '.png';
+			if (gGlyphModule.renderPreviewPNG(fontFile, fi, "", pngPath)) {
+				const pngData = gGlyphModule.FS.readFile(pngPath);
+				const blob = new Blob([pngData], { type: 'image/png' });
+				const url = URL.createObjectURL(blob);
+				pngImgHtml = `<img class="metadata_png" src="${url}" alt="PNG preview"/>`;
+				gGlyphModule.FS.unlink(pngPath);
+			}
+
+			previewsHtml += `<div style="margin-bottom:16px;">`;
+			previewsHtml += `<div style="font-weight:bold; margin-bottom:4px;">${label}</div>`;
+			previewsHtml += `<div style="display:inline-block; border:1px solid #ccc; margin-right:8px;">${svgStr}</div>`;
+			previewsHtml += `<div style="display:inline-block; border:1px solid #ccc;">${pngImgHtml}</div>`;
+			previewsHtml += `</div>`;
+		}
+		$('#metadata_previews').html(previewsHtml);
+
+		// Scale PNG images to 0.5x for retina
+		$('.metadata_png').each(function() {
+			$(this).on('load', function() {
+				$(this).css({ width: this.naturalWidth / 2, height: this.naturalHeight / 2 });
+			});
+		});
+	} catch (err) {
+		$('#metadata_json').text('Error: ' + err.message);
+		$('#metadata_previews').html('');
+	}
+}
+
 // The OpenTypeFeature ( member: string code, bool isOn) 
 function feats_contains(inCodes, inVal)
 {
@@ -498,35 +545,7 @@ function InitFontFace(fontFile, faceIndex)
 	ReRenderGlyphs();
 
 	// FontMetadata tab
-	try {
-		const metadataJson = gGlyphModule.scanFontMetadataJson(fontFile);
-		$('#metadata_json').text(metadataJson);
-
-		// SVG preview for current face
-		const svgStr = gGlyphModule.renderPreviewSVG(fontFile, faceIndex, "");
-		$('#metadata_svg_preview').html(svgStr);
-
-		// PNG preview for current face
-		const pngPath = '/tmp/_preview.png';
-		if (gGlyphModule.renderPreviewPNG(fontFile, faceIndex, "", pngPath)) {
-			const pngData = gGlyphModule.FS.readFile(pngPath);
-			const blob = new Blob([pngData], { type: 'image/png' });
-			const url = URL.createObjectURL(blob);
-			const img = $('#metadata_png_img');
-			img.attr('src', url);
-			// Display at 0.5x for retina sharpness
-			img.on('load', function() {
-				$(this).css({ width: this.naturalWidth / 2, height: this.naturalHeight / 2 });
-			});
-			gGlyphModule.FS.unlink(pngPath);
-		} else {
-			$('#metadata_png_img').attr('src', '');
-		}
-	} catch (err) {
-		$('#metadata_json').text('Error: ' + err.message);
-		$('#metadata_svg_preview').html('');
-		$('#metadata_png_img').attr('src', '');
-	}
+	ReRenderMetadataTab(fontFile);
 	
 	// opentype features
 	const feats = gi.getOpenTypeFeatures();
