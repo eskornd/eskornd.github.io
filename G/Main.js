@@ -457,17 +457,14 @@ function ReRenderMetadataTab(fontFile)
 
 		const faces = JSON.parse(metadataJson);
 		let previewsHtml = '';
-		for (const face of faces) {
-			const fi = face.faceIndex;
-			const label = face.postScriptName || `Face ${fi}`;
 
-			// SVG preview
-			const svgStr = gGlyphModule.renderPreviewSVG(fontFile, fi, "");
+		// Build one labeled SVG+PNG pair for a given framing variant.
+		function buildVariant(fontFile, fi, fixedFrame, variantLabel) {
+			const svgStr = gGlyphModule.renderPreviewSVG(fontFile, fi, "", fixedFrame);
 
-			// PNG preview
 			let pngImgHtml = '';
-			const pngPath = '/tmp/_preview_' + fi + '.png';
-			if (gGlyphModule.renderPreviewPNG(fontFile, fi, "", pngPath)) {
+			const pngPath = '/tmp/_preview_' + fi + (fixedFrame ? '_fixed' : '_metrics') + '.png';
+			if (gGlyphModule.renderPreviewPNG(fontFile, fi, "", pngPath, fixedFrame)) {
 				const pngData = gGlyphModule.FS.readFile(pngPath);
 				const blob = new Blob([pngData], { type: 'image/png' });
 				const url = URL.createObjectURL(blob);
@@ -475,10 +472,28 @@ function ReRenderMetadataTab(fontFile)
 				gGlyphModule.FS.unlink(pngPath);
 			}
 
+			let html = `<div style="margin-bottom:8px;">`;
+			html += `<div style="font-size:12px; color:#333; margin-bottom:4px;">${variantLabel}</div>`;
+			html += `<div style="display:inline-block; margin-right:8px; vertical-align:top; text-align:center;">`;
+			html += `<div style="border:1px solid #ccc;">${svgStr}</div>`;
+			html += `<div style="font-size:11px; color:#666; margin-top:2px;">SVG</div>`;
+			html += `</div>`;
+			html += `<div style="display:inline-block; vertical-align:top; text-align:center;">`;
+			html += `<div style="border:1px solid #ccc;">${pngImgHtml}</div>`;
+			html += `<div style="font-size:11px; color:#666; margin-top:2px;">PNG</div>`;
+			html += `</div>`;
+			html += `</div>`;
+			return html;
+		}
+
+		for (const face of faces) {
+			const fi = face.faceIndex;
+			const label = face.postScriptName || `Face ${fi}`;
+
 			previewsHtml += `<div style="margin-bottom:16px;">`;
-			previewsHtml += `<div style="font-weight:bold; margin-bottom:4px;">${label}</div>`;
-			previewsHtml += `<div style="display:inline-block; border:1px solid #ccc; margin-right:8px;">${svgStr}</div>`;
-			previewsHtml += `<div style="display:inline-block; border:1px solid #ccc;">${pngImgHtml}</div>`;
+			previewsHtml += `<div style="font-weight:bold; margin-bottom:6px;">${label}</div>`;
+			previewsHtml += buildVariant(fontFile, fi, false, 'Metrics (per-font)');
+			previewsHtml += buildVariant(fontFile, fi, true, 'Fixed em-box (comparable)');
 			previewsHtml += `</div>`;
 		}
 		$('#metadata_previews').html(previewsHtml);
