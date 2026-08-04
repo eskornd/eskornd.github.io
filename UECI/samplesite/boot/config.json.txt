@@ -10,6 +10,7 @@
 		"https://applink.qa-eu-1.test.cloudi.city/public/panelcomponent/panel/main",
 		"https://applink.qa-eu-2.test.cloudi.city/public/panelcomponent/panel/main",
 		"https://shapes.future.dev.cloudi.city/index",
+		"https://shapes.eu.esko.cloud/index",
 		"https://demo.filebrowser.org/",
 		"https://ae.future.dev.cloudi.city/appconnector/open?theme=dark&language=en",
 		"https://www.whatarecookies.com/cookietest.asp",
