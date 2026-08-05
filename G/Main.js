@@ -463,7 +463,7 @@ function ReRenderMetadataTab(fontFile)
 			const svgStr = gGlyphModule.renderPreviewSVG(fontFile, fi, "", fixedFrame);
 
 			let pngImgHtml = '';
-			const pngPath = '/tmp/_preview_' + fi + (fixedFrame ? '_fixed' : '_metrics') + '.png';
+			const pngPath = '/tmp/_preview_' + fi + (fixedFrame ? '_uniform' : '_metrics') + '.png';
 			if (gGlyphModule.renderPreviewPNG(fontFile, fi, "", pngPath, fixedFrame)) {
 				const pngData = gGlyphModule.FS.readFile(pngPath);
 				const blob = new Blob([pngData], { type: 'image/png' });
@@ -493,7 +493,7 @@ function ReRenderMetadataTab(fontFile)
 			previewsHtml += `<div style="margin-bottom:16px;">`;
 			previewsHtml += `<div style="font-weight:bold; margin-bottom:6px;">${label}</div>`;
 			previewsHtml += buildVariant(fontFile, fi, false, 'Metrics (per-font)');
-			previewsHtml += buildVariant(fontFile, fi, true, 'Fixed em-box (comparable)');
+			previewsHtml += buildVariant(fontFile, fi, true, 'Uniform em-box (comparable)');
 			previewsHtml += `</div>`;
 		}
 		$('#metadata_previews').html(previewsHtml);
