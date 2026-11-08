@@ -1102,7 +1102,10 @@ Override this function to get notified.
     
     <div class="description">
         Notified when annotation created
-Override this function to get notified.
+Override this function to get notified. <br>
+The annotation is created by the user with the annotation tool (see <a href="Editor.html#activateAnnotationTool">Editor#activateAnnotationTool</a>). It has no .id
+and is NOT stored by the editor: to keep it visible, assign an .id and pass it (together with your other annotations)
+to <a href="Document.html#setAnnotations">Document#setAnnotations</a>.
     </div>
     
 
@@ -1449,7 +1452,9 @@ Override this function to get notified.
     
     <div class="description">
         Notified when document is opened/closed/switched in host application
-Override this function to get notified.
+Override this function to get notified. <br>
+Note: in Adobe Illustrator, notifications (this and the other on*() functions) are only delivered after the web-component
+has made its first UECI call (e.g. <a href="Editor.html#currentDocument">Editor#currentDocument</a>), so make a call right after initialization.
     </div>
     
 

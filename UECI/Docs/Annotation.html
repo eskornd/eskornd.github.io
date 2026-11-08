@@ -48,7 +48,14 @@
     
         <h2><span class="attribs"><span class="type-signature"></span></span>Annotation</h2>
         
-            <div class="class-description">Annotation object, instructs editor where and how to draw highlight</div>
+            <div class="class-description">Annotation object, instructs editor where and how to draw highlight <br>
+<br>
+<b>Coordinates</b>: .rect, .points (and the deprecated .boundingBox) are in the editor's document (page) coordinate space,
+the same space as <a href="PageInfo.html">PageInfo</a> / <a href="PageBox.html">PageBox</a> rects: unit is point (1/72 inch), the Y axis points UP (origin at bottom-left),
+so y0 / y is the bottom edge and y1 is the top edge of a rectangle. Verified for Adobe Illustrator; ArtPro+ may differ. <br>
+<br>
+<b>Ownership</b>: the web-view owns its annotations. They are set as a whole with <a href="Document.html#setAnnotations">Document#setAnnotations</a>, and
+annotations that the user draws with the annotation tool are NOT stored by the editor (see <a href="Editor.html#onAnnotationCreated2">Editor#onAnnotationCreated2</a>).</div>
         
     
 </header>
@@ -268,7 +275,7 @@ Change since 23.07: if .rect is defined, then .boundingBox (as deprecated member
 <dd>
     
     <div class="description">
-        The pen color to be used by the highlight
+        The pen color to be used by the highlight (each channel 0..255)
     </div>
     
 
@@ -345,7 +352,7 @@ Change since 23.07: if .rect is defined, then .boundingBox (as deprecated member
 <dd>
     
     <div class="description">
-        Pen stroke width of the highlight
+        Pen stroke width of the highlight, default 2.0
     </div>
     
 
@@ -423,7 +430,9 @@ Change since 23.07: if .rect is defined, then .boundingBox (as deprecated member
     
     <div class="description">
         The annotation's unique ID. Provided by web-view
-Should exists so that editor can idendify
+Should exists so that editor can idendify <br>
+Annotations created by the user with the annotation tool have no ID, the web-view must assign one
+before passing them back to <a href="Document.html#setAnnotations">Document#setAnnotations</a>.
     </div>
     
 
@@ -577,7 +586,7 @@ Should exists so that editor can idendify
 <dd>
     
     <div class="description">
-        Highlight points of 'Freehand'
+        Highlight points of 'Freehand', in the same coordinate space as .rect
 optional, only used for 'Freehand'.
     </div>
     
@@ -661,11 +670,13 @@ Meaning for each type of annotation: <br>
 - Oval: The out-bound rectangle of the oval<br>
 - Line: x0, y0 as start point, x1, y1 as end point <br>
 - Arrow: x0, y0 as start point, x1, y1 as end point <br>
-- Note: x0, y0 as the location for note, x1, y1 should be identical as x0, y0 <br>
+- Note: x0, y0 as the location for note, x1, y1 should be identical as x0, y0 (x1, y1 are ignored by Illustrator) <br>
 - Highlight: The rectangle of the highlight <br>
 - Freehand: The out-bound rectangle of the highlight. Freehand's annotation data is defined by .points <br>
 <br>
-If both .rect and .boundingBox are presented, .rect will be used prior to .boundingBox.
+Line and Arrow keep their direction, so x0 > x1 or y0 > y1 is valid (not normalized). <br>
+If both .rect and .boundingBox are presented, .rect will be used prior to .boundingBox. <br>
+Coordinates are in points with Y up, see <a href="Annotation.html">Annotation</a>.
     </div>
     
 

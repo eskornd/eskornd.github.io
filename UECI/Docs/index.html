@@ -79,11 +79,11 @@
 <p><a href="Editor.html">See API reference of Editor class</a></p>
 <h3>Asynchronicity</h3>
 <p>All UECI APIs are asynchronous, this is because the asynchronicity between C++ / JS interactions in modern applications.</p>
-<p>This means APIs like Editor.getVersionString() is async which returns a Promise object instead of string. In web comonent, it is also required to handle the return value in asynchronous way.</p>
+<p>This means APIs like Editor.versionString() is async which returns a Promise object instead of string. In web comonent, it is also required to handle the return value in asynchronous way.</p>
 <pre class="prettyprint source lang-js"><code>// Sample code of showing version string in web-component
 async function showVersionString()
 {
-	const verStr = await editor.getVersionString.getVersionString();
+	const verStr = await editor.versionString();
 	var s = document.getElementById('elementID');
 	s.value(verStr);
 }

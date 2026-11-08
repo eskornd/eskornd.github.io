@@ -315,7 +315,9 @@
     
     <div class="description">
         Get Annotations that is shown for current document
-Only the annotation set by your web-component will be returned.
+Only the annotation set by your web-component will be returned. <br>
+Annotations drawn by the user with the annotation tool are not included until the web-component commits them
+through <a href="Document.html#setAnnotations">Document#setAnnotations</a>.
     </div>
     
 
@@ -1740,7 +1742,10 @@ True if the document is checked-in & up-to-date on S2. Otherwise return false. I
 
     
     <div class="description">
-        Set Annotations that should be shown for current document
+        Set Annotations that should be shown for current document <br>
+This REPLACES all annotations previously set by this web-component on this document (pass an empty array to clear them),
+it is not an incremental "add". To add/update/remove a single annotation, keep your own list (keyed by .id), modify it
+and call setAnnotations() with the full list. Each annotation needs a unique .id.
     </div>
     
 
