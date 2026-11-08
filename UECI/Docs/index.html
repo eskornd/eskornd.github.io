@@ -89,7 +89,7 @@ async function showVersionString()
 }
 </code></pre>
 <h3>Error Handling</h3>
-<p>Error could happen during call of an async API function, on error happens, the API function will throw Error object, it is the caller's responsibility to catch and properly handle it.
+<p>Errors could happen during a call of an async API function. When an error happens, the returned promise is rejected (so <code>await</code> throws), with an error object carrying <code>errorCode</code> and <code>errorMessage</code>. It is the caller's responsibility to catch and properly handle it.
 A typical example is when a document has been closed by the host application, then calling APIs on such document will cause an error.</p>
 <pre class="prettyprint source"><code>async function showDocumentTitle(doc)
 {
